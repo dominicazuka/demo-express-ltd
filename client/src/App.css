@@ -1,0 +1,149 @@
+/* bootstrap icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+.App {
+  text-align: center;
+}
+
+.homeScreenContainer {
+  /* box-sizing: border-box; */
+}
+
+.myCarousel {
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  text-align: var(--bs-body-text-align);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  color: rgb(var(--bs-tertiary-color-rgb));
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 4rem;
+}
+
+/* Hide scrollbar for browsers that don't support styling */
+/* This will hide the scrollbar while still allowing scrolling */
+::-webkit-scrollbar {
+  /* display: none; */
+}
+
+/* For browsers that support styling */
+/* Style the scrollbar in both X and Y directions */
+::-webkit-scrollbar {
+  width: 12px;
+  /* Width of the scrollbar */
+  height: 12px;
+  /* Height of the scrollbar */
+}
+
+/* Track styles */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Color of the scrollbar track */
+  border-radius: 10px;
+  /* Radius of the scrollbar track */
+}
+
+/* Thumb styles (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+  background: #006400;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  /* Radius of the scrollbar thumb */
+}
+
+/* Handle hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* Color of the scrollbar thumb on hover */
+}
+
+/* Media query for small screens (up to 768px) */
+@media (max-width: 768px) {
+
+  /* Adjust scrollbar width and height for smaller screens */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Media query for medium screens (769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+
+  /* Adjust scrollbar width and height for medium screens */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Media query for large screens (993px and above) */
+@media (min-width: 993px) {
+
+  /* Adjust scrollbar width and height for larger screens */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.back-to-top-button {
+  position: fixed;
+  bottom: 20px;
+  /* Adjust as needed */
+  right: 20px;
+  /* Adjust as needed */
+  background-color: #006400;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 9999;
+  /* Ensure the button appears over all elements */
+}
+
+.back-to-top-button.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top-button:focus {
+  outline: none;
+}
+
+.back-to-top-button:hover {
+  background-color: #0056b3;
+  /* Darken the color on hover */
+}
+
+.fxg-landing-hero {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  --rem: 16;
+  --button-height-comfortable: 3.5rem;
+  --button-height-condensed: 2.5rem;
+  --gray-1: #ccc;
+  --gray-900: #111827;
+  --gray-800: #1f2937;
+  color: #333;
+  font-family: FedExSans, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 350px;
+  position: relative;
+  margin-top: 0;
+}
