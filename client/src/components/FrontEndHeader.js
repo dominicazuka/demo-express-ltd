@@ -47,16 +47,6 @@ const FrontEndHeader = () => {
                     About
                 </Link>
               </li>
-              <li className='nav-item'>
-                <a className='nav-link' href='#' style={{ color: 'white' }}>
-                  Link
-                </a>
-              </li>
-              <li className='nav-item'>
-                <a className='nav-link disabled' aria-disabled='true'>
-                  Disabled
-                </a>
-              </li>
               <li className='nav-item dropdown'>
                 <a
                   className='nav-link dropdown-toggle'
@@ -65,22 +55,17 @@ const FrontEndHeader = () => {
                   aria-expanded='false'
                   style={{ color: 'white' }}
                 >
-                  Dropdown
+                  Support
                 </a>
                 <ul className='dropdown-menu'>
                   <li>
-                    <a className='dropdown-item' href='#'>
-                      Action
-                    </a>
+                    <Link to='/faq' className='dropdown-item'>
+                    FAQ
+                </Link>
                   </li>
                   <li>
                     <a className='dropdown-item' href='#'>
                       Another action
-                    </a>
-                  </li>
-                  <li>
-                    <a className='dropdown-item' href='#'>
-                      Something else here
                     </a>
                   </li>
                 </ul>

@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
 const ErrorPage = lazy(() => import('./components/ErrorPage'))
 const AboutUs = lazy(() => import('./views/frontend/AboutUs'))
+const Faq = lazy(() => import('./views/frontend/Faq'))
 
 function App () {
   useEffect(() => {
@@ -81,6 +82,7 @@ function App () {
           <Routes>
             <Route path='/' element={<HomeScreen />} />
             <Route path='/about' element={<AboutUs />} />
+            <Route path='/faq' element={<Faq />} />
 
             <Route path='/404' element={<ErrorPage />} />
 

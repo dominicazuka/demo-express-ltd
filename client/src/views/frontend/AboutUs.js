@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const AboutUs = () => {
 
   return (
-    <div className='clearfix ' style={{ position: 'relative' }}>
+    <div className='clearfix' style={{ position: 'relative' }}>
       {/* Landing hero  */}
       <div
         className='shadow'
