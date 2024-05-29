@@ -303,73 +303,82 @@ a {
 }
 
 .PhoneInputCountry {
-    position: relative;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    margin-right: 0.35em;
-    margin-right: var(--PhoneInputCountrySelect-marginRight);
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  margin-right: 0.35em;
+  margin-right: var(--PhoneInputCountrySelect-marginRight);
 }
 
 .PhoneInputCountrySelect {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    height: 100% !important;
-    width: 100% !important;
-    z-index: 1 !important;
-    border: 0 !important;
-    cursor: pointer !important;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 1 !important;
+  border: 0 !important;
+  cursor: pointer !important;
 }
 
 .PhoneInputCountryIcon {
-    width: calc(1em * 1.5) !important;
-    width: calc(var(--PhoneInputCountryFlag-height) * var(--PhoneInputCountryFlag-aspectRatio)) !important;
-    height: 1em !important;
-    height: var(--PhoneInputCountryFlag-height) !important;
+  width: calc(1em * 1.5) !important;
+  width: calc(var(--PhoneInputCountryFlag-height) * var(--PhoneInputCountryFlag-aspectRatio)) !important;
+  height: 1em !important;
+  height: var(--PhoneInputCountryFlag-height) !important;
 }
 
 .PhoneInputCountrySelectArrow {
-    display: block  !important;
-    content: '' !important;
-    width: 0.3em;
-    width: var(--PhoneInputCountrySelectArrow-width) !important;
-    height: 0.3em !important;
-    height: var(--PhoneInputCountrySelectArrow-width) !important;
-    margin-left: 0.35em !important;
-    margin-left: var(--PhoneInputCountrySelectArrow-marginLeft) !important;
-    border-style: solid !important;
-    border-color: currentColor !important;
-    border-color: var(--PhoneInputCountrySelectArrow-color) !important;
-    border-top-width: 0 !important;
-    border-bottom-width: 1px !important;
-    border-bottom-width: var(--PhoneInputCountrySelectArrow-borderWidth) !important;
-    border-left-width: 0 !important;
-    border-right-width: 1px !important;
-    border-right-width: var(--PhoneInputCountrySelectArrow-borderWidth) !important;
-    transform: rotate(45deg) !important;
-    transform: var(--PhoneInputCountrySelectArrow-transform) !important;
-    opacity: 0.45 !important;
-    opacity: var(--PhoneInputCountrySelectArrow-opacity) !important;
+  display: block !important;
+  content: '' !important;
+  width: 0.3em;
+  width: var(--PhoneInputCountrySelectArrow-width) !important;
+  height: 0.3em !important;
+  height: var(--PhoneInputCountrySelectArrow-width) !important;
+  margin-left: 0.35em !important;
+  margin-left: var(--PhoneInputCountrySelectArrow-marginLeft) !important;
+  border-style: solid !important;
+  border-color: currentColor !important;
+  border-color: var(--PhoneInputCountrySelectArrow-color) !important;
+  border-top-width: 0 !important;
+  border-bottom-width: 1px !important;
+  border-bottom-width: var(--PhoneInputCountrySelectArrow-borderWidth) !important;
+  border-left-width: 0 !important;
+  border-right-width: 1px !important;
+  border-right-width: var(--PhoneInputCountrySelectArrow-borderWidth) !important;
+  transform: rotate(45deg) !important;
+  transform: var(--PhoneInputCountrySelectArrow-transform) !important;
+  opacity: 0.45 !important;
+  opacity: var(--PhoneInputCountrySelectArrow-opacity) !important;
 }
 
 input:not(.react-phone-number-input__input) {
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-    border-radius: 0.2em;
-    border: 1px solid #cfcfcf;
-    background-color: #fcfcfc;
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  border-radius: 0.2em;
+  border: 1px solid #cfcfcf;
+  background-color: #fcfcfc;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .PhoneInputCountryIconImg {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-    padding: 30px;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 30px;
+}
+
+
+/* checkout image */
+@media (max-width: 767px) {
+  .checkout-image>img {
+    display: none !important;
+    margin-top: 0px;
+  }
 }

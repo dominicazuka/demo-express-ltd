@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import PhoneInput from 'react-phone-number-input'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import PhoneInput from 'react-phone-number-input';
+import { useMediaQuery } from 'react-responsive';
 
 const Ship = () => {
+  const isMobile = useMediaQuery({ maxWidth: 767 }) // Define the breakpoint for mobile devices
+
   //   const [formSubmitted, setFormSubmitted] = useState(false)
 
   // State to store the currently selected icon
@@ -778,7 +781,9 @@ const Ship = () => {
           </div>
         </div>
         {/* shipment info end */}
-        <div class='accordion-item'>
+
+        {/* delivery options start */}
+        <div class='mt-3 accordion-item'>
           <h2 class='accordion-header' id='panelsStayOpen-headingThree'>
             <button
               class='accordion-button collapsed'
@@ -788,7 +793,7 @@ const Ship = () => {
               aria-expanded='false'
               aria-controls='panelsStayOpen-collapseThree'
             >
-              Accordion Item #3
+              Delivery Options #3
             </button>
           </h2>
           <div
@@ -797,17 +802,139 @@ const Ship = () => {
             aria-labelledby='panelsStayOpen-headingThree'
           >
             <div class='accordion-body'>
-              <strong>This is the third item's accordion body.</strong> It is
-              hidden by default, until the collapse plugin adds the appropriate
-              classes that we use to style each element. These classes control
-              the overall appearance, as well as the showing and hiding via CSS
-              transitions. You can modify any of this with custom CSS or
-              overriding our default variables. It's also worth noting that just
-              about any HTML can go within the <code>.accordion-body</code>,
-              though the transition does limit overflow.
+              <div className='row'>
+                <div className='col-md-6'>
+                  <div className='card my-4 shadow'>
+                    <div className='card-body'>
+                      <div className='align-items-center mb-3'>
+                        <div className='me-3'>
+                          <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-3 rounded-3 p-2 shadow'>
+                            <i class='bi bi-airplane-engines'></i>
+                          </div>
+                        </div>
+                        <div>
+                          <p className='mb-1'>Estimated delivery</p>
+                          <h5 className='mb-1'>Fri, 31 May</h5>
+                          <span>latest by end of day</span>
+                          <p className='mt-2'>
+                            Book by 29/05/2024 by 03:00 pm for a pick-up today
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className='mb-3'>
+                        <p className='mb-1'>Includes VAT</p>
+                        <h4>$ 20,000 </h4>
+                      </div>
+
+                      <button
+                        className='btn btn-success w-100 mb-3 shadow'
+                        type='button'
+                      >
+                        Continue to Booking
+                      </button>
+                    </div>
+
+                    <div className='accordion' id='accordionExample'>
+                      <div className='accordion-item'>
+                        <h2 className='accordion-header' id='headingOne'>
+                          <button
+                            className='accordion-button'
+                            type='button'
+                            data-bs-toggle='collapse'
+                            data-bs-target='#collapseOne'
+                            aria-expanded='true'
+                            aria-controls='collapseOne'
+                          >
+                            Included in this Offer
+                          </button>
+                        </h2>
+                        <div
+                          id='collapseOne'
+                          className='accordion-collapse collapse show'
+                          aria-labelledby='headingOne'
+                          data-bs-parent='#accordionExample'
+                        >
+                          <div className='accordion-body'>
+                            <ul>
+                              <li>
+                                Reliable door-to-door Express parcel & document
+                                Delivery of your Time Sensitive Shipment
+                              </li>
+                              <li>Track & trace</li>
+                              <li>Electronic Proof of Delivery in Real Time</li>
+                              <li>
+                                Courier pickup scheduling in the next step
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className='accordion-item'>
+                        <h2 className='accordion-header' id='headingTwo'>
+                          <button
+                            className='accordion-button collapsed'
+                            type='button'
+                            data-bs-toggle='collapse'
+                            data-bs-target='#collapseTwo'
+                            aria-expanded='false'
+                            aria-controls='collapseTwo'
+                          >
+                            Optional Add-ons
+                          </button>
+                        </h2>
+                        <div
+                          id='collapseTwo'
+                          className='accordion-collapse collapse'
+                          aria-labelledby='headingTwo'
+                          data-bs-parent='#accordionExample'
+                        >
+                          <div className='accordion-body'>
+                            <h6>Insurance</h6>
+                            <p>
+                              Financial protection of your shipment value
+                              against all risks of physical shipment loss or
+                              damage, from any external causes (additional
+                              charges apply)
+                            </p>
+                            <h6>GoGreen Plus</h6>
+                            <p>
+                              <strong>Reduce your CO2 emissions by 30%.</strong>{' '}
+                              Harness our sustainable aviation fuel and engage
+                              in impactful climate action. Choose GoGreen Plus
+                              without compromising speed, as your deliveries
+                              remain as timely as ever!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='card-footer text-muted text-end justify-content-end ms-auto'>
+                      <span class='badge text-bg-success rounded-pill'>
+                        Validity of quote: Until end of the year
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className='col-md-6 mx-auto'>
+                  <div className='checkout-image d-flex justify-content-center'>
+                    <img
+                      src='https://media1.thehungryjpeg.com/thumbs2/ori_3745172_w8q654njoy3e5xgqvcl686uq9te0xviaeabbw6pg_green-cargo-container-vector-freight-shipping-container-concept-logistics-transportation-mock-up-front-and-back-sides-isolated-on-white-background-illustration.jpg'
+                      alt='checkout'
+                      className='d-block w-100 rounded shadow'
+                      width='500'
+                      height='500'
+                      style={{ maxHeight: '500px', objectFit: 'cover', marginTop: '120px' }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        {/* delivery options end */}
       </div>
 
       {/* shipping section end */}
