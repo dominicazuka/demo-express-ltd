@@ -296,7 +296,7 @@ a {
 
 @import url("https://cdn.jsdelivr.net/npm/@docsearch/css@3");
 
-/* phone number input */
+/* phone number input styles */
 .PhoneInput {
   display: flex !important;
   align-items: center !important;
@@ -319,7 +319,6 @@ a {
     width: 100% !important;
     z-index: 1 !important;
     border: 0 !important;
-    /* opacity: 0 !important; */
     cursor: pointer !important;
 }
 
@@ -353,10 +352,6 @@ a {
     opacity: 0.45 !important;
     opacity: var(--PhoneInputCountrySelectArrow-opacity) !important;
 }
-/* .PhoneInputInput {
-    flex: 1;
-    min-width: 0;
-} */
 
 input:not(.react-phone-number-input__input) {
     padding-left: 0.4em;

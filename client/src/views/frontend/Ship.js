@@ -5,6 +5,22 @@ import PhoneInput from 'react-phone-number-input'
 const Ship = () => {
   //   const [formSubmitted, setFormSubmitted] = useState(false)
 
+  // State to store the currently selected icon
+  const [selectedIcon, setSelectedIcon] = useState('bi bi-question-circle')
+
+  // State to store the weight input value
+  const [weight, setWeight] = useState('0')
+
+  // Function to handle button clicks and update the selected icon
+  const handleButtonClick = iconClass => {
+    setSelectedIcon(iconClass)
+  }
+
+  // Function to handle weight input changes
+  const handleWeightChange = event => {
+    setWeight(event.target.value)
+  }
+
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')
@@ -263,18 +279,18 @@ const Ship = () => {
                           <label htmlFor='senderPhone' className='form-label'>
                             Phone Number
                           </label>
-                            <PhoneInput
-                              className='form-control rounded'
-                              id='senderPhone'
-                              placeholder='E.g +2347034054567'
-                              onChange={e => {
-                                handlePhoneNumberInput(e)
-                              }}
-                              required
-                            />
-                            <div className='invalid-feedback'>
-                              Valid phone number is required.
-                            </div>
+                          <PhoneInput
+                            className='form-control rounded'
+                            id='senderPhone'
+                            placeholder='E.g +2347034054567'
+                            onChange={e => {
+                              handlePhoneNumberInput(e)
+                            }}
+                            required
+                          />
+                          <div className='invalid-feedback'>
+                            Valid phone number is required.
+                          </div>
                         </div>
 
                         {/* email */}
@@ -284,7 +300,7 @@ const Ship = () => {
                           </label>
                           <div className='input-group has-validation'>
                             <span className='input-group-text'>
-                              <i class="bi bi-envelope-at"></i>
+                              <i class='bi bi-envelope-at'></i>
                             </span>
                             <input
                               type='email'
@@ -306,7 +322,7 @@ const Ship = () => {
                           </label>
                           <div className='input-group'>
                             <span className='input-group-text'>
-                              <i class="bi bi-envelope-at"></i>
+                              <i class='bi bi-cash-stack'></i>
                             </span>
                             <input
                               type='text'
@@ -348,9 +364,13 @@ const Ship = () => {
                             </div>
                           </div>
                         </div>
+
                         {/* company - optional */}
                         <div className='col-12 text-start justify-content-start ms-auto'>
-                          <label htmlFor='receiverCompany' className='form-label'>
+                          <label
+                            htmlFor='receiverCompany'
+                            className='form-label'
+                          >
                             Receiver Company
                           </label>
                           <div className='input-group has-validation'>
@@ -368,7 +388,10 @@ const Ship = () => {
 
                         {/* address */}
                         <div className='col-12 text-start justify-content-start ms-auto'>
-                          <label htmlFor='receiverAddress' className='form-label'>
+                          <label
+                            htmlFor='receiverAddress'
+                            className='form-label'
+                          >
                             Receiver Address
                           </label>
                           <div className='input-group has-validation'>
@@ -409,9 +432,12 @@ const Ship = () => {
                           </div>
                         </div>
 
-                        {/* country, state, city */}
+                        {/* country, state, city start */}
                         <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
-                          <label htmlFor='receiverCountry' className='form-label'>
+                          <label
+                            htmlFor='receiverCountry'
+                            className='form-label'
+                          >
                             Receiver Country
                           </label>
                           <span style={{ marginLeft: '10px' }}>
@@ -467,34 +493,35 @@ const Ship = () => {
                             Please select a valid receiver city.
                           </div>
                         </div>
+                        {/* country, state, city end */}
 
                         {/* phone number */}
                         <div className='has-validation text-start justify-content-start ms-auto'>
                           <label htmlFor='receiverPhone' className='form-label'>
-                            Reciever Phone Number
+                            Receiver Phone Number
                           </label>
-                            <PhoneInput
-                              className='form-control rounded'
-                              id='receiverPhone'
-                              placeholder='E.g +2347034054567'
-                              onChange={e => {
-                                handlePhoneNumberInput(e)
-                              }}
-                              required
-                            />
-                            <div className='invalid-feedback'>
-                              Valid receiver phone number is required.
-                            </div>
+                          <PhoneInput
+                            className='form-control rounded'
+                            id='receiverPhone'
+                            placeholder='E.g +2347034054567'
+                            onChange={e => {
+                              handlePhoneNumberInput(e)
+                            }}
+                            required
+                          />
+                          <div className='invalid-feedback'>
+                            Valid receiver phone number is required.
+                          </div>
                         </div>
 
                         {/* email */}
                         <div className='col-12 text-start justify-content-start ms-auto'>
                           <label htmlFor='receiverEmail' className='form-label'>
-                           Receiver Email Address
+                            Receiver Email Address
                           </label>
                           <div className='input-group has-validation'>
                             <span className='input-group-text'>
-                              <i class="bi bi-envelope-at"></i>
+                              <i class='bi bi-envelope-at'></i>
                             </span>
                             <input
                               type='email'
@@ -516,7 +543,7 @@ const Ship = () => {
                           </label>
                           <div className='input-group'>
                             <span className='input-group-text'>
-                              <i class="bi bi-envelope-at"></i>
+                              <i class='bi bi-cash-stack'></i>
                             </span>
                             <input
                               type='text'
@@ -526,15 +553,33 @@ const Ship = () => {
                             />
                           </div>
                         </div>
+
+                        {/* notes */}
+                        <div className='col-12 text-start justify-content-start ms-auto'>
+                          <label htmlFor='receiverNote' className='form-label'>
+                            Notes about this contact
+                          </label>
+                          <div className='input-group'>
+                            <span className='input-group-text'>
+                              <i class='bi bi-journal-check'></i>
+                            </span>
+                            <textarea
+                              className='form-control'
+                              id='receiverNote'
+                              placeholder='Important things we need to take note of...'
+                              rows='5'
+                            />
+                          </div>
+                        </div>
                       </div>
 
                       <hr className='my-4' />
 
                       <button
-                        className='w-100 btn btn-primary btn-lg'
+                        className='w-100 btn btn-success btn-lg shadow'
                         type='submit'
                       >
-                        Continue to checkout
+                        Next
                       </button>
                     </div>
                     {/* To info end*/}
@@ -546,7 +591,8 @@ const Ship = () => {
         </div>
         {/* address info end */}
 
-        <div class='accordion-item'>
+        {/* shipment info start */}
+        <div class='mt-3 accordion-item'>
           <h2 class='accordion-header' id='panelsStayOpen-headingTwo'>
             <button
               class='accordion-button collapsed'
@@ -556,7 +602,7 @@ const Ship = () => {
               aria-expanded='false'
               aria-controls='panelsStayOpen-collapseTwo'
             >
-              Accordion Item #2
+              Shipment Details #2
             </button>
           </h2>
           <div
@@ -565,17 +611,173 @@ const Ship = () => {
             aria-labelledby='panelsStayOpen-headingTwo'
           >
             <div class='accordion-body'>
-              <strong>This is the second item's accordion body.</strong> It is
-              hidden by default, until the collapse plugin adds the appropriate
-              classes that we use to style each element. These classes control
-              the overall appearance, as well as the showing and hiding via CSS
-              transitions. You can modify any of this with custom CSS or
-              overriding our default variables. It's also worth noting that just
-              about any HTML can go within the <code>.accordion-body</code>,
-              though the transition does limit overflow.
+              <div className='container mb-4'>
+                <div className='card p-3 shadow'>
+                  {/* weight start */}
+                  <p className='h5 '>Weight</p>
+                  <div className='align-items-start text-start justify-content-start'>
+                    <label htmlFor='weight-0' className='form-label'>
+                      Weight (kg)
+                    </label>
+                    <input
+                      aria-describedby='success_weight-0'
+                      id='weight-0'
+                      name='weight-0'
+                      required
+                      type='text'
+                      placeholder='Weight (kg)'
+                      autoComplete='off'
+                      className='form-control'
+                      onChange={handleWeightChange}
+                    />
+                    <div role='alert'></div>
+                  </div>
+                  {/* weight end */}
+
+                  <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-5 rounded-3 p-3 shadow'>
+                    <i className={selectedIcon}></i>
+                  </div>
+                  {/* weight end */}
+
+                  {/* Dimension start */}
+                  <fieldset>
+                    <legend className='h5'>Dimensions</legend>
+                    <div className='d-flex align-items-center mb-3'>
+                      <label
+                        htmlFor='length'
+                        className='form-label'
+                        style={{ marginRight: '10px' }}
+                      >
+                        Length (cm)
+                      </label>
+                      <input
+                        aria-describedby='success_length-0'
+                        id='length'
+                        name='length'
+                        required
+                        type='text'
+                        placeholder='Length (cm)'
+                        autoComplete='off'
+                        className='form-control'
+                      />
+                      <span className='mx-2'>X</span>
+
+                      <label htmlFor='width' className='form-label me-2'>
+                        Width (cm)
+                      </label>
+                      <input
+                        aria-describedby='success_width-0'
+                        id='width'
+                        name='width'
+                        required
+                        type='text'
+                        placeholder='Width (cm)'
+                        autoComplete='off'
+                        className='form-control me-2'
+                      />
+                      <span className='mx-2'>X</span>
+                      <label htmlFor='height-0' className='form-label me-2'>
+                        Height (cm)
+                      </label>
+                      <input
+                        aria-describedby='success_height-0'
+                        id='height'
+                        name='height'
+                        required
+                        type='text'
+                        placeholder='Height (cm)'
+                        autoComplete='off'
+                        className='form-control'
+                      />
+                    </div>
+                  </fieldset>
+                  {/* Dimension End */}
+
+                  {/* options start */}
+                  <fieldset>
+                    <legend className='visually-hidden'>
+                      Common Shipping Sizes
+                    </legend>
+                    <p className='mt-4 h5'>Not sure about the sizes?</p>
+                    <div className='text-center align-items-center justify-content-center d-flex flex-wrap'>
+                      <div className='card me-2 mb-2'>
+                        <button
+                          className='btn btn-outline-success shadow'
+                          data-testid='preset-card-button'
+                          onClick={() => handleButtonClick('bi bi-envelope')}
+                        >
+                          <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-3 rounded-3 p-2 shadow'>
+                            <i class='bi bi-envelope'></i>
+                          </div>
+
+                          <div>
+                            <span className='fw-bold'>A4 Envelope</span>
+                            <span className='d-block'>32 x 24 x 1 cm</span>
+                          </div>
+                        </button>
+                      </div>
+                      <div className='card me-2 mb-2'>
+                        <button
+                          className='btn btn-outline-success shadow'
+                          data-testid='preset-card-button'
+                          onClick={() => handleButtonClick('bi bi-book')}
+                        >
+                          <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-3 rounded-3 p-2 shadow'>
+                            <i class='bi bi-book'></i>
+                          </div>
+                          <div>
+                            <span className='fw-bold'>One or two books</span>
+                            <span className='d-block'>23 x 14 x 4 cm</span>
+                          </div>
+                        </button>
+                      </div>
+                      <div className='card me-2 mb-2'>
+                        <button
+                          className='btn btn-outline-success shadow'
+                          data-testid='preset-card-button'
+                          onClick={() => handleButtonClick('bi bi-backpack3')}
+                        >
+                          <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-3 rounded-3 p-2 shadow'>
+                            <i class='bi bi-backpack3'></i>
+                          </div>
+                          <div>
+                            <span className='fw-bold'>Shoe box</span>
+                            <span className='d-block'>35 x 20 x 15 cm</span>
+                          </div>
+                        </button>
+                      </div>
+                      <div className='card me-2 mb-2'>
+                        <button
+                          className='btn btn-outline-success shadow'
+                          data-testid='preset-card-button'
+                          onClick={() =>
+                            handleButtonClick('bi bi-minecart-loaded')
+                          }
+                        >
+                          <div className='feature-icon text-center d-inline-flex align-items-center justify-content-center text-bg-success bg-gradient fs-2 mb-3 rounded-3 p-2 shadow'>
+                            <i class='bi bi-minecart-loaded'></i>
+                          </div>
+                          <div>
+                            <span className='fw-bold'>Moving box</span>
+                            <span className='d-block'>75 x 35 x 35 cm</span>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                  {/* options end */}
+
+                  {/* total weight start */}
+                  <p className='mt-3 h5 align-items-start text-start justify-content-start'>
+                    Total Shipment Weight: {weight} kg
+                  </p>
+                  {/* total weight end */}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        {/* shipment info end */}
         <div class='accordion-item'>
           <h2 class='accordion-header' id='panelsStayOpen-headingThree'>
             <button
