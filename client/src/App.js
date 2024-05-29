@@ -10,10 +10,11 @@ import FullScreenLoader from './components/FullScreenLoader'
 import Swal from 'sweetalert2'
 
 //using lazy load
-const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
-const ErrorPage = lazy(() => import('./components/ErrorPage'))
-const AboutUs = lazy(() => import('./views/frontend/AboutUs'))
-const Faq = lazy(() => import('./views/frontend/Faq'))
+const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'));
+const ErrorPage = lazy(() => import('./components/ErrorPage'));
+const AboutUs = lazy(() => import('./views/frontend/AboutUs'));
+const Faq = lazy(() => import('./views/frontend/Faq'));
+const Ship = lazy(() => import('./views/frontend/Ship'));
 
 function App () {
   useEffect(() => {
@@ -83,6 +84,7 @@ function App () {
             <Route path='/' element={<HomeScreen />} />
             <Route path='/about' element={<AboutUs />} />
             <Route path='/faq' element={<Faq />} />
+            <Route path='/ship' element={<Ship />} />
 
             <Route path='/404' element={<ErrorPage />} />
 
