@@ -121,9 +121,11 @@ const FrontEndHeader = () => {
             </form>
 
             <div className='mt-2 text-center'>
-              <button type='button' className='btn btn-outline-light me-2'>
-                Login
-              </button>
+              <Link to='/login/user'>
+                <button type='button' className='btn btn-outline-light me-2'>
+                  Login
+                </button>
+              </Link>
               <Link to='/register/user'>
                 <button type='button' className='btn btn-warning'>
                   Sign-up

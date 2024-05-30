@@ -1,0 +1,256 @@
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import { useMediaQuery } from 'react-responsive'
+
+const LoginPageUser = () => {
+  const useFormValidation = () => {
+    useEffect(() => {
+      const forms = document.querySelectorAll('.needs-validation')
+
+      Array.from(forms).forEach(form => {
+        form.addEventListener(
+          'submit',
+          event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+              // Add 'was-validated' class to show validation messages
+              form.classList.add('was-validated')
+              // Highlight the required fields with the 'is-invalid' class
+              const invalidInputs = form.querySelectorAll(':invalid')
+              invalidInputs.forEach(input => {
+                input.classList.add('is-invalid')
+              })
+            }
+
+            form.classList.add('was-validated')
+          },
+          false
+        )
+      })
+
+      return () => {
+        // Cleanup event listeners
+        Array.from(forms).forEach(form => {
+          form.removeEventListener('submit', () => {})
+        })
+      }
+    }, [])
+  }
+
+  useFormValidation()
+  return (
+    <div className='clearfix' style={{ position: 'relative' }}>
+      {/* Breadcrumb  */}
+      <div
+        className='shadow'
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hpcHBpbmd8ZW58MHx8MHx8fDA%3D")',
+          height: '250px',
+          maxHeight: '250px',
+          objectFit: 'cover',
+          position: 'relative'
+        }}
+      >
+        {/* overlay start */}
+        <div
+          className='overlay'
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
+            zIndex: 1,
+            backdropFilter: 'blur(10px)' // Adjust the blur intensity as needed
+          }}
+        ></div>
+        {/* overlay end */}
+        <div
+          className=''
+          style={{ textAlign: 'left', position: 'relative', zIndex: 2 }}
+        >
+          <div className='container'>
+            <h1
+              className='mt-5'
+              style={{
+                display: 'inline-block',
+                color: '#FFFFFF'
+              }}
+            >
+              Login
+            </h1>
+            <p
+              className='text-white'
+              style={{
+                marginBottom: '60px'
+              }}
+            >
+              Take advantage of our services and solutions designed to meet all
+              of your shipping requirements. Login to your Demo Express LTD
+              shipping account below. Let’s get started!
+            </p>
+          </div>
+
+          {/* Breadcrumb */}
+          <nav
+            aria-label='breadcrumb'
+            className='p-5'
+            style={{ marginTop: '-90px' }}
+          >
+            <ol className='breadcrumb breadcrumb-chevron p-2 bg-body-tertiary rounded-3 shadow'>
+              <li className='breadcrumb-item'>
+                <Link to='/' className='link-body-emphasis'>
+                  <i className='bi bi-house-door-fill'></i>
+                  <span className='visually-hidden'>Home</span>
+                </Link>
+              </li>
+              <li className='breadcrumb-item'>
+                <a
+                  className='link-body-emphasis fw-semibold text-decoration-none'
+                  href='#!'
+                >
+                  Login
+                </a>
+              </li>
+            </ol>
+          </nav>
+          {/* breadcrumb end */}
+        </div>
+      </div>
+      {/* Breadcrumb  end*/}
+
+       {/* cta start */}
+       <div class='container my-5 mb-4'>
+        <div class='position-relative p-2 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
+          <h1 class='mt-2 text-body-emphasis'>
+            Sign in now and enjoy personalized experience!
+          </h1>
+          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Don't have an Account?</h3>
+          <Link
+            to='/register/user'
+            rel='noopener noreferrer'
+            className='btn btn-link cursor-pointer'
+            aria-label='Register'
+            style={{ color: 'green' }}
+          >
+            <button class='btn btn-success px-5 mb-3 shadow' type='button'>
+              REGISTER
+            </button>
+          </Link>
+        </div>
+      </div>
+      {/* cta end */}
+
+      {/* register form start */}
+      <main className='container mt-5'>
+        <div className='p-2 shadow rounded'>
+          <form
+            className='row needs-validation'
+            noValidate
+            style={{ padding: '20px' }}
+          >
+            <div className='mt-3 col-md-12 col-lg-12'>
+              <h4 className='mb-3'>Sign In</h4>
+
+              <div className='row g-3'>
+                {/* email */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='email' className='form-label'>
+                    Email Address
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-envelope-at'></i>
+                    </span>
+                    <input
+                      type='email'
+                      className='form-control'
+                      id='email'
+                      placeholder='Email would be used for shipment notifications'
+                      required
+                    />
+                    <div className='invalid-feedback'>
+                      Valid sender email address is required.
+                    </div>
+                  </div>
+                </div>
+
+                {/* password */}
+                <div className='col-12 text-start justify-content-start ms-auto mt-3'>
+                  <label htmlFor='password' className='form-label'>
+                    Password
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i className='bi bi-lock'></i>
+                    </span>
+                    <input
+                      type='password'
+                      className='form-control'
+                      id='password'
+                      placeholder='Enter your password'
+                      required
+                    />
+                    <button
+                      className='btn btn-outline-secondary'
+                      type='button'
+                      id='togglePassword'
+                      onClick={() => {
+                        const passwordField =
+                          document.getElementById('password')
+                        const toggleButton =
+                          document.getElementById('togglePassword')
+                        if (passwordField.type === 'password') {
+                          passwordField.type = 'text'
+                          toggleButton.innerHTML =
+                            '<i class="bi bi-eye-slash"></i>'
+                        } else {
+                          passwordField.type = 'password'
+                          toggleButton.innerHTML = '<i class="bi bi-eye"></i>'
+                        }
+                      }}
+                    >
+                      <i className='bi bi-eye'></i>
+                    </button>
+                    <div className='invalid-feedback'>
+                      Password is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr className='my-4' />
+              {/* remember-me subscription start*/}
+              <div class='form-check text-start my-3'>
+                <input
+                  class='form-check-input'
+                  type='checkbox'
+                  name='remember-me'
+                  id='rememberMe'
+                />
+                <label class='form-check-label' for='rememberMe'>
+                  Remember me
+                </label>
+              </div>
+              {/* remember-me end */}
+
+              <button
+                className='w-70 btn btn-success btn-lg shadow'
+                type='submit'
+              >
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+      {/* register form ends */}
+    </div>
+  )
+}
+
+export default LoginPageUser

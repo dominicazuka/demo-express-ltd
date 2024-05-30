@@ -126,24 +126,29 @@ const RegisterPageUser = () => {
       {/* Breadcrumb  end*/}
 
       {/* cta start */}
-      <div class='container my-5 mb-3'>
-        <div class='position-relative p-5 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
-          <h1 class='text-body-emphasis'>
+      <div class='container my-5 mb-4'>
+        <div class='position-relative p-2 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
+          <h1 class='mt-2 text-body-emphasis'>
             Sign up now and enjoy personalized shipping rates!
           </h1>
-          <p class='col-lg-6 mx-auto mb-4'>
-            Open a corporate account and enjoy our standard 30 days credit
-            terms.
-          </p>
-          <button class='btn btn-success px-5 mb-5 shadow' type='button'>
-            Call to action
-          </button>
+          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Have an Account?</h3>
+          <Link
+            to='/login/user'
+            rel='noopener noreferrer'
+            className='btn btn-link cursor-pointer'
+            aria-label='Login'
+            style={{ color: 'green' }}
+          >
+            <button class='btn btn-success px-5 mb-3 shadow' type='button'>
+              LOG IN
+            </button>
+          </Link>
         </div>
       </div>
       {/* cta end */}
 
       {/* register form start */}
-      <main className='container'>
+      <main className='container mt-2'>
         <div className='p-2 shadow rounded'>
           <form
             className='row needs-validation'
@@ -387,16 +392,17 @@ const RegisterPageUser = () => {
                   required
                 />
                 <label class='form-check-label' for='privacyPolicyCheck'>
-                  I have read the Privacy Policy <sup className='text-danger'> *</sup>
+                  I have read the Privacy Policy{' '}
+                  <sup className='text-danger'> *</sup>
                 </label>
                 <div className='invalid-feedback'>
-                     Kindly check the box for privacy policy.
-                    </div>
+                  Kindly check the box for privacy policy.
+                </div>
               </div>
               {/* privacy policy end */}
 
               <button
-                className='w-100 btn btn-success btn-lg shadow'
+                className='w-70 btn btn-success btn-lg shadow'
                 type='submit'
               >
                 Submit
@@ -408,7 +414,7 @@ const RegisterPageUser = () => {
       {/* register form ends */}
 
       {/* benefits start */}
-      <div class='container px-4 py-5' id='hanging-icons'>
+      <div class='container mt-3 px-4 py-5' id='hanging-icons'>
         <h2 class='pb-2 border-bottom'>Opening an account has its benefits</h2>
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>

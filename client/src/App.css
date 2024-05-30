@@ -385,6 +385,6 @@ input:not(.react-phone-number-input__input) {
 
 /* checkbox */
 .form-check-input:checked {
-  background-color: var(--bs-success);
-  border-color: var(--bs-success);
+  background-color: var(--bs-success) !important;
+  border-color: var(--bs-success) !important;
 }

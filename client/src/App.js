@@ -16,6 +16,8 @@ const AboutUs = lazy(() => import('./views/frontend/AboutUs'));
 const Faq = lazy(() => import('./views/frontend/Faq'));
 const Ship = lazy(() => import('./views/frontend/Ship'));
 const RegisterPageUser = lazy(() => import('./views/frontend/RegisterPageUser'))
+const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
+
 
 function App () {
   useEffect(() => {
@@ -87,6 +89,7 @@ function App () {
             <Route path='/faq' element={<Faq />} />
             <Route path='/ship' element={<Ship />} />
             <Route path='/register/user' element={<RegisterPageUser />} />
+            <Route path='/login/user' element={<LoginPageUser/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 
