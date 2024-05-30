@@ -13,7 +13,8 @@ const AboutUs = () => {
           height: '250px',
           maxHeight: '250px',
           objectFit: 'cover',
-          position: 'relative'
+          position: 'relative',
+          borderRadius: '0 0 50px 50px'
         }}
       >
         <div
@@ -26,7 +27,8 @@ const AboutUs = () => {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
             zIndex: 1,
-            backdropFilter: 'blur(10px)' // Adjust the blur intensity as needed
+            backdropFilter: 'blur(10px)', // Adjust the blur intensity as needed
+            borderRadius: '0 0 50px 50px'
           }}
         ></div>
         <div

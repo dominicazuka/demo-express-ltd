@@ -53,7 +53,8 @@ const RegisterPageUser = () => {
           height: '250px',
           maxHeight: '250px',
           objectFit: 'cover',
-          position: 'relative'
+          position: 'relative',
+          borderRadius: '0 0 50px 50px'
         }}
       >
         {/* overlay start */}
@@ -67,7 +68,8 @@ const RegisterPageUser = () => {
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
             zIndex: 1,
-            backdropFilter: 'blur(10px)' // Adjust the blur intensity as needed
+            backdropFilter: 'blur(10px)', // Adjust the blur intensity as needed
+            borderRadius: '0 0 50px 50px'
           }}
         ></div>
         {/* overlay end */}
@@ -132,17 +134,37 @@ const RegisterPageUser = () => {
             Sign up now and enjoy personalized shipping rates!
           </h1>
           <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Have an Account?</h3>
-          <Link
-            to='/login/user'
-            rel='noopener noreferrer'
-            className='btn btn-link cursor-pointer'
-            aria-label='Login'
-            style={{ color: 'green' }}
-          >
-            <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-              LOG IN
-            </button>
-          </Link>
+          <div className='row'>
+            <div className='col-lg-12'>
+              <Link
+                to='/login/user'
+                rel='noopener noreferrer'
+                className='btn btn-link cursor-pointer'
+                aria-label='RegisterUser'
+                style={{ color: 'green' }}
+              >
+                <button class='btn btn-success px-5 mb-3 shadow' type='button'>
+                <i class="bi bi-person-bounding-box" style={{marginRight:'10px'}}></i>
+                  USER LOGIN
+                </button>
+              </Link>
+            </div>
+
+            <div className='col-lg-12'>
+              <Link
+                to='/login/driver'
+                rel='noopener noreferrer'
+                className='btn btn-link cursor-pointer'
+                aria-label='RegisterDriver'
+                style={{ color: 'green' }}
+              >
+                <button class='btn btn-success px-5 mb-3 shadow' type='button'>
+                <i class="bi bi-car-front-fill" style={{marginRight:'10px'}}></i>
+                  DRIVER LOGIN
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       {/* cta end */}

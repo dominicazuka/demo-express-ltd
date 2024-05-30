@@ -17,6 +17,8 @@ const Faq = lazy(() => import('./views/frontend/Faq'));
 const Ship = lazy(() => import('./views/frontend/Ship'));
 const RegisterPageUser = lazy(() => import('./views/frontend/RegisterPageUser'))
 const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
+const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
+
 
 
 function App () {
@@ -90,6 +92,7 @@ function App () {
             <Route path='/ship' element={<Ship />} />
             <Route path='/register/user' element={<RegisterPageUser />} />
             <Route path='/login/user' element={<LoginPageUser/>}/>
+            <Route path='/login/driver' element={<LoginPageDriver/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 

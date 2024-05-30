@@ -3,45 +3,45 @@ import { Link } from 'react-router-dom'
 import PhoneInput from 'react-phone-number-input'
 import { useMediaQuery } from 'react-responsive'
 
-const LoginPageUser = () => {
-  const useFormValidation = () => {
-    useEffect(() => {
-      const forms = document.querySelectorAll('.needs-validation')
-
-      Array.from(forms).forEach(form => {
-        form.addEventListener(
-          'submit',
-          event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-              // Add 'was-validated' class to show validation messages
-              form.classList.add('was-validated')
-              // Highlight the required fields with the 'is-invalid' class
-              const invalidInputs = form.querySelectorAll(':invalid')
-              invalidInputs.forEach(input => {
-                input.classList.add('is-invalid')
-              })
-            }
-
-            form.classList.add('was-validated')
-          },
-          false
-        )
-      })
-
-      return () => {
-        // Cleanup event listeners
-        Array.from(forms).forEach(form => {
-          form.removeEventListener('submit', () => {})
-        })
+const LoginPageDriver = () => {
+    const useFormValidation = () => {
+        useEffect(() => {
+          const forms = document.querySelectorAll('.needs-validation')
+    
+          Array.from(forms).forEach(form => {
+            form.addEventListener(
+              'submit',
+              event => {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  // Add 'was-validated' class to show validation messages
+                  form.classList.add('was-validated')
+                  // Highlight the required fields with the 'is-invalid' class
+                  const invalidInputs = form.querySelectorAll(':invalid')
+                  invalidInputs.forEach(input => {
+                    input.classList.add('is-invalid')
+                  })
+                }
+    
+                form.classList.add('was-validated')
+              },
+              false
+            )
+          })
+    
+          return () => {
+            // Cleanup event listeners
+            Array.from(forms).forEach(form => {
+              form.removeEventListener('submit', () => {})
+            })
+          }
+        }, [])
       }
-    }, [])
-  }
-
-  useFormValidation()
-  return (
-    <div className='clearfix' style={{ position: 'relative' }}>
+    
+      useFormValidation()
+    return (
+        <div className='clearfix' style={{ position: 'relative' }}>
       {/* Breadcrumb  */}
       <div
         className='shadow'
@@ -83,7 +83,7 @@ const LoginPageUser = () => {
                 color: '#FFFFFF'
               }}
             >
-              Login
+              Log in 
             </h1>
             <p
               className='text-white'
@@ -91,9 +91,7 @@ const LoginPageUser = () => {
                 marginBottom: '60px'
               }}
             >
-              Take advantage of our services and solutions designed to meet all
-              of your shipping requirements. Login to your Demo Express LTD
-              shipping account below. Let’s get started!
+              Access your delivery schedule, manage your routes, and stay updated with the latest shipment details. Your next successful delivery is just a login away.
             </p>
           </div>
 
@@ -115,7 +113,7 @@ const LoginPageUser = () => {
                   className='link-body-emphasis fw-semibold text-decoration-none'
                   href='#!'
                 >
-                  Login User
+                  Login Driver
                 </a>
               </li>
             </ol>
@@ -129,7 +127,7 @@ const LoginPageUser = () => {
       <div class='container my-5 mb-4'>
         <div class='position-relative p-2 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
           <h1 class='mt-2 text-body-emphasis'>
-            Sign in now and enjoy personalized experience!
+          Log in to Your Demo Express LTD Driver Account
           </h1>
           <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>
             Don't have an Account?
@@ -274,7 +272,7 @@ const LoginPageUser = () => {
       </main>
       {/* register form ends */}
     </div>
-  )
+    )
 }
 
-export default LoginPageUser
+export default LoginPageDriver

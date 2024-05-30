@@ -16,8 +16,9 @@ const HomeScreen = () => {
         {/* Carousel */}
         <div
           id='myCarousel'
-          className='carousel slide mb-6 shadow-lg'
+          className='carousel slide mb-6 shadow'
           data-bs-ride='carousel'
+          style={{borderRadius: '0 0 50px 50px'}}
         >
           {/* carousel button indicators */}
           <div className='carousel-indicators'>
@@ -45,7 +46,7 @@ const HomeScreen = () => {
             ></button>
           </div>
           {/* carousel inner */}
-          <div className='carousel-inner'>
+          <div className='carousel-inner' style={{borderRadius: '0 0 50px 50px'}}>
             <div className='carousel-item'>
               {isMobile && (
                 // Mobile image: 350x525
