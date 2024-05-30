@@ -93,9 +93,7 @@ const RegisterPageUser = () => {
                 marginBottom: '60px'
               }}
             >
-              Take advantage of our services and solutions designed to meet all
-              of your shipping requirements. Open a Demo Express LTD shipping
-              account below. Let’s get started!
+              Become part of the world’s leading logistics company. Sign up today to drive with Demo Express LTD and experience a rewarding career with competitive benefits, comprehensive training, and opportunities for growth. Deliver excellence with every mile.
             </p>
           </div>
 
@@ -117,7 +115,7 @@ const RegisterPageUser = () => {
                   className='link-body-emphasis fw-semibold text-decoration-none'
                   href='#!'
                 >
-                  Register
+                  Register - Driver
                 </a>
               </li>
             </ol>
@@ -131,7 +129,7 @@ const RegisterPageUser = () => {
       <div class='container my-5 mb-4'>
         <div class='position-relative p-2 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
           <h1 class='mt-2 text-body-emphasis'>
-            Sign up now and enjoy personalized shipping rates!
+            Register and Start Your Journey with Demo Express LTD
           </h1>
           <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Have an Account?</h3>
           <div className='row'>
@@ -178,7 +176,7 @@ const RegisterPageUser = () => {
             style={{ padding: '20px' }}
           >
             <div className='mt-3 col-md-12 col-lg-12'>
-              <h4 className='mb-3'>Sign Up</h4>
+              <h4 className='mb-3'>Sign Up - Driver</h4>
 
               <div className='row g-3'>
                 {/* name */}
@@ -350,41 +348,28 @@ const RegisterPageUser = () => {
                   </div>
                 </div>
 
-                {/* VAT/Tax ID */}
+                {/* Driver Licence No */}
                 <div className='col-12 text-start justify-content-start ms-auto'>
-                  <label htmlFor='taxNo' className='form-label'>
-                    VAT/Tax ID
+                  <label htmlFor='driverLicenseNo' className='form-label'>
+                    Driver License ID/No
                   </label>
-                  <div className='input-group'>
+                  <div className='input-group has-validation'>
                     <span className='input-group-text'>
-                      <i class='bi bi-cash-stack'></i>
+                    <i class="bi bi-fingerprint"></i>
                     </span>
                     <input
                       type='text'
                       className='form-control'
-                      id='taxNo'
-                      placeholder='Used in Customs Declaration section (optional)'
+                      id='driverLicenseNo'
+                      placeholder='Used in KYC'
+                      required
                     />
+                    <div className='invalid-feedback'>
+                     Driver License No./ID is required.
+                    </div>
                   </div>
                 </div>
 
-                {/* notes */}
-                <div className='col-12 text-start justify-content-start ms-auto'>
-                  <label htmlFor='note' className='form-label'>
-                    Notes/Message
-                  </label>
-                  <div className='input-group'>
-                    <span className='input-group-text'>
-                      <i class='bi bi-journal-check'></i>
-                    </span>
-                    <textarea
-                      className='form-control'
-                      id='note'
-                      placeholder='Important things we need to take note of... (optional)'
-                      rows='5'
-                    />
-                  </div>
-                </div>
               </div>
 
               <hr className='my-4' />

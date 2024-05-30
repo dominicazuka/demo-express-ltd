@@ -16,6 +16,7 @@ const AboutUs = lazy(() => import('./views/frontend/AboutUs'));
 const Faq = lazy(() => import('./views/frontend/Faq'));
 const Ship = lazy(() => import('./views/frontend/Ship'));
 const RegisterPageUser = lazy(() => import('./views/frontend/RegisterPageUser'))
+const RegisterPageDriver = lazy(() => import('./views/frontend/RegisterPageDriver'))
 const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
 const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
 
@@ -93,6 +94,7 @@ function App () {
             <Route path='/register/user' element={<RegisterPageUser />} />
             <Route path='/login/user' element={<LoginPageUser/>}/>
             <Route path='/login/driver' element={<LoginPageDriver/>}/>
+            <Route path='/register/driver' element={<RegisterPageDriver/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 
