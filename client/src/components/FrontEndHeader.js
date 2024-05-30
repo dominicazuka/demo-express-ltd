@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { Link } from 'react-router-dom'
 
 const FrontEndHeader = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 768px)' })
@@ -15,14 +15,15 @@ const FrontEndHeader = () => {
         style={{ backgroundColor: 'green' }}
       >
         <div className='container-fluid'>
-          <Link to="/" className='navbar-brand'>
-              <img
-                src='https://via.placeholder.com/40x32'
-                alt='Logo'
-                width='40'
-                height='32'
-                className='me-2'
-              />
+          {/* logo */}
+          <Link to='/' className='navbar-brand'>
+            <img
+              src='https://via.placeholder.com/40x32'
+              alt='Logo'
+              width='40'
+              height='32'
+              className='me-2'
+            />
           </Link>
           <button
             className='navbar-toggler collapsed'
@@ -43,8 +44,12 @@ const FrontEndHeader = () => {
           >
             <ul className='navbar-nav me-auto mb-2 mb-sm-0'>
               <li className='nav-item'>
-                <Link to='/about' className='nav-link active' style={{ color: 'white' }}>
-                    About
+                <Link
+                  to='/about'
+                  className='nav-link active'
+                  style={{ color: 'white' }}
+                >
+                  About
                 </Link>
               </li>
               <li className='nav-item dropdown'>
@@ -60,8 +65,8 @@ const FrontEndHeader = () => {
                 <ul className='dropdown-menu'>
                   <li>
                     <Link to='/faq' className='dropdown-item'>
-                    FAQ
-                </Link>
+                      FAQ
+                    </Link>
                   </li>
                   <li>
                     <a className='dropdown-item' href='#'>
@@ -119,9 +124,11 @@ const FrontEndHeader = () => {
               <button type='button' className='btn btn-outline-light me-2'>
                 Login
               </button>
-              <button type='button' className='btn btn-warning'>
-                Sign-up
-              </button>
+              <Link to='/register/user'>
+                <button type='button' className='btn btn-warning'>
+                  Sign-up
+                </button>
+              </Link>
             </div>
 
             <div
@@ -171,4 +178,4 @@ const FrontEndHeader = () => {
   )
 }
 
-export default FrontEndHeader;
+export default FrontEndHeader

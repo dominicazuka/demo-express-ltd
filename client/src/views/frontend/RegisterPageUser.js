@@ -1,0 +1,469 @@
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import { useMediaQuery } from 'react-responsive'
+const RegisterPageUser = () => {
+  const useFormValidation = () => {
+    useEffect(() => {
+      const forms = document.querySelectorAll('.needs-validation')
+
+      Array.from(forms).forEach(form => {
+        form.addEventListener(
+          'submit',
+          event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+              // Add 'was-validated' class to show validation messages
+              form.classList.add('was-validated')
+              // Highlight the required fields with the 'is-invalid' class
+              const invalidInputs = form.querySelectorAll(':invalid')
+              invalidInputs.forEach(input => {
+                input.classList.add('is-invalid')
+              })
+            }
+
+            form.classList.add('was-validated')
+          },
+          false
+        )
+      })
+
+      return () => {
+        // Cleanup event listeners
+        Array.from(forms).forEach(form => {
+          form.removeEventListener('submit', () => {})
+        })
+      }
+    }, [])
+  }
+
+  useFormValidation()
+
+  const handlePhoneNumberInput = e => {}
+
+  return (
+    <div className='clearfix' style={{ position: 'relative' }}>
+      {/* Breadcrumb  */}
+      <div
+        className='shadow'
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hpcHBpbmd8ZW58MHx8MHx8fDA%3D")',
+          height: '250px',
+          maxHeight: '250px',
+          objectFit: 'cover',
+          position: 'relative'
+        }}
+      >
+        {/* overlay start */}
+        <div
+          className='overlay'
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
+            zIndex: 1,
+            backdropFilter: 'blur(10px)' // Adjust the blur intensity as needed
+          }}
+        ></div>
+        {/* overlay end */}
+        <div
+          className=''
+          style={{ textAlign: 'left', position: 'relative', zIndex: 2 }}
+        >
+          <div className='container'>
+            <h1
+              className='mt-5'
+              style={{
+                display: 'inline-block',
+                color: '#FFFFFF'
+              }}
+            >
+              Open an account
+            </h1>
+            <p
+              className='text-white'
+              style={{
+                marginBottom: '60px'
+              }}
+            >
+              Take advantage of our services and solutions designed to meet all
+              of your shipping requirements. Open a Demo Express LTD shipping
+              account below. Let’s get started!
+            </p>
+          </div>
+
+          {/* Breadcrumb */}
+          <nav
+            aria-label='breadcrumb'
+            className='p-5'
+            style={{ marginTop: '-90px' }}
+          >
+            <ol className='breadcrumb breadcrumb-chevron p-2 bg-body-tertiary rounded-3 shadow'>
+              <li className='breadcrumb-item'>
+                <Link to='/' className='link-body-emphasis'>
+                  <i className='bi bi-house-door-fill'></i>
+                  <span className='visually-hidden'>Home</span>
+                </Link>
+              </li>
+              <li className='breadcrumb-item'>
+                <a
+                  className='link-body-emphasis fw-semibold text-decoration-none'
+                  href='#!'
+                >
+                  Register
+                </a>
+              </li>
+            </ol>
+          </nav>
+          {/* breadcrumb end */}
+        </div>
+      </div>
+      {/* Breadcrumb  end*/}
+
+      {/* cta start */}
+      <div class='container my-5 mb-3'>
+        <div class='position-relative p-5 text-center text-muted bg-body border border-dashed rounded-5 shadow'>
+          <h1 class='text-body-emphasis'>
+            Sign up now and enjoy personalized shipping rates!
+          </h1>
+          <p class='col-lg-6 mx-auto mb-4'>
+            Open a corporate account and enjoy our standard 30 days credit
+            terms.
+          </p>
+          <button class='btn btn-success px-5 mb-5 shadow' type='button'>
+            Call to action
+          </button>
+        </div>
+      </div>
+      {/* cta end */}
+
+      {/* register form start */}
+      <main className='container'>
+        <div className='p-2 shadow rounded'>
+          <form
+            className='row needs-validation'
+            noValidate
+            style={{ padding: '20px' }}
+          >
+            <div className='mt-3 col-md-12 col-lg-12'>
+              <h4 className='mb-3'>Sign Up</h4>
+
+              <div className='row g-3'>
+                {/* name */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='name' className='form-label'>
+                    Your Name
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-person-bounding-box'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='name'
+                      placeholder='Full Name'
+                      required
+                    />
+                    <div className='invalid-feedback'>
+                      Valid full name is required.
+                    </div>
+                  </div>
+                </div>
+                {/* company - optional */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='company' className='form-label'>
+                    Company
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-building'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='company'
+                      placeholder='(optional)'
+                    />
+                  </div>
+                </div>
+
+                {/* address */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='address' className='form-label'>
+                    Address
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-send'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='address'
+                      placeholder='Address'
+                      required
+                    />
+                    <div className='invalid-feedback'>
+                      Valid address is required.
+                    </div>
+                  </div>
+                </div>
+
+                {/* postal code - optional */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='postalCode' className='form-label'>
+                    Postal Code
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-upc'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='postalCode'
+                      placeholder='(optional)'
+                    />
+                  </div>
+                </div>
+
+                {/* country, state, city */}
+                <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
+                  <label htmlFor='country' className='form-label'>
+                    Country
+                  </label>
+                  <span style={{ marginLeft: '10px' }}>
+                    <i class='bi bi-globe-asia-australia'></i>
+                  </span>
+                  <select className='form-select' id='country' required>
+                    <option value=''>Choose...</option>
+                    <option>United States</option>
+                  </select>
+                  <div className='invalid-feedback'>
+                    Please select a valid country.
+                  </div>
+                </div>
+
+                <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
+                  <label htmlFor='state' className='form-label'>
+                    State
+                  </label>
+                  <span style={{ marginLeft: '10px' }}>
+                    <i class='bi bi-map'></i>
+                  </span>
+                  <select className='form-select' id='state' required>
+                    <option value=''>Choose...</option>
+                    <option>Califonia</option>
+                  </select>
+                  <div className='invalid-feedback'>
+                    Please select a valid state.
+                  </div>
+                </div>
+
+                <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
+                  <label htmlFor='city' className='form-label'>
+                    City
+                  </label>
+                  <span style={{ marginLeft: '10px' }}>
+                    <i class='bi bi-radar'></i>
+                  </span>
+                  <select className='form-select' id='city' required>
+                    <option value=''>Choose...</option>
+                    <option>City 1</option>
+                  </select>
+                  <div className='invalid-feedback'>
+                    Please select a valid city.
+                  </div>
+                </div>
+
+                {/* phone number */}
+                <div className='has-validation text-start justify-content-start ms-auto'>
+                  <label htmlFor='phone' className='form-label'>
+                    Phone Number
+                  </label>
+                  <PhoneInput
+                    className='form-control rounded'
+                    id='phone'
+                    placeholder='E.g +2347034054567'
+                    onChange={e => {
+                      handlePhoneNumberInput(e)
+                    }}
+                    required
+                  />
+                  <div className='invalid-feedback'>
+                    Valid phone number is required.
+                  </div>
+                </div>
+
+                {/* email */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='email' className='form-label'>
+                    Email Address
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-envelope-at'></i>
+                    </span>
+                    <input
+                      type='email'
+                      className='form-control'
+                      id='email'
+                      placeholder='Email would be used for shipment notifications'
+                      required
+                    />
+                    <div className='invalid-feedback'>
+                      Valid sender email address is required.
+                    </div>
+                  </div>
+                </div>
+
+                {/* VAT/Tax ID */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='taxNo' className='form-label'>
+                    VAT/Tax ID
+                  </label>
+                  <div className='input-group'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-cash-stack'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='taxNo'
+                      placeholder='Used in Customs Declaration section (optional)'
+                    />
+                  </div>
+                </div>
+
+                {/* notes */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='note' className='form-label'>
+                    Notes/Message
+                  </label>
+                  <div className='input-group'>
+                    <span className='input-group-text'>
+                      <i class='bi bi-journal-check'></i>
+                    </span>
+                    <textarea
+                      className='form-control'
+                      id='note'
+                      placeholder='Important things we need to take note of... (optional)'
+                      rows='5'
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <hr className='my-4' />
+              {/* //newsletter subscription start*/}
+              <div class='form-check text-start my-3'>
+                <input
+                  class='form-check-input'
+                  type='checkbox'
+                  name='newsletter'
+                  id='newsletterCheck'
+                />
+                <label class='form-check-label' for='newsletterCheck'>
+                  I agree to receive regular communications of promotions,
+                  information and news on specific Demo Express LTD solutions
+                  per email.
+                </label>
+              </div>
+              {/* newsletter end */}
+
+              {/* //privacy policy subscription start*/}
+              <div class='form-check text-start my-3 has-validation'>
+                <input
+                  class='form-check-input'
+                  type='checkbox'
+                  name='privacyPolicy'
+                  id='privacyPolicyCheck'
+                  required
+                />
+                <label class='form-check-label' for='privacyPolicyCheck'>
+                  I have read the Privacy Policy <sup className='text-danger'> *</sup>
+                </label>
+                <div className='invalid-feedback'>
+                     Kindly check the box for privacy policy.
+                    </div>
+              </div>
+              {/* privacy policy end */}
+
+              <button
+                className='w-100 btn btn-success btn-lg shadow'
+                type='submit'
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+      {/* register form ends */}
+
+      {/* benefits start */}
+      <div class='container px-4 py-5' id='hanging-icons'>
+        <h2 class='pb-2 border-bottom'>Opening an account has its benefits</h2>
+        <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
+          <div class='col d-flex align-items-start'>
+            <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
+              <i class='bi bi-bus-front'></i>
+            </div>
+            <div>
+              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <p>
+                Paragraph of text beneath the heading to explain the heading.
+                We'll add onto it with another sentence and probably just keep
+                going until we run out of words.
+              </p>
+              <a href='#' class='btn btn-success shadow'>
+                Primary button
+              </a>
+            </div>
+          </div>
+          <div class='col d-flex align-items-start'>
+            <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
+              <i class='bi bi-box-seam-fill'></i>
+            </div>
+            <div>
+              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <p>
+                Paragraph of text beneath the heading to explain the heading.
+                We'll add onto it with another sentence and probably just keep
+                going until we run out of words.
+              </p>
+              <a href='#' class='btn btn-success shadow'>
+                Primary button
+              </a>
+            </div>
+          </div>
+          <div class='col d-flex align-items-start'>
+            <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
+              <i class='bi bi-tools'></i>
+            </div>
+            <div>
+              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <p>
+                Paragraph of text beneath the heading to explain the heading.
+                We'll add onto it with another sentence and probably just keep
+                going until we run out of words.
+              </p>
+              <a href='#' class='btn btn-success shadow'>
+                Primary button
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* benefits end */}
+    </div>
+  )
+}
+
+export default RegisterPageUser

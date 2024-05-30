@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const AboutUs = () => {
-
   return (
     <div className='clearfix' style={{ position: 'relative' }}>
-      {/* Landing hero  */}
+      {/* Breadcrumb  */}
       <div
         className='shadow'
         style={{
@@ -26,7 +25,8 @@ const AboutUs = () => {
             width: '100%',
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity as needed
-            zIndex: 1
+            zIndex: 1,
+            backdropFilter: 'blur(10px)' // Adjust the blur intensity as needed
           }}
         ></div>
         <div
@@ -149,11 +149,11 @@ const AboutUs = () => {
 
         <div className='row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5'>
           <div className='col'>
-            <div
-              className='card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow'
-              style={{ backgroundImage: "url('https://plus.unsplash.com/premium_photo-1661494449331-1801a61c2c7c')" }}
-            >
-              <div className='d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1'>
+            <div className='card card-cover h-100 overflow-hidden bg-success bg-gradient rounded-4 shadow'>
+              <div
+                className='d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1'
+                style={{ zIndex: 1 }}
+              >
                 <h3 className='pt-5 mt-5 mb-4 display-6 lh-1 fw-bold'>
                   Short title, long jacket
                 </h3>
@@ -187,10 +187,7 @@ const AboutUs = () => {
           </div>
 
           <div className='col'>
-            <div
-              className='card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow'
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578575437130-527eed3abbec')" }}
-            >
+            <div className='card card-cover h-100 overflow-hidden bg-success bg-gradient rounded-4 shadow'>
               <div className='d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1'>
                 <h3 className='pt-5 mt-5 mb-4 display-6 lh-1 fw-bold'>
                   Much longer title that wraps to multiple lines
@@ -225,10 +222,7 @@ const AboutUs = () => {
           </div>
 
           <div className='col'>
-            <div
-              className='card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow'
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1590497008432-598f04441de8')" }}
-            >
+            <div className='text-white card card-cover h-100 overflow-hidden bg-success bg-gradient rounded-4 shadow'>
               <div className='d-flex flex-column h-100 p-5 pb-3 text-shadow-1'>
                 <h3 className='pt-5 mt-5 mb-4 display-6 lh-1 fw-bold'>
                   Another longer title belongs here
@@ -334,4 +328,4 @@ const AboutUs = () => {
   )
 }
 
-export default AboutUs;
+export default AboutUs

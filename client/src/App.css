@@ -382,3 +382,9 @@ input:not(.react-phone-number-input__input) {
     margin-top: 0px;
   }
 }
+
+/* checkbox */
+.form-check-input:checked {
+  background-color: var(--bs-success);
+  border-color: var(--bs-success);
+}

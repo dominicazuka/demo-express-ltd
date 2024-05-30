@@ -569,7 +569,7 @@ const Ship = () => {
                             <textarea
                               className='form-control'
                               id='receiverNote'
-                              placeholder='Important things we need to take note of...'
+                              placeholder='Important things we need to take note of... (optional)'
                               rows='5'
                             />
                           </div>
