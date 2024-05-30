@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const AboutUs = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className='clearfix' style={{ position: 'relative' }}>
       {/* Breadcrumb  */}

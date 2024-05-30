@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import logo from '../../logo.svg'
 import '../../App.css'
 
 const HomeScreen = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 768px)' })
 
   // Define media queries for mobile and desktop images
@@ -18,7 +22,7 @@ const HomeScreen = () => {
           id='myCarousel'
           className='carousel slide mb-6 shadow'
           data-bs-ride='carousel'
-          style={{borderRadius: '0 0 50px 50px'}}
+          style={{ borderRadius: '0 0 50px 50px' }}
         >
           {/* carousel button indicators */}
           <div className='carousel-indicators'>
@@ -46,7 +50,10 @@ const HomeScreen = () => {
             ></button>
           </div>
           {/* carousel inner */}
-          <div className='carousel-inner' style={{borderRadius: '0 0 50px 50px'}}>
+          <div
+            className='carousel-inner'
+            style={{ borderRadius: '0 0 50px 50px' }}
+          >
             <div className='carousel-item'>
               {isMobile && (
                 // Mobile image: 350x525
@@ -343,7 +350,10 @@ const HomeScreen = () => {
                   hood at the source HTML here as we've adjusted the alignment
                   and sizing of both column's content for equal-height.
                 </p>
-                <button className='btn btn-outline-success shadow' type='button'>
+                <button
+                  className='btn btn-outline-success shadow'
+                  type='button'
+                >
                   Example button
                 </button>
               </div>
@@ -358,7 +368,10 @@ const HomeScreen = () => {
                   hood at the source HTML here as we've adjusted the alignment
                   and sizing of both column's content for equal-height.
                 </p>
-                <button className='btn btn-outline-success shadow' type='button'>
+                <button
+                  className='btn btn-outline-success shadow'
+                  type='button'
+                >
                   Example button
                 </button>
               </div>
@@ -367,40 +380,48 @@ const HomeScreen = () => {
         </div>
 
         {/* more info image and description */}
-        <hr className='featurette-divider' style={{ marginTop: '70px', marginBottom: '50px' }} />
-        
-        <div className="container d-flex align-items-center justify-content-center">
-          <div className='row featurette' style={{marginTop: '30px', marginBottom: '20px'}}>
-          <div className='col-md-7 order-md-2' style={{ marginTop: isDesktop ? '40px' : '0' }}>
-            <h2 className='featurette-heading fw-normal lh-1'>
-              Oh yeah, it’s that good.{' '}
-              <span className='text-body-secondary'>See for yourself.</span>
-            </h2>
-            <p className='lead'>
-              Another featurette? Of course. More placeholder content here to
-              give you an idea of how this layout would work with some actual
-              real-world content in place.
-            </p>
-            <button className="btn btn-outline-success shadow mb-4">
-              View all Service News
-            </button>
-          </div>
-          <div className='col-md-5 order-md-1 d-flex justify-content-center'>
-            <img
-              src='https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXBwaW5nfGVufDB8fDB8fHww'
-              alt='Image'
-              className='d-block w-100 rounded shadow'
-              width = '500'
-              height = '300'
-              style={{ maxHeight: '300px', objectFit: 'cover' }}
-            />
+        <hr
+          className='featurette-divider'
+          style={{ marginTop: '70px', marginBottom: '50px' }}
+        />
 
+        <div className='container d-flex align-items-center justify-content-center'>
+          <div
+            className='row featurette'
+            style={{ marginTop: '30px', marginBottom: '20px' }}
+          >
+            <div
+              className='col-md-7 order-md-2'
+              style={{ marginTop: isDesktop ? '40px' : '0' }}
+            >
+              <h2 className='featurette-heading fw-normal lh-1'>
+                Oh yeah, it’s that good.{' '}
+                <span className='text-body-secondary'>See for yourself.</span>
+              </h2>
+              <p className='lead'>
+                Another featurette? Of course. More placeholder content here to
+                give you an idea of how this layout would work with some actual
+                real-world content in place.
+              </p>
+              <button className='btn btn-outline-success shadow mb-4'>
+                View all Service News
+              </button>
+            </div>
+            <div className='col-md-5 order-md-1 d-flex justify-content-center'>
+              <img
+                src='https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXBwaW5nfGVufDB8fDB8fHww'
+                alt='Image'
+                className='d-block w-100 rounded shadow'
+                width='500'
+                height='300'
+                style={{ maxHeight: '300px', objectFit: 'cover' }}
+              />
+            </div>
           </div>
-        </div>
         </div>
       </main>
     </div>
   )
 }
 
-export default HomeScreen;
+export default HomeScreen

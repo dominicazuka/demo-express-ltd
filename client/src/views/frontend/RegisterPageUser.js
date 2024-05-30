@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import PhoneInput from 'react-phone-number-input'
 import { useMediaQuery } from 'react-responsive'
 const RegisterPageUser = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')
@@ -133,7 +137,9 @@ const RegisterPageUser = () => {
           <h1 class='mt-2 text-body-emphasis'>
             Sign up now and enjoy personalized shipping rates!
           </h1>
-          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Have an Account?</h3>
+          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>
+            Have an Account?
+          </h3>
           <div className='row'>
             <div className='col-lg-12'>
               <Link
@@ -144,7 +150,10 @@ const RegisterPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-person-bounding-box" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-person-bounding-box'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   USER LOGIN
                 </button>
               </Link>
@@ -159,7 +168,10 @@ const RegisterPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-ev-front-fill" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-ev-front-fill'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   DRIVER LOGIN
                 </button>
               </Link>

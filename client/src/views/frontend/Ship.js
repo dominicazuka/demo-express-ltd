@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PhoneInput from 'react-phone-number-input';
-import { useMediaQuery } from 'react-responsive';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import { useMediaQuery } from 'react-responsive'
 
 const Ship = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const isMobile = useMediaQuery({ maxWidth: 767 }) // Define the breakpoint for mobile devices
 
   //   const [formSubmitted, setFormSubmitted] = useState(false)
@@ -926,7 +930,11 @@ const Ship = () => {
                       className='d-block w-100 rounded shadow'
                       width='500'
                       height='500'
-                      style={{ maxHeight: '500px', objectFit: 'cover', marginTop: '120px' }}
+                      style={{
+                        maxHeight: '500px',
+                        objectFit: 'cover',
+                        marginTop: '120px'
+                      }}
                     />
                   </div>
                 </div>

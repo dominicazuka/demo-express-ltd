@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Faq = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div class='container-fluid'>
       {/* Row start */}
@@ -32,21 +36,21 @@ const Faq = () => {
               <h1 class='display-5 text-white mb-20'>
                 Ask a question or browse by category below.
               </h1>
-             
-                <div class='input-group'>
-                  <input
-                    class='form-control form-control-lg filled-input bg-white'
-                    placeholder='Search by keywords'
-                    type='search'
-                  />
-                  <button
-                    className='btn btn-outline-secondary btn-warning'
-                    type='button'
-                  >
-                    <i className='bi bi-search'></i>
-                  </button>
-                </div>
-                          </div>
+
+              <div class='input-group'>
+                <input
+                  class='form-control form-control-lg filled-input bg-white'
+                  placeholder='Search by keywords'
+                  type='search'
+                />
+                <button
+                  className='btn btn-outline-secondary btn-warning'
+                  type='button'
+                >
+                  <i className='bi bi-search'></i>
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class='container mt-sm-60 mt-30'>

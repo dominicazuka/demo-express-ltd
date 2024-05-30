@@ -4,6 +4,10 @@ import PhoneInput from 'react-phone-number-input'
 import { useMediaQuery } from 'react-responsive'
 
 const LoginPageUser = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')
@@ -144,7 +148,10 @@ const LoginPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-person-add" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-person-add'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   USER REGISTER
                 </button>
               </Link>
@@ -159,7 +166,10 @@ const LoginPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-car-front-fill" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-car-front-fill'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   DRIVER REGISTER
                 </button>
               </Link>

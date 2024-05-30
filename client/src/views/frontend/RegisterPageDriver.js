@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import PhoneInput from 'react-phone-number-input'
 import { useMediaQuery } from 'react-responsive'
 const RegisterPageUser = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')
@@ -93,7 +97,10 @@ const RegisterPageUser = () => {
                 marginBottom: '60px'
               }}
             >
-              Become part of the world’s leading logistics company. Sign up today to drive with Demo Express LTD and experience a rewarding career with competitive benefits, comprehensive training, and opportunities for growth. Deliver excellence with every mile.
+              Become part of the world’s leading logistics company. Sign up
+              today to drive with Demo Express LTD and experience a rewarding
+              career with competitive benefits, comprehensive training, and
+              opportunities for growth. Deliver excellence with every mile.
             </p>
           </div>
 
@@ -131,7 +138,9 @@ const RegisterPageUser = () => {
           <h1 class='mt-2 text-body-emphasis'>
             Register and Start Your Journey with Demo Express LTD
           </h1>
-          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>Have an Account?</h3>
+          <h3 class='text-muted col-lg-6 mx-auto mb-2 mt-5'>
+            Have an Account?
+          </h3>
           <div className='row'>
             <div className='col-lg-12'>
               <Link
@@ -142,7 +151,10 @@ const RegisterPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-person-bounding-box" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-person-bounding-box'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   USER LOGIN
                 </button>
               </Link>
@@ -157,7 +169,10 @@ const RegisterPageUser = () => {
                 style={{ color: 'green' }}
               >
                 <button class='btn btn-success px-5 mb-3 shadow' type='button'>
-                <i class="bi bi-ev-front-fill" style={{marginRight:'10px'}}></i>
+                  <i
+                    class='bi bi-ev-front-fill'
+                    style={{ marginRight: '10px' }}
+                  ></i>
                   DRIVER LOGIN
                 </button>
               </Link>
@@ -355,7 +370,7 @@ const RegisterPageUser = () => {
                   </label>
                   <div className='input-group has-validation'>
                     <span className='input-group-text'>
-                    <i class="bi bi-fingerprint"></i>
+                      <i class='bi bi-fingerprint'></i>
                     </span>
                     <input
                       type='text'
@@ -365,11 +380,10 @@ const RegisterPageUser = () => {
                       required
                     />
                     <div className='invalid-feedback'>
-                     Driver License No./ID is required.
+                      Driver License No./ID is required.
                     </div>
                   </div>
                 </div>
-
               </div>
 
               <hr className='my-4' />
