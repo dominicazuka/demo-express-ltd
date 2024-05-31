@@ -10,7 +10,7 @@ const FrontEndHeader = () => {
   return (
     <>
       <nav
-        className='navbar navbar-expand-sm'
+        className='navbar navbar-expand-sm shadow'
         aria-label='Navbar'
         style={{ backgroundColor: 'green' }}
       >
@@ -89,6 +89,29 @@ const FrontEndHeader = () => {
                   <li>
                     <Link to='/ship' className='dropdown-item'>
                       Ship
+                    </Link>
+                  </li>
+                  <li>
+                    <a className='dropdown-item' href='#'>
+                      Another action
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li className='nav-item dropdown'>
+                <a
+                  className='nav-link dropdown-toggle'
+                  href='#'
+                  data-bs-toggle='dropdown'
+                  aria-expanded='false'
+                  style={{ color: 'white' }}
+                >
+                  Account
+                </a>
+                <ul className='dropdown-menu'>
+                  <li>
+                    <Link to='/my-orders' className='dropdown-item'>
+                      My Orders
                     </Link>
                   </li>
                   <li>

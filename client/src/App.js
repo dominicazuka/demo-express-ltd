@@ -8,6 +8,12 @@ import FrontEndHeader from '../src/components/FrontEndHeader'
 import FrontEndFooter from '../src/components/FrontEndFooter'
 import FullScreenLoader from './components/FullScreenLoader'
 import Swal from 'sweetalert2'
+import 'datatables.net';
+import 'datatables.net-bs5';
+import 'datatables.net-responsive';
+import 'datatables.net-responsive-bs5';
+import 'datatables.net-select';
+import 'datatables.net-select-bs5';
 
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'));
@@ -19,7 +25,8 @@ const RegisterPageUser = lazy(() => import('./views/frontend/RegisterPageUser'))
 const RegisterPageDriver = lazy(() => import('./views/frontend/RegisterPageDriver'))
 const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
 const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
-
+const MyOrders = lazy(() => import('./views/frontend/MyOrders'))
+const OrderDetails = lazy(() => import('./views/frontend/OrderDetails'))
 
 
 function App () {
@@ -95,6 +102,8 @@ function App () {
             <Route path='/login/user' element={<LoginPageUser/>}/>
             <Route path='/login/driver' element={<LoginPageDriver/>}/>
             <Route path='/register/driver' element={<RegisterPageDriver/>}/>
+            <Route path='/my-orders' element={<MyOrders/>}/>
+            <Route path='/order-details' element={<OrderDetails/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 

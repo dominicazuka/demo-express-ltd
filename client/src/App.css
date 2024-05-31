@@ -124,7 +124,7 @@
 }
 
 .back-to-top-button:hover {
-  background-color: #0056b3;
+  background-color: #191b1d;
   /* Darken the color on hover */
 }
 
@@ -295,6 +295,8 @@ a {
 }
 
 @import url("https://cdn.jsdelivr.net/npm/@docsearch/css@3");
+@import url("https://cdn.jsdelivr.net/npm/cdbootstrap/css/cdb.min.css");
+@import url("https://cdn.jsdelivr.net/npm/cdbootstrap/css/bootstrap.min.css");
 
 /* phone number input styles */
 .PhoneInput {
@@ -387,4 +389,144 @@ input:not(.react-phone-number-input__input) {
 .form-check-input:checked {
   background-color: var(--bs-success) !important;
   border-color: var(--bs-success) !important;
+}
+
+/* my orders */
+.MyOrders {
+  --dashui-gutter-x: 1.25rem;
+  --dashui-gutter-y: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 100%;
+}
+
+/* my order pagination */
+.pagination .page-item .page-link {
+  color: #198754; /* Bootstrap success color */
+}
+
+.pagination .page-item .page-link.active {
+  background-color: #198754; /* Bootstrap success background color */
+  border-color: #198754; /* Bootstrap success border color */
+  color: white;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #145a32; /* Darker shade of success color for hover effect */
+  border-color: #145a32;
+  color: white;
+}
+
+
+/* order details */
+.horizontal-steps {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  /* display: flex; */
+  position: relative;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+}
+
+.horizontal-steps:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: .2em;
+  background-color: var(--ct-border-color);
+}
+
+.horizontal-steps .horizontal-steps-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+}
+
+.horizontal-steps .horizontal-steps-content .step-item:first-child {
+  margin-left: 0;
+}
+
+.horizontal-steps .horizontal-steps-content .step-item span {
+  /* white-space: inherit; */
+}
+
+@media (max-width: 767.98px) {
+  .horizontal-steps .horizontal-steps-content .step-item span {
+      /* white-space: inherit; */
+  }
+}
+
+.horizontal-steps .horizontal-steps-content .step-item span {
+  position: absolute;
+  top: calc(100% + 1em);
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  /* white-space: inherit; */
+  color: var(--ct-gray-500);
+}
+
+.horizontal-steps .horizontal-steps-content .step-item {
+  display: block;
+  position: relative;
+  bottom: calc(100% + 1em);
+  height: 8px;
+  width: 8px;
+  margin: 0 2em;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  color: var(--ct-success);
+  background-color: currentColor;
+  border: .25em solid var(--ct-body-bg);
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.horizontal-steps .horizontal-steps-content .step-item.current:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 48%;
+  left: 48%;
+  padding: 1em;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: -1;
+  -webkit-animation-name: animation-steps-current;
+  animation-name: animation-steps-current;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+  animation-timing-function: ease-out;
+}
+
+.horizontal-steps .horizontal-steps-content .step-item.current span {
+  color: var(--ct-primary)!important;
 }
