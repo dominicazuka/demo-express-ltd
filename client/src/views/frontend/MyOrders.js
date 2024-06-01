@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PhoneInput from 'react-phone-number-input'
 import { useMediaQuery } from 'react-responsive'
+import $ from 'jquery'
 
 const MyAccount = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  //   initialize datatable
+  const useDataTables = selector => {
+    useEffect(() => {
+      $(selector).DataTable()
+    }, [selector])
+  }
+  useDataTables('#basic-datatable')
   return (
     <>
       {/* Breadcrumb  */}
@@ -331,29 +340,10 @@ const MyAccount = () => {
             <div className='card mb-4 shadow'>
               <div className='card-header'>
                 <div className='row'>
-                  <div className=' col-lg-3 col-md-6'>
-                    <input
-                      type='search'
-                      className='form-control '
-                      placeholder='Search Files...'
-                    />
-                  </div>
-                  <div className='col-lg-4 col-md-6 d-flex align-items-center mt-3 mt-md-0'>
-                    <label className='form-label me-2 mb-0'>Status</label>
-                    <select
-                      className='form-select'
-                      aria-label='Default select example'
-                    >
-                      <option selected=''>Shipped</option>
-                      <option value='1'>In Progress</option>
-                      <option value='2'>Delivered</option>
-                    </select>
-                  </div>
-
-                  <div className='col-lg-5 text-lg-end mt-3 mt-lg-0'>
-                    <a href='#!' className='btn btn-success me-2'>
-                      + Add New Order
-                    </a>
+                  <div className='col-lg-12 text-lg-end align-items-end mt-3 mt-lg-0'>
+                  <Link to='/ship' className='btn btn-success'>
+                    + Add New Order
+                    </Link>
                     <a href='#!' className='btn btn-light'>
                       Export
                     </a>
@@ -364,7 +354,7 @@ const MyAccount = () => {
                 <div className='table-responsive table-card'>
                   <table
                     id='basic-datatable'
-                    className='table table-striped data-table1 text-nowrap mb-0 table-centered table-hover'
+                    className='table table-striped text-nowrap mb-0 table-centered table-hover'
                   >
                     <thead className='table-light'>
                       <tr>
@@ -1263,38 +1253,6 @@ const MyAccount = () => {
                     </tbody>
                   </table>
                 </div>
-              </div>
-              <div className='card-footer d-md-flex justify-content-between align-items-center'>
-                <span>Showing 1 to 8 of 12 entries</span>
-                <nav className='mt-2 mt-md-0'>
-                  <ul className='pagination mb-0'>
-                    <li className='page-item'>
-                      <a className='page-link' href='#!'>
-                        Previous
-                      </a>
-                    </li>
-                    <li className='page-item'>
-                      <a className='page-link active' href='#!'>
-                        1
-                      </a>
-                    </li>
-                    <li className='page-item'>
-                      <a className='page-link' href='#!'>
-                        2
-                      </a>
-                    </li>
-                    <li className='page-item'>
-                      <a className='page-link' href='#!'>
-                        3
-                      </a>
-                    </li>
-                    <li className='page-item'>
-                      <a className='page-link' href='#!'>
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>

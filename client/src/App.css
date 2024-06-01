@@ -341,7 +341,7 @@ a {
   margin-left: 0.35em !important;
   margin-left: var(--PhoneInputCountrySelectArrow-marginLeft) !important;
   border-style: solid !important;
-  border-color: currentColor !important;
+  border-color: #068671 !important;
   border-color: var(--PhoneInputCountrySelectArrow-color) !important;
   border-top-width: 0 !important;
   border-bottom-width: 1px !important;
@@ -414,9 +414,15 @@ input:not(.react-phone-number-input__input) {
 }
 
 .pagination .page-item .page-link:hover {
-  background-color: #145a32; /* Darker shade of success color for hover effect */
+  background-color: #759e87; /* Darker shade of success color for hover effect */
   border-color: #145a32;
   color: white;
+}
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #145a32;
+  border-color: #145a32;
 }
 
 
@@ -424,7 +430,7 @@ input:not(.react-phone-number-input__input) {
 .horizontal-steps {
   display: -webkit-box;
   display: -ms-flexbox;
-  /* display: flex; */
+  display: flex;
   position: relative;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -445,7 +451,7 @@ input:not(.react-phone-number-input__input) {
   position: absolute;
   width: 100%;
   height: .2em;
-  background-color: var(--ct-border-color);
+  background-color: #4c504f;
 }
 
 .horizontal-steps .horizontal-steps-content {
@@ -471,23 +477,18 @@ input:not(.react-phone-number-input__input) {
 }
 
 .horizontal-steps .horizontal-steps-content .step-item span {
-  /* white-space: inherit; */
-}
-
-@media (max-width: 767.98px) {
-  .horizontal-steps .horizontal-steps-content .step-item span {
-      /* white-space: inherit; */
-  }
-}
-
-.horizontal-steps .horizontal-steps-content .step-item span {
   position: absolute;
   top: calc(100% + 1em);
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
-  /* white-space: inherit; */
-  color: var(--ct-gray-500);
+  color: #a1a9b1;
+}
+
+@media (max-width: 767.98px) {
+  .horizontal-steps .horizontal-steps-content .step-item span {
+    white-space: inherit;
+  }
 }
 
 .horizontal-steps .horizontal-steps-content .step-item {
@@ -499,11 +500,26 @@ input:not(.react-phone-number-input__input) {
   margin: 0 2em;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
-  color: var(--ct-success);
-  background-color: currentColor;
-  border: .25em solid var(--ct-body-bg);
+  color: #0f8353;
+  background-color: #8acbb0;
+  border: .25em solid #e2e3e5;
   border-radius: 50%;
   z-index: 5;
+}
+
+@keyframes animation-steps-current {
+  0% {
+    background-color: #f5f5f5;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #ffc107;
+    transform: scale(1.1);
+  }
+  100% {
+    background-color: #f5f5f5;
+    transform: scale(1);
+  }
 }
 
 .horizontal-steps .horizontal-steps-content .step-item.current:before {
@@ -513,20 +529,20 @@ input:not(.react-phone-number-input__input) {
   top: 48%;
   left: 48%;
   padding: 1em;
-  background-color: currentColor;
+  background-color: #068671;
   border-radius: 50%;
   opacity: 0;
-  z-index: -1;
-  -webkit-animation-name: animation-steps-current;
-  animation-name: animation-steps-current;
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-timing-function: ease-out;
-  animation-timing-function: ease-out;
+  animation: animation-steps-current 2s infinite ease-out !important;
 }
 
 .horizontal-steps .horizontal-steps-content .step-item.current span {
-  color: var(--ct-primary)!important;
+  color: #068671 !important;
+}
+
+.horizontal-steps .process-line {
+  display: block;
+  position: absolute;
+  width: 50%;
+  height: .2em;
+  background-color: #43d8bf;
 }

@@ -7,7 +7,6 @@ const OrderDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
   //   initialize datatable
   const useDataTables = selector => {
     useEffect(() => {
@@ -15,6 +14,27 @@ const OrderDetails = () => {
     }, [selector])
   }
   useDataTables('#basic-datatable')
+
+  useEffect(() => {
+    // Ensure window.bootstrap is available
+    const bootstrap = require('bootstrap/dist/js/bootstrap.bundle.min.js')
+
+    // Initialize all tooltips on the page
+    const tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    )
+    const tooltipList = tooltipTriggerList.map(tooltipTriggerEl => {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+    // Clean up tooltips on component unmount
+    return () => {
+      tooltipList.forEach(tooltip => {
+        tooltip.dispose()
+      })
+    }
+  }, [])
+
   return (
     <>
       {/* Breadcrumb  */}
@@ -123,19 +143,23 @@ const OrderDetails = () => {
         {/* order status steps start*/}
         <div class='row text-center ms-auto justify-content-center'>
           <div class='col-lg-7 col-md-10 col-sm-11 mb-3'>
-            <div class='horizontal-steps mt-4 mb-4 pb-5' id='tooltip-container'>
-              <div class='horizontal-steps-content'>
-                <div class='step-item'>
+            <div
+              className='horizontal-steps mt-4 mb-4 pb-5'
+              id='tooltip-container'
+            >
+              <div className='horizontal-steps-content'>
+                <div className='step-item'>
                   <span
                     data-bs-container='#tooltip-container'
                     data-bs-toggle='tooltip'
                     data-bs-placement='bottom'
                     data-bs-original-title='20/08/2018 07:24 PM'
+                    data-bs-title='20/08/2018 07:24 PM'
                   >
                     Order Placed
                   </span>
                 </div>
-                <div class='step-item current'>
+                <div className='step-item current'>
                   <span
                     data-bs-container='#tooltip-container'
                     data-bs-toggle='tooltip'
@@ -145,15 +169,14 @@ const OrderDetails = () => {
                     Packed
                   </span>
                 </div>
-                <div class='step-item'>
+                <div className='step-item'>
                   <span>Shipped</span>
                 </div>
-                <div class='step-item'>
+                <div className='step-item'>
                   <span>Delivered</span>
                 </div>
               </div>
-
-              <div class='process-line' style={{ width: '33%' }}></div>
+              <div className='process-line' style={{ width: '33%' }}></div>
             </div>
           </div>
         </div>
@@ -169,7 +192,7 @@ const OrderDetails = () => {
                 <div class='table-responsive'>
                   <table
                     id='basic-datatable'
-                    class='table table-bordered table-striped data-table1'
+                    class='table table-bordered table-striped table-centered table-hover'
                     style={{ minWidth: '100%' }}
                   >
                     <thead>

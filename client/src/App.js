@@ -27,6 +27,7 @@ const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
 const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
 const MyOrders = lazy(() => import('./views/frontend/MyOrders'))
 const OrderDetails = lazy(() => import('./views/frontend/OrderDetails'))
+const MyAccount = lazy(() => import('./views/frontend/MyAccount'))
 
 
 function App () {
@@ -104,6 +105,7 @@ function App () {
             <Route path='/register/driver' element={<RegisterPageDriver/>}/>
             <Route path='/my-orders' element={<MyOrders/>}/>
             <Route path='/order-details' element={<OrderDetails/>}/>
+            <Route path='/account' element={<MyAccount/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 
