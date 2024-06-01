@@ -68,11 +68,6 @@ const FrontEndHeader = () => {
                       FAQ
                     </Link>
                   </li>
-                  <li>
-                    <a className='dropdown-item' href='#'>
-                      Another action
-                    </a>
-                  </li>
                 </ul>
               </li>
               <li className='nav-item dropdown'>
@@ -90,11 +85,6 @@ const FrontEndHeader = () => {
                     <Link to='/ship' className='dropdown-item'>
                       Ship
                     </Link>
-                  </li>
-                  <li>
-                    <a className='dropdown-item' href='#'>
-                      Another action
-                    </a>
                   </li>
                 </ul>
               </li>
@@ -115,9 +105,14 @@ const FrontEndHeader = () => {
                     </Link>
                   </li>
                   <li>
-                    <a className='dropdown-item' href='#'>
-                      Another action
-                    </a>
+                    <Link to='/account' className='dropdown-item'>
+                      My Account
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/track-order' className='dropdown-item'>
+                      Track Order
+                    </Link>
                   </li>
                 </ul>
               </li>

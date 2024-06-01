@@ -427,122 +427,61 @@ input:not(.react-phone-number-input__input) {
 
 
 /* order details */
-.horizontal-steps {
+.track {
+  position: relative;
+  background-color: #ddd;
+  height: 7px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 100%;
+  margin-bottom: 60px;
+  margin-top: 50px
 }
 
-.horizontal-steps:before {
+.track .step {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  width: 25%;
+  margin-top: -18px;
+  text-align: center;
+  position: relative
+}
+
+.track .step.active:before {
+  background: #068671
+}
+
+.track .step::before {
+  height: 7px;
+  position: absolute;
   content: "";
-  display: block;
-  position: absolute;
   width: 100%;
-  height: .2em;
-  background-color: #4c504f;
+  left: 0;
+  top: 18px
 }
 
-.horizontal-steps .horizontal-steps-content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+.track .step.active .icon {
+  background: #068671;
+  color: #fff
+}
+
+.track .icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   position: relative;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 100%;
+  border-radius: 100%;
+  background: #ddd
 }
 
-.horizontal-steps .horizontal-steps-content .step-item:first-child {
-  margin-left: 0;
+.track .step.active .text {
+  font-weight: 400;
+  color: #000
 }
 
-.horizontal-steps .horizontal-steps-content .step-item span {
-  position: absolute;
-  top: calc(100% + 1em);
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: #a1a9b1;
-}
-
-@media (max-width: 767.98px) {
-  .horizontal-steps .horizontal-steps-content .step-item span {
-    white-space: inherit;
-  }
-}
-
-.horizontal-steps .horizontal-steps-content .step-item {
+.track .text {
   display: block;
-  position: relative;
-  bottom: calc(100% + 1em);
-  height: 8px;
-  width: 8px;
-  margin: 0 2em;
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
-  color: #0f8353;
-  background-color: #8acbb0;
-  border: .25em solid #e2e3e5;
-  border-radius: 50%;
-  z-index: 5;
-}
-
-@keyframes animation-steps-current {
-  0% {
-    background-color: #f5f5f5;
-    transform: scale(1);
-  }
-  50% {
-    background-color: #ffc107;
-    transform: scale(1.1);
-  }
-  100% {
-    background-color: #f5f5f5;
-    transform: scale(1);
-  }
-}
-
-.horizontal-steps .horizontal-steps-content .step-item.current:before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 48%;
-  left: 48%;
-  padding: 1em;
-  background-color: #068671;
-  border-radius: 50%;
-  opacity: 0;
-  animation: animation-steps-current 2s infinite ease-out !important;
-}
-
-.horizontal-steps .horizontal-steps-content .step-item.current span {
-  color: #068671 !important;
-}
-
-.horizontal-steps .process-line {
-  display: block;
-  position: absolute;
-  width: 50%;
-  height: .2em;
-  background-color: #43d8bf;
+  margin-top: 7px
 }

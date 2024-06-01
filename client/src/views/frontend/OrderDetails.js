@@ -122,7 +122,7 @@ const OrderDetails = () => {
       {/* Breadcrumb  end*/}
 
       <div
-        class='container-fluid'
+        className='container-fluid'
         style={{
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -131,68 +131,67 @@ const OrderDetails = () => {
         }}
       >
         {/* title start */}
-        <div class='row'>
-          <div class='col-12'>
-            <div class='mt-5 text-start justify-content-start ms-auto page-title-box page-title-left'>
-              <h4 class='page-title'>Order Details</h4>
+        <div className='row'>
+          <div className='col-12'>
+            <div className='mt-5 text-start justify-content-start ms-auto page-title-box page-title-left'>
+              <h4 className='page-title'>Order Details</h4>
             </div>
           </div>
         </div>
         {/* title end */}
 
         {/* order status steps start*/}
-        <div class='row text-center ms-auto justify-content-center'>
-          <div class='col-lg-7 col-md-10 col-sm-11 mb-3'>
-            <div
-              className='horizontal-steps mt-4 mb-4 pb-5'
-              id='tooltip-container'
-            >
-              <div className='horizontal-steps-content'>
-                <div className='step-item'>
-                  <span
-                    data-bs-container='#tooltip-container'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='bottom'
-                    data-bs-original-title='20/08/2018 07:24 PM'
-                    data-bs-title='20/08/2018 07:24 PM'
-                  >
-                    Order Placed
-                  </span>
-                </div>
-                <div className='step-item current'>
-                  <span
-                    data-bs-container='#tooltip-container'
-                    data-bs-toggle='tooltip'
-                    data-bs-placement='bottom'
-                    data-bs-original-title='21/08/2018 11:32 AM'
-                  >
-                    Packed
-                  </span>
-                </div>
-                <div className='step-item'>
-                  <span>Shipped</span>
-                </div>
-                <div className='step-item'>
-                  <span>Delivered</span>
-                </div>
+        <div className='row text-center ms-auto justify-content-center'>
+          <div className='col-lg-7 col-md-10 col-sm-11 mb-3'>
+            <div className='track'>
+              <div className='step active'>
+                
+                <span className='icon'>
+                  
+                  <i className='fa fa-check'></i>
+                </span>
+                <span className='text'>Order Placed</span>
               </div>
-              <div className='process-line' style={{ width: '33%' }}></div>
+              <div className='step active'>
+               
+                <span className='icon'>
+                  
+                  <i className='fa fa-user'></i>
+                </span>
+                <span className='text'> Picked by courier</span>
+              </div>
+              <div className='step'>
+                
+                <span className='icon'>
+                  
+                  <i className='fa fa-truck'></i>
+                </span>
+                <span className='text'> Shipped</span>
+              </div>
+              <div className='step'>
+                
+                <span className='icon'>
+                  
+                  <i className='fa fa-box'></i>
+                </span>
+                <span className='text'>Ready for pickup</span>
+              </div>
             </div>
           </div>
         </div>
         {/* order status steps end*/}
 
         {/* order details start*/}
-        <div class='row mb-3'>
+        <div className='row mb-3'>
           {/* items list */}
-          <div class='col-lg-8 mt-5'>
-            <div class='card shadow'>
-              <div class='card-body'>
-                <h4 class='header-title mb-3'>Items from Order #12537</h4>
-                <div class='table-responsive'>
+          <div className='col-lg-8 mt-5'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h4 className='header-title mb-3'>Items from Order #12537</h4>
+                <div className='table-responsive'>
                   <table
                     id='basic-datatable'
-                    class='table table-bordered table-striped table-centered table-hover'
+                    className='table table-bordered table-striped table-centered table-hover'
                     style={{ minWidth: '100%' }}
                   >
                     <thead>
@@ -658,14 +657,14 @@ const OrderDetails = () => {
           </div>
 
           {/* order summary */}
-          <div class='col-lg-4 mt-5'>
-            <div class='card shadow'>
-              <div class='card-body'>
-                <h4 class='header-title mb-3'>Order Summary</h4>
+          <div className='col-lg-4 mt-5'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h4 className='header-title mb-3'>Order Summary</h4>
 
-                <div class='table-responsive'>
-                  <table class='table mb-0'>
-                    <thead class='table-light'>
+                <div className='table-responsive'>
+                  <table className='table mb-0'>
+                    <thead className='table-light'>
                       <tr>
                         <th>Description</th>
                         <th>Price</th>
@@ -697,16 +696,16 @@ const OrderDetails = () => {
         </div>
         {/* order details end*/}
 
-        <div class='row'>
+        <div className='row'>
           {/* shipping info */}
-          <div class='col-lg-4 mt-5 mb-3'>
-            <div class='card shadow'>
-              <div class='card-body'>
-                <h4 class='header-title mb-3'>Shipping Information</h4>
+          <div className='col-lg-4 mt-5 mb-3'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h4 className='header-title mb-3'>Shipping Information</h4>
 
                 <h5>Stanley Jones</h5>
 
-                <address class='mb-0 font-14 address-lg'>
+                <address className='mb-0 font-14 address-lg'>
                   795 Folsom Ave, Suite 600
                   <br />
                   San Francisco, CA 94107
@@ -719,26 +718,26 @@ const OrderDetails = () => {
           </div>
 
           {/* billing info */}
-          <div class='col-lg-4 mt-5 mb-3'>
-            <div class='card shadow'>
-              <div class='card-body'>
-                <h4 class='header-title mb-3'>Billing Information</h4>
+          <div className='col-lg-4 mt-5 mb-3'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h4 className='header-title mb-3'>Billing Information</h4>
 
-                <ul class='list-unstyled mb-0'>
+                <ul className='list-unstyled mb-0'>
                   <li>
-                    <p class='mb-2'>
-                      <span class='fw-bold me-2'>Payment Type:</span> Credit
+                    <p className='mb-2'>
+                      <span className='fw-bold me-2'>Payment Type:</span> Credit
                       Card
                     </p>
-                    <p class='mb-2'>
-                      <span class='fw-bold me-2'>Provider:</span> Visa ending in
+                    <p className='mb-2'>
+                      <span className='fw-bold me-2'>Provider:</span> Visa ending in
                       2851
                     </p>
-                    <p class='mb-2'>
-                      <span class='fw-bold me-2'>Valid Date:</span> 02/2020
+                    <p className='mb-2'>
+                      <span className='fw-bold me-2'>Valid Date:</span> 02/2020
                     </p>
-                    <p class='mb-0'>
-                      <span class='fw-bold me-2'>CVV:</span> xxx
+                    <p className='mb-0'>
+                      <span className='fw-bold me-2'>CVV:</span> xxx
                     </p>
                   </li>
                 </ul>
@@ -747,20 +746,20 @@ const OrderDetails = () => {
           </div>
 
           {/* delivery info */}
-          <div class='col-lg-4 mt-5 mb-3'>
-            <div class='card shadow'>
-              <div class='card-body'>
-                <h4 class='header-title mb-3'>Delivery Info</h4>
+          <div className='col-lg-4 mt-5 mb-3'>
+            <div className='card shadow'>
+              <div className='card-body'>
+                <h4 className='header-title mb-3'>Delivery Info</h4>
 
-                <div class='text-center'>
-                  <i class='mdi mdi-truck-fast h2 text-muted'></i>
+                <div className='text-center'>
+                  <i className='mdi mdi-truck-fast h2 text-muted'></i>
                   <h5>
                     <b>UPS Delivery</b>
                   </h5>
-                  <p class='mb-1'>
+                  <p className='mb-1'>
                     <b>Order ID :</b> xxxx235
                   </p>
-                  <p class='mb-0'>
+                  <p className='mb-0'>
                     <b>Payment Mode :</b> COD
                   </p>
                 </div>

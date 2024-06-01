@@ -143,7 +143,7 @@ const LoginPageDriver = () => {
               <Link
                 to='/register/user'
                 rel='noopener noreferrer'
-                className='btn btn-link cursor-pointer'
+                className='cursor-pointer'
                 aria-label='RegisterUser'
                 style={{ color: 'green' }}
               >
@@ -161,7 +161,7 @@ const LoginPageDriver = () => {
               <Link
                 to='/register/driver'
                 rel='noopener noreferrer'
-                className='btn btn-link cursor-pointer'
+                className='cursor-pointer'
                 aria-label='RegisterDriver'
                 style={{ color: 'green' }}
               >

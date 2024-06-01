@@ -28,7 +28,7 @@ const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
 const MyOrders = lazy(() => import('./views/frontend/MyOrders'))
 const OrderDetails = lazy(() => import('./views/frontend/OrderDetails'))
 const MyAccount = lazy(() => import('./views/frontend/MyAccount'))
-
+const TrackMyOrder = lazy(() => import('./views/frontend/TrackMyOrder'))
 
 function App () {
   useEffect(() => {
@@ -106,6 +106,7 @@ function App () {
             <Route path='/my-orders' element={<MyOrders/>}/>
             <Route path='/order-details' element={<OrderDetails/>}/>
             <Route path='/account' element={<MyAccount/>}/>
+            <Route path='/track-order' element={<TrackMyOrder/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 

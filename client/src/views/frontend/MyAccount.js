@@ -1,8 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import PhoneInput from 'react-phone-number-input'
 
 const MyAccount = () => {
+  // window scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  const useFormValidation = () => {
+    useEffect(() => {
+      const forms = document.querySelectorAll('.needs-validation')
+
+      Array.from(forms).forEach(form => {
+        form.addEventListener(
+          'submit',
+          event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+              // Add 'was-validated' class to show validation messages
+              form.classList.add('was-validated')
+              // Highlight the required fields with the 'is-invalid' class
+              const invalidInputs = form.querySelectorAll(':invalid')
+              invalidInputs.forEach(input => {
+                input.classList.add('is-invalid')
+              })
+            }
+
+            form.classList.add('was-validated')
+          },
+          false
+        )
+      })
+
+      return () => {
+        // Cleanup event listeners
+        Array.from(forms).forEach(form => {
+          form.removeEventListener('submit', () => {})
+        })
+      }
+    }, [])
+  }
+
+  useFormValidation()
   const handlePhoneNumberInput = e => {}
   return (
     <>
@@ -99,8 +139,8 @@ const MyAccount = () => {
               <hr />
             </div>
             {/* <!-- Form START --> */}
-            <form className='file-upload'>
-              <div className='row mb-5 gx-5'>
+            <form className='file-upload needs-validation' noValidate>
+              <div className='row mb-3 gx-5'>
                 {/* <!-- Contact detail --> */}
                 <div className='col-xxl-8 mb-5 mb-xxl-0'>
                   <div className='bg-secondary-soft px-4 py-5 rounded'>
@@ -246,24 +286,22 @@ const MyAccount = () => {
                 {/* <!-- Upload profile photo --> */}
                 <div className='col-xxl-4'>
                   <div className='bg-secondary-soft px-4 py-5 rounded'>
-                    <div className='row g-3'>
+                    <div className='row g-3 text-start justify-content-start ms-auto'>
                       <h4 className='mb-4 mt-0'>Upload your profile photo</h4>
                       <div className='text-center'>
                         {/* <!-- Image upload --> */}
-                        <div className='square position-relative display-2 mb-3'>
-                          <i className='fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary'></i>
+                        <div className='input-group'>
+                          <span className='input-group-text'>
+                          <i class="bi bi-camera2"></i>
+                          </span>
+                          <input
+                            type='file'
+                            id='customFile'
+                            name='file'
+                            hidden=''
+                            className='form-control mb-2 mt-2'
+                          />
                         </div>
-                        {/* <!-- Button --> */}
-                        <input
-                          type='file'
-                          id='customFile'
-                          name='file'
-                          hidden=''
-                          className='form-control mb-2'
-                        />
-                        <button type='button' className='btn btn-success'>
-                          Upload
-                        </button>
                         {/* <!-- Content --> */}
                         <p className='text-muted mt-3 mb-0'>
                           <span className='me-1'>Note:</span>Minimum size 300px
@@ -283,7 +321,7 @@ const MyAccount = () => {
                   Delete profile
                 </button>
                 <button
-                  type='button'
+                  type='submit'
                   className='btn btn-success btn-lg shadow mt-2'
                 >
                   Update profile

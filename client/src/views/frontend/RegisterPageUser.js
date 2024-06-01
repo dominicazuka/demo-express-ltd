@@ -145,7 +145,7 @@ const RegisterPageUser = () => {
               <Link
                 to='/login/user'
                 rel='noopener noreferrer'
-                className='btn btn-link cursor-pointer'
+                className='cursor-pointer'
                 aria-label='RegisterUser'
                 style={{ color: 'green' }}
               >
@@ -163,7 +163,7 @@ const RegisterPageUser = () => {
               <Link
                 to='/login/driver'
                 rel='noopener noreferrer'
-                className='btn btn-link cursor-pointer'
+                className='cursor-pointer'
                 aria-label='RegisterDriver'
                 style={{ color: 'green' }}
               >
@@ -397,6 +397,114 @@ const RegisterPageUser = () => {
                     />
                   </div>
                 </div>
+
+                {/* new password */}
+                <div className='col-12 text-start justify-content-start ms-auto mt-3'>
+                  <label htmlFor='newPassword' className='form-label'>
+                    New Password
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i className='bi bi-lock'></i>
+                    </span>
+                    <input
+                      type='password'
+                      className='form-control w-70'
+                      id='newPassword'
+                      placeholder='Enter your new password'
+                      required
+                    />
+                    <button
+                      className='btn btn-outline-secondary'
+                      type='button'
+                      id='toggleNewPassword'
+                      onClick={() => {
+                        const passwordField =
+                          document.getElementById('newPassword')
+                        const toggleButton =
+                          document.getElementById('toggleNewPassword')
+                        if (passwordField.type === 'password') {
+                          passwordField.type = 'text'
+                          toggleButton.innerHTML =
+                            '<i className="bi bi-eye-slash"></i>'
+                        } else {
+                          passwordField.type = 'password'
+                          toggleButton.innerHTML =
+                            '<i className="bi bi-eye"></i>'
+                        }
+                      }}
+                    >
+                      <i className='bi bi-eye'></i>
+                    </button>
+                    <div className='invalid-feedback'>
+                      New Password is required.
+                    </div>
+                  </div>
+                </div>
+
+                {/* confirm new password */}
+                <div className='col-12 text-start justify-content-start ms-auto mt-3'>
+                  <label htmlFor='confirmNewPassword' className='form-label'>
+                    Confirm New Password
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i className='bi bi-lock'></i>
+                    </span>
+                    <input
+                      type='password'
+                      className='form-control w-70'
+                      id='confirmNewPassword'
+                      placeholder='Confirm your new password'
+                      required
+                    />
+                    <button
+                      className='btn btn-outline-secondary'
+                      type='button'
+                      id='toggleConfirmNewPassword'
+                      onClick={() => {
+                        const passwordField =
+                          document.getElementById('confirmNewPassword')
+                        const toggleButton = document.getElementById(
+                          'toggleConfirmNewPassword'
+                        )
+                        if (passwordField.type === 'password') {
+                          passwordField.type = 'text'
+                          toggleButton.innerHTML =
+                            '<i className="bi bi-eye-slash"></i>'
+                        } else {
+                          passwordField.type = 'password'
+                          toggleButton.innerHTML =
+                            '<i className="bi bi-eye"></i>'
+                        }
+                      }}
+                    >
+                      <i className='bi bi-eye'></i>
+                    </button>
+                    <div className='invalid-feedback'>
+                      Confirmation of New Password is required.
+                    </div>
+                  </div>
+                </div>
+
+                {/* password requirements */}
+                <div className='col-12 text-start justify-content-start ms-auto mt-3'>
+                  <h6 className='mb-1'>Password requirements:</h6>
+                  <p>Ensure that these requirements are met:</p>
+                  <ul
+                    style={{
+                      paddingLeft: '20px',
+                      listStylePosition: 'inside'
+                    }}
+                  >
+                    <li> Minimum 8 characters long the more, the better</li>
+                    <li>At least one lowercase character</li>
+                    <li>At least one uppercase character</li>
+                    <li>
+                      At least one number, symbol, or whitespace character
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <hr className='my-4' />
@@ -453,34 +561,32 @@ const RegisterPageUser = () => {
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-bus-front'></i>
+              <i class='bi-truck'></i>
             </div>
             <div>
-              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <h3 class='fs-2 text-body-emphasis'>Fast Delivery</h3>
               <p>
-                Paragraph of text beneath the heading to explain the heading.
-                We'll add onto it with another sentence and probably just keep
-                going until we run out of words.
+                With Demo Express LTD, you can expect fast and reliable delivery
+                services for all your packages. Our extensive network and
+                efficient logistics ensure that your items reach their
+                destination quickly and safely. Experience the convenience of
+                timely deliveries with every order.
               </p>
-              <a href='#' class='btn btn-success shadow'>
-                Primary button
-              </a>
             </div>
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-box-seam-fill'></i>
+              <i class='bi bi-map'></i>
             </div>
             <div>
-              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <h3 class='fs-2 text-body-emphasis'>Real-Time Tracking</h3>
               <p>
-                Paragraph of text beneath the heading to explain the heading.
-                We'll add onto it with another sentence and probably just keep
-                going until we run out of words.
+                Stay informed about the status of your shipments with our
+                real-time tracking feature. Monitor your package's journey from
+                the moment it leaves the sender until it arrives at your
+                doorstep. Receive updates and notifications to always know where
+                your package is and when it will arrive.
               </p>
-              <a href='#' class='btn btn-success shadow'>
-                Primary button
-              </a>
             </div>
           </div>
           <div class='col d-flex align-items-start'>
@@ -488,15 +594,14 @@ const RegisterPageUser = () => {
               <i class='bi bi-tools'></i>
             </div>
             <div>
-              <h3 class='fs-2 text-body-emphasis'>Featured title</h3>
+              <h3 class='fs-2 text-body-emphasis'>Secure Payments</h3>
               <p>
-                Paragraph of text beneath the heading to explain the heading.
-                We'll add onto it with another sentence and probably just keep
-                going until we run out of words.
+                Demo Express LTD prioritizes your security with secure and
+                hassle-free payment options. Our platform uses advanced
+                encryption technology to protect your financial information.
+                Enjoy peace of mind knowing that your transactions are safe and
+                your data is protected
               </p>
-              <a href='#' class='btn btn-success shadow'>
-                Primary button
-              </a>
             </div>
           </div>
         </div>
