@@ -17,9 +17,9 @@ const TrackMyOrder = () => {
             if (!form.checkValidity()) {
               event.preventDefault()
               event.stopPropagation()
-              // Add 'was-validated' class to show validation messages
+              // Add 'was-validated' className to show validation messages
               form.classList.add('was-validated')
-              // Highlight the required fields with the 'is-invalid' class
+              // Highlight the required fields with the 'is-invalid' className
               const invalidInputs = form.querySelectorAll(':invalid')
               invalidInputs.forEach(input => {
                 input.classList.add('is-invalid')
@@ -93,9 +93,7 @@ const TrackMyOrder = () => {
                 marginBottom: '60px'
               }}
             >
-              Take advantage of our services and solutions designed to meet all
-              of your shipping requirements. Login to your Demo Express LTD
-              shipping account below. Let’s get started!
+              Stay updated on the status of your delivery with our real-time order tracking. Enter your tracking number to view the current location of your package, estimated delivery time, and any updates along the way.
             </p>
           </div>
 
@@ -136,7 +134,7 @@ const TrackMyOrder = () => {
         style={{ padding: '20px' }}
       >
         <div className='mt-3 col-md-12 col-lg-12'>
-          <img class='img-fluid' src='https://i.imgur.com/Rzjor3M.png' />
+          <img className='img-fluid' src='https://i.imgur.com/Rzjor3M.png' />
           <h4 className='mb-3 mt-3'>Track Your Order</h4>
           <div className='row g-3'>
             {/* order id */}
@@ -146,7 +144,7 @@ const TrackMyOrder = () => {
               </label>
               <div className='input-group has-validation'>
                 <span className='input-group-text'>
-                <i class="bi bi-card-checklist"></i>
+                <i className="bi bi-card-checklist"></i>
                 </span>
                 <input
                   type='text'

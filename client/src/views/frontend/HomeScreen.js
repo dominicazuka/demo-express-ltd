@@ -391,7 +391,7 @@ const HomeScreen = () => {
             style={{ marginTop: '30px', marginBottom: '20px' }}
           >
             <div
-              className='col-md-7 order-md-2'
+              className='col-md-7 order-md-2 justify-content-center align-content-center'
               style={{ marginTop: isDesktop ? '40px' : '0' }}
             >
               <h2 className='featurette-heading fw-normal lh-1'>

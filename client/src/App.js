@@ -18,17 +18,18 @@ import 'datatables.net-select-bs5';
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'));
 const ErrorPage = lazy(() => import('./components/ErrorPage'));
-const AboutUs = lazy(() => import('./views/frontend/AboutUs'));
-const Faq = lazy(() => import('./views/frontend/Faq'));
-const Ship = lazy(() => import('./views/frontend/Ship'));
-const RegisterPageUser = lazy(() => import('./views/frontend/RegisterPageUser'))
-const RegisterPageDriver = lazy(() => import('./views/frontend/RegisterPageDriver'))
-const LoginPageUser = lazy(() => import('./views/frontend/LoginPageUser'))
-const LoginPageDriver = lazy(() => import('./views/frontend/LoginPageDriver'))
-const MyOrders = lazy(() => import('./views/frontend/MyOrders'))
-const OrderDetails = lazy(() => import('./views/frontend/OrderDetails'))
-const MyAccount = lazy(() => import('./views/frontend/MyAccount'))
-const TrackMyOrder = lazy(() => import('./views/frontend/TrackMyOrder'))
+const AboutUs = lazy(() => import('./views/frontend/about/AboutUs'));
+const Faq = lazy(() => import('./views/frontend/faq/Faq'));
+const Ship = lazy(() => import('./views/frontend/ship/Ship'));
+const RegisterPageUser = lazy(() => import('./views/auth/RegisterPageUser'))
+const RegisterPageDriver = lazy(() => import('./views/auth/RegisterPageDriver'))
+const LoginPageUser = lazy(() => import('./views/auth/LoginPageUser'))
+const LoginPageDriver = lazy(() => import('./views/auth/LoginPageDriver'))
+const MyOrders = lazy(() => import('./views/frontend/order/MyOrders'))
+const OrderDetails = lazy(() => import('./views/frontend/order/OrderDetails'))
+const MyAccount = lazy(() => import('./views/frontend/account/MyAccount'))
+const TrackMyOrder = lazy(() => import('./views/frontend/track/TrackMyOrder'))
+const ServiceNews = lazy(() => import('./views/frontend/service-news/ServiceNews'))
 
 function App () {
   useEffect(() => {
@@ -107,6 +108,7 @@ function App () {
             <Route path='/order-details' element={<OrderDetails/>}/>
             <Route path='/account' element={<MyAccount/>}/>
             <Route path='/track-order' element={<TrackMyOrder/>}/>
+            <Route path='/service-news' element={<ServiceNews/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 
