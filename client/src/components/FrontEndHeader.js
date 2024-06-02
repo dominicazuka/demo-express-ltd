@@ -73,6 +73,11 @@ const FrontEndHeader = () => {
                       Service News
                     </Link>
                   </li>
+                  <li>
+                    <Link to='/contact-us' className='dropdown-item'>
+                      Contact Us
+                    </Link>
+                  </li>
                 </ul>
               </li>
               <li className='nav-item dropdown'>

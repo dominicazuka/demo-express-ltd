@@ -466,9 +466,9 @@ const ServiceNews = () => {
                 <span className='text-body-secondary'>See for yourself.</span>
               </h2>
               <p className='lead'>We’re here to help! Whether you have questions, feedback, or need assistance with our services, our team is ready to assist you. Reach out to us through our contact form, email, or phone, and we’ll get back to you as soon as possible. </p>
-              <button className='btn btn-outline-success shadow mb-4'>
+              <Link to='/contact-us' className='btn btn-outline-success shadow mb-4'>
                 Contact Us
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -282,7 +282,9 @@ const RegisterPageUser = () => {
                     <i class='bi bi-globe-asia-australia'></i>
                   </span>
                   <select className='form-select' id='country' required>
-                    <option value=''>Choose...</option>
+                    <option selected disabled value="">
+                      Select Country
+                    </option>
                     <option>United States</option>
                   </select>
                   <div className='invalid-feedback'>
@@ -298,7 +300,9 @@ const RegisterPageUser = () => {
                     <i class='bi bi-map'></i>
                   </span>
                   <select className='form-select' id='state' required>
-                    <option value=''>Choose...</option>
+                    <option selected disabled value="">
+                      Select State
+                    </option>
                     <option>Califonia</option>
                   </select>
                   <div className='invalid-feedback'>
@@ -314,7 +318,9 @@ const RegisterPageUser = () => {
                     <i class='bi bi-radar'></i>
                   </span>
                   <select className='form-select' id='city' required>
-                    <option value=''>Choose...</option>
+                    <option selected disabled value="">
+                      Select City
+                    </option>
                     <option>City 1</option>
                   </select>
                   <div className='invalid-feedback'>
