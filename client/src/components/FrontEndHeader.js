@@ -96,6 +96,11 @@ const FrontEndHeader = () => {
                       Ship
                     </Link>
                   </li>
+                  <li>
+                    <Link to='/locations' className='dropdown-item'>
+                      Locations
+                    </Link>
+                  </li>
                 </ul>
               </li>
               <li className='nav-item dropdown'>

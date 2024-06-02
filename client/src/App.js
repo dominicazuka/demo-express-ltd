@@ -31,6 +31,8 @@ const MyAccount = lazy(() => import('./views/frontend/account/MyAccount'))
 const TrackMyOrder = lazy(() => import('./views/frontend/track/TrackMyOrder'))
 const ServiceNews = lazy(() => import('./views/frontend/service-news/ServiceNews'))
 const ContactUs = lazy(() => import('./views/frontend/contact/ContactUs'))
+const Locations = lazy(() => import('./views/frontend/locations/Locations'))
+const LocationWithinCountry = lazy(() => import('./views/frontend/locations/LocationWithinCountry'))
 
 function App () {
   useEffect(() => {
@@ -111,6 +113,8 @@ function App () {
             <Route path='/track-order' element={<TrackMyOrder/>}/>
             <Route path='/service-news' element={<ServiceNews/>}/>
             <Route path='/contact-us' element={<ContactUs/>}/>
+            <Route path='/locations' element={<Locations/>}/>
+            <Route path='/location-within-country' element={<LocationWithinCountry/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 

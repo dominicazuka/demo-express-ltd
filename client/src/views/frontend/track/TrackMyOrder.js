@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const TrackMyOrder = () => {
-    // window scroll to top on page load
+  // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -44,8 +44,8 @@ const TrackMyOrder = () => {
   useFormValidation()
   return (
     <>
-{/* Breadcrumb  */}
-<div
+      {/* Breadcrumb  */}
+      <div
         className='shadow'
         style={{
           backgroundImage:
@@ -93,7 +93,10 @@ const TrackMyOrder = () => {
                 marginBottom: '60px'
               }}
             >
-              Stay updated on the status of your delivery with our real-time order tracking. Enter your tracking number to view the current location of your package, estimated delivery time, and any updates along the way.
+              Stay updated on the status of your delivery with our real-time
+              order tracking. Enter your tracking number to view the current
+              location of your package, estimated delivery time, and any updates
+              along the way.
             </p>
           </div>
 
@@ -125,54 +128,57 @@ const TrackMyOrder = () => {
       </div>
       {/* Breadcrumb  end*/}
 
-    {/* register form start */}
-    <main className='container mt-5'>
-    <div className='p-2 shadow rounded'>
-      <form
-        className='row needs-validation'
-        noValidate
-        style={{ padding: '20px' }}
-      >
-        <div className='mt-3 col-md-12 col-lg-12'>
-          <img className='img-fluid' src='https://i.imgur.com/Rzjor3M.png' />
-          <h4 className='mb-3 mt-3'>Track Your Order</h4>
-          <div className='row g-3'>
-            {/* order id */}
-            <div className='col-12 text-start justify-content-start ms-auto'>
-              <label htmlFor='orderId' className='form-label'>
-                Order ID
-              </label>
-              <div className='input-group has-validation'>
-                <span className='input-group-text'>
-                <i className="bi bi-card-checklist"></i>
-                </span>
-                <input
-                  type='text'
-                  className='form-control'
-                  id='orderId'
-                  placeholder='Enter order ID sent to your email'
-                  required
-                />
-                <div className='invalid-feedback'>
-                  Order ID is required.
+      {/* register form start */}
+      <main className='container mt-5'>
+        <div className='p-2 shadow rounded'>
+          <form
+            className='row needs-validation'
+            noValidate
+            style={{ padding: '20px' }}
+          >
+            <div className='mt-3 col-md-12 col-lg-12'>
+              <img
+                className='img-fluid'
+                src='https://i.imgur.com/Rzjor3M.png'
+              />
+              <h4 className='mb-3 mt-3'>Track Your Order</h4>
+              <div className='row g-3'>
+                {/* order id */}
+                <div className='col-12 text-start justify-content-start ms-auto'>
+                  <label htmlFor='orderId' className='form-label'>
+                    Order ID
+                  </label>
+                  <div className='input-group has-validation'>
+                    <span className='input-group-text'>
+                      <i className='bi bi-card-checklist'></i>
+                    </span>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='orderId'
+                      placeholder='Enter order ID sent to your email'
+                      required
+                    />
+                    <div className='invalid-feedback'>
+                      Order ID is required.
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <hr className='my-4' />
-          <button
-            className='w-70 btn btn-success btn-lg shadow'
-            type='submit'
-          >
-            Track
-          </button>
+              <hr className='my-4' />
+              <button
+                className='w-70 btn btn-success btn-lg shadow'
+                type='submit'
+              >
+                Track
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-  </main>
-  {/* register form ends */}
-  </>
+      </main>
+      {/* register form ends */}
+    </>
   )
 }
 
