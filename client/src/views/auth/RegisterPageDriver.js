@@ -483,7 +483,7 @@ const RegisterPageUser = () => {
                 {/* password requirements */}
                 <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                   <h6 className='mb-1'>Password requirements:</h6>
-                  <p>Ensure that these requirements are met:</p>
+                  <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
                   <ul
                     style={{
                       paddingLeft: '20px',
@@ -554,11 +554,11 @@ const RegisterPageUser = () => {
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-clock'></i>
+              <i class='bi bi-clock' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Flexible Scheduling</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 As a driver with Demo Express LTD, you have the flexibility to
                 choose your working hours. Whether you prefer to work in the
                 mornings, evenings, or split shifts, our scheduling system
@@ -569,11 +569,11 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-currency-dollar'></i>
+              <i class='bi bi-currency-dollar' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Competitive Earnings</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 Demo Express LTD offers competitive pay rates to ensure that
                 your hard work is rewarded. In addition to base pay, we provide
                 performance bonuses and incentives for high achievers. Drive
@@ -584,11 +584,11 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-headset'></i>
+              <i class='bi bi-headset' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Comprehensive Support</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 Our drivers are never alone on the road. Demo Express LTD
                 provides comprehensive support, including 24/7 access to our
                 dedicated support team. Whether you encounter a mechanical

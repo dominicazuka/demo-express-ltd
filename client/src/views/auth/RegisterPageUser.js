@@ -496,7 +496,7 @@ const RegisterPageUser = () => {
                 {/* password requirements */}
                 <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                   <h6 className='mb-1'>Password requirements:</h6>
-                  <p>Ensure that these requirements are met:</p>
+                  <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
                   <ul
                     style={{
                       paddingLeft: '20px',
@@ -567,11 +567,11 @@ const RegisterPageUser = () => {
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi-truck'></i>
+              <i class='bi-truck' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Fast Delivery</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 With Demo Express LTD, you can expect fast and reliable delivery
                 services for all your packages. Our extensive network and
                 efficient logistics ensure that your items reach their
@@ -582,11 +582,11 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-map'></i>
+              <i class='bi bi-map' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Real-Time Tracking</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 Stay informed about the status of your shipments with our
                 real-time tracking feature. Monitor your package's journey from
                 the moment it leaves the sender until it arrives at your
@@ -597,11 +597,11 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-tools'></i>
+              <i class='bi bi-tools' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Secure Payments</h3>
-              <p>
+              <p style={{ textAlign: 'justify' }}>
                 Demo Express LTD prioritizes your security with secure and
                 hassle-free payment options. Our platform uses advanced
                 encryption technology to protect your financial information.

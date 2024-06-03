@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import logo from '../../logo.svg'
 import '../../App.css'
+import { Link } from 'react-router-dom'
 
 const HomeScreen = () => {
   // window scroll to top on page load
@@ -54,6 +55,7 @@ const HomeScreen = () => {
             className='carousel-inner'
             style={{ borderRadius: '0 0 50px 50px' }}
           >
+            {/* 1 */}
             <div className='carousel-item'>
               {isMobile && (
                 // Mobile image: 350x525
@@ -94,19 +96,23 @@ const HomeScreen = () => {
                 }}
               >
                 <div className='carousel-caption text-start'>
-                  <h1>Example headline.</h1>
-                  <p className='opacity-75'>
-                    Some representative placeholder content for the first slide
-                    of the carousel.
+                  <h1>Global Shipping, Local Expertise</h1>
+                  <p className='opacity-75' style={{ textAlign: 'justify' }}>
+                    Wherever you need to send your package, we’ve got you
+                    covered. With our extensive network of locations worldwide,
+                    your shipment is in safe hands, arriving swiftly and
+                    securely.
                   </p>
-                  <p>
-                    <a className='btn btn-lg btn-success' href='#'>
-                      Sign up today
-                    </a>
+                  <p style={{ textAlign: 'justify' }}>
+                    <Link to='/locations' className='btn btn-lg btn-success'>
+                      Explore Our Network
+                    </Link>
                   </p>
                 </div>
               </div>
             </div>
+
+            {/* 2 */}
             <div className='carousel-item'>
               {isMobile && (
                 // Mobile image: 350x525
@@ -147,19 +153,22 @@ const HomeScreen = () => {
                 }}
               >
                 <div className='carousel-caption'>
-                  <h1>Another example headline.</h1>
-                  <p>
-                    Some representative placeholder content for the second slide
-                    of the carousel.
+                  <h1>24/7 Customer Support</h1>
+                  <p style={{ textAlign: 'justify' }}>
+                    We're here for you around the clock. Our dedicated support
+                    team is ready to assist with any inquiries, ensuring a
+                    smooth and worry-free shipping experience.
                   </p>
                   <p>
-                    <a className='btn btn-lg btn-success' href='#'>
-                      Learn more
-                    </a>
+                    <Link to='/contact-us' className='btn btn-lg btn-success'>
+                      Contact Us
+                    </Link>
                   </p>
                 </div>
               </div>
             </div>
+
+            {/* 3 */}
             <div className='carousel-item active'>
               {isMobile && (
                 // Mobile image: 350x525
@@ -201,15 +210,16 @@ const HomeScreen = () => {
                 }}
               >
                 <div className='carousel-caption text-end'>
-                  <h1>One more for good measure.</h1>
-                  <p>
-                    Some representative placeholder content for the third slide
-                    of this carousel.
+                  <h1>Affordable Shipping Rates</h1>
+                  <p style={{ textAlign: 'justify' }}>
+                    Ship more for less with our competitive pricing. We offer
+                    some of the best rates in the industry without compromising
+                    on service quality. Get a quote and start saving today.
                   </p>
                   <p>
-                    <a className='btn btn-lg btn-success' href='#'>
-                      Browse gallery
-                    </a>
+                    <Link to='/ship' className='btn btn-lg btn-success'>
+                      Check Rates
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -246,134 +256,155 @@ const HomeScreen = () => {
         {/* info cards more services */}
         <div className='container marketing' style={{ marginTop: '50px' }}>
           <div className='row'>
-            <div className='col-lg-4 mt-5'>
-              <img
-                src='https://via.placeholder.com/40x32'
-                alt='Bootstrap Logo'
-                width='140'
-                height='140'
-                className='me-2 rounded-circle shadow'
-              />
+            <h3 className='display-5 fw-medium'>Manage your shipments</h3>
+            <div className='col-lg-3 mt-3'>
+              <i
+                className='bi bi-person-circle'
+                style={{
+                  fontSize: '140px',
+                  color: '#6c757d'
+                }}
+              ></i>
 
-              <h2 className='fw-normal'>Heading</h2>
               <p>
-                Some representative placeholder content for the three columns of
-                text below the carousel. This is the first column.
-              </p>
-              <p>
-                <a className='btn btn-success shadow' href='#'>
-                  View details »
+                <a className='btn btn-success shadow' href='#!'>
+                  SCHEDULE PICKUP »
                 </a>
               </p>
             </div>
-            <div className='col-lg-4 mt-5'>
-              <img
-                src='https://via.placeholder.com/40x32'
-                alt='Bootstrap Logo'
-                width='140'
-                height='140'
-                className='me-2 rounded-circle shadow'
-              />
+            <div className='col-lg-3 mt-3'>
+              <i
+                className='bi bi-truck'
+                style={{
+                  fontSize: '140px',
+                  color: '#6c757d'
+                }}
+              ></i>
 
-              <h2 className='fw-normal'>Heading</h2>
               <p>
-                Another exciting bit of representative placeholder content. This
-                time, we've moved on to the second column.
-              </p>
-              <p>
-                <a className='btn btn-success shadow' href='#'>
-                  View details »
+                <a className='btn btn-success shadow' href='#!'>
+                  REDIRECT YOUR PACKAGE »
                 </a>
               </p>
             </div>
-            <div className='col-lg-4 mt-5'>
-              <img
-                src='https://via.placeholder.com/40x32'
-                alt='Bootstrap Logo'
-                width='140'
-                height='140'
-                className='me-2 rounded-circle shadow'
-              />
+            <div className='col-lg-3 mt-3'>
+              <i
+                className='bi bi-geo-fill'
+                style={{
+                  fontSize: '140px',
+                  color: '#6c757d'
+                }}
+              ></i>
 
-              <h2 className='fw-normal'>Heading</h2>
               <p>
-                And lastly this, the third column of representative placeholder
-                content.
+                <Link to='/locations' className='btn btn-success shadow'>
+                  FIND LOCATIONS »
+                </Link>
               </p>
+            </div>
+            <div className='col-lg-3 mt-3'>
+              <i
+                className='bi bi-cash-stack'
+                style={{
+                  fontSize: '140px',
+                  color: '#6c757d'
+                }}
+              ></i>
+
               <p>
-                <a className='btn btn-success shadow' href='#'>
-                  View details »
-                </a>
+                <Link to='/ship' className='btn btn-success shadow'>
+                  FRIENDLY SHIPPING RATES »
+                </Link>
               </p>
             </div>
           </div>
 
           <hr className='featurette-divider' />
-          {/* jumbrotron info */}
-          <div className='container-fluid py-5'>
-            <h1 className='display-5 fw-bold'>Custom jumbotron</h1>
-            <p className=' fs-4'>
-              Using a series of utilities, you can create this jumbotron, just
-              like the one in previous versions of Bootstrap. Check out the
-              examples below for how you can remix and restyle it to your
-              liking.
-            </p>
-            <button className='btn btn-success btn-lg shadow' type='button'>
-              Example button
-            </button>
+
+          {/* Sign up CTA info */}
+          <div className='container mt-5 mb-5'>
+            <div
+              className='row rounded shadow'
+              style={{ backgroundColor: '#006400' }}
+            >
+              {/* <!-- Column 1 --> */}
+              <div className='col-sm-2 d-flex align-items-center justify-content-center'>
+                <i
+                  className='bi bi-tags'
+                  style={{ fontSize: '90px', color: '#FFFFFF' }}
+                ></i>
+              </div>
+              {/* <!-- Column 2 --> */}
+              <div className='col-sm-6 text-center text-sm-start'>
+                <h2 className='text-white my-4' style={{ fontSize: '25px' }}>
+                  Sign up now to enjoy personalized shipping rates!
+                </h2>
+                <p className='text-white'>
+                  Benefit from our services and solutions designed to meet all
+                  of your shipping needs.
+                </p>
+              </div>
+              {/* <!-- Column 3 --> */}
+              <div className='col-sm-4 d-flex align-items-center justify-content-center'>
+                <Link to='/register/user' className='btn btn-warning text-dark'>
+                  OPEN AN ACCOUNT
+                </Link>
+              </div>
+            </div>
           </div>
 
           {/*info cards */}
           <div className='row align-items-md-stretch mb-4'>
             <div className='col-md-4 mt-3'>
               <div className='h-100 p-5 text-bg-dark rounded-3 shadow'>
-                <h2>Change the background</h2>
-                <p>
-                  Swap the background-color utility and add a `.text-*` color
-                  utility to mix up the jumbotron look. Then, mix and match with
-                  additional component themes and more.
+                <h2>Report Fraudulent Activities</h2>
+                <p style={{ textAlign: 'justify' }}>
+                  Help us ensure the security and integrity of our services by
+                  reporting any suspicious or fraudulent activities. Your
+                  vigilance is crucial in protecting our community. If you
+                  encounter any fraudulent behavior, please provide detailed
+                  information so we can take immediate action.
                 </p>
-                <button
+                <Link
+                  to='/report-fraud'
                   className='btn btn-success btn-outline-light'
                   type='button'
                 >
-                  Example button
-                </button>
+                  Learn More
+                </Link>
               </div>
             </div>
             <div className='col-md-4 mt-3'>
               <div className='h-100 p-5 bg-body-tertiary border rounded-3 shadow'>
-                <h2>Add borders</h2>
-                <p>
-                  Or, keep it light and add a border for some added definition
-                  to the boundaries of your content. Be sure to look under the
-                  hood at the source HTML here as we've adjusted the alignment
-                  and sizing of both column's content for equal-height.
+                <h2>Conditions of Carriage</h2>
+                <p style={{ textAlign: 'justify' }}>
+                  Familiarize yourself with the Terms and Conditions of Carriage
+                  to ensure a clear understanding of the rules and guidelines
+                  for shipping your packages.
                 </p>
-                <button
+                <Link
+                  to='/conditions-of-carriage'
                   className='btn btn-outline-success shadow'
                   type='button'
                 >
-                  Example button
-                </button>
+                  Learn More
+                </Link>
               </div>
             </div>
 
             <div className='col-md-4 mt-3'>
               <div className='h-100 p-5 bg-body-tertiary border rounded-3 shadow'>
-                <h2>Add borders</h2>
-                <p>
-                  Or, keep it light and add a border for some added definition
-                  to the boundaries of your content. Be sure to look under the
-                  hood at the source HTML here as we've adjusted the alignment
-                  and sizing of both column's content for equal-height.
+                <h2>Frequently Asked Questions (FAQ)</h2>
+                <p style={{ textAlign: 'justify' }}>
+                Have questions about our services? Find answers to the most commonly asked questions here. From shipping details to account management, our FAQ section provides all the information you need to ensure a smooth experience with Demo Express LTD.
                 </p>
-                <button
+                <Link
+                  to='/faq'
                   className='btn btn-outline-success shadow'
                   type='button'
                 >
-                  Example button
-                </button>
+                  Learn More
+                </Link>
               </div>
             </div>
           </div>
@@ -395,22 +426,26 @@ const HomeScreen = () => {
               style={{ marginTop: isDesktop ? '40px' : '0' }}
             >
               <h2 className='featurette-heading fw-normal lh-1'>
-                Oh yeah, it’s that good.{' '}
+                Stay Updated with Our Latest Services{' '}
                 <span className='text-body-secondary'>See for yourself.</span>
               </h2>
               <p className='lead'>
-                Another featurette? Of course. More placeholder content here to
-                give you an idea of how this layout would work with some actual
-                real-world content in place.
+                Keep informed about our latest shipping services, special
+                offers, and operational updates. Our service news section
+                ensures you never miss out on important information that can
+                benefit your shipping needs.
               </p>
-              <button className='btn btn-outline-success shadow mb-4'>
+              <Link
+                to='/service-news'
+                className='btn btn-outline-success shadow mb-4'
+              >
                 View all Service News
-              </button>
+              </Link>
             </div>
             <div className='col-md-5 order-md-1 d-flex justify-content-center'>
               <img
                 src='https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNoaXBwaW5nfGVufDB8fDB8fHww'
-                alt='Image'
+                alt='ServiceImage'
                 className='d-block w-100 rounded shadow'
                 width='500'
                 height='300'

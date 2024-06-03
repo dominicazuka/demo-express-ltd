@@ -119,7 +119,7 @@ const LocationWithinCountry = () => {
                   </tr>
                   <tr>
                     <td>
-                      <i className='far fa-envelope'></i>
+                      <i className='far fa-envelope' style={{marginRight: '10px'}}></i>
                     </td>
                     <td>hannaelina123@gmail.com</td>
                   </tr>
@@ -128,6 +128,12 @@ const LocationWithinCountry = () => {
                       <i className='fas fa-phone'></i>
                     </td>
                     <td>+46 (0) 722 220 524</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <i className='fas fa-clock'></i>
+                    </td>
+                    <td>Closed. Opens at 08:00</td>
                   </tr>
                 </table>
               </div>

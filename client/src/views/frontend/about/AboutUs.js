@@ -275,7 +275,7 @@ const AboutUs = () => {
               <i class='bi bi-toggles'></i>
             </div>
             <h3 className='fs-2 text-body-emphasis'>Featured title</h3>
-            <p>
+            <p style={{ textAlign: 'justify' }}>
               Paragraph of text beneath the heading to explain the heading.
               We'll add onto it with another sentence and probably just keep
               going until we run out of words.
@@ -313,7 +313,7 @@ const AboutUs = () => {
               <i class='bi bi-person-vcard'></i>
             </div>
             <h3 className='fs-2 text-body-emphasis'>Featured title</h3>
-            <p>
+            <p style={{ textAlign: 'justify' }}>
               Paragraph of text beneath the heading to explain the heading.
               We'll add onto it with another sentence and probably just keep
               going until we run out of words.

@@ -473,7 +473,7 @@ const MyAccount = () => {
                   {/* password requirements */}
                   <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                     <h6 className='mb-1'>Password requirements:</h6>
-                    <p>Ensure that these requirements are met:</p>
+                    <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
                     <ul
                       style={{
                         paddingLeft: '20px',

@@ -15,6 +15,7 @@ import 'datatables.net-responsive-bs5';
 import 'datatables.net-select';
 import 'datatables.net-select-bs5';
 
+
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'));
 const ErrorPage = lazy(() => import('./components/ErrorPage'));
@@ -33,6 +34,9 @@ const ServiceNews = lazy(() => import('./views/frontend/service-news/ServiceNews
 const ContactUs = lazy(() => import('./views/frontend/contact/ContactUs'))
 const Locations = lazy(() => import('./views/frontend/locations/Locations'))
 const LocationWithinCountry = lazy(() => import('./views/frontend/locations/LocationWithinCountry'))
+const ReportFraud = lazy(() => import('./views/frontend/trust-center/ReportFraud'))
+const ConditionsOfCarriage = lazy(() => import('./views/frontend/conditions-of-carriage/ConditionsOfCarriage'))
+
 
 function App () {
   useEffect(() => {
@@ -115,6 +119,8 @@ function App () {
             <Route path='/contact-us' element={<ContactUs/>}/>
             <Route path='/locations' element={<Locations/>}/>
             <Route path='/location-within-country' element={<LocationWithinCountry/>}/>
+            <Route path='/report-fraud' element={<ReportFraud/>}/>
+            <Route path='/conditions-of-carriage' element={<ConditionsOfCarriage/>}/>
 
             <Route path='/404' element={<ErrorPage />} />
 

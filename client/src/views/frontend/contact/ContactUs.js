@@ -140,7 +140,7 @@ const ContactUs = () => {
               <i className='bi bi-envelope-at'></i>
             </div>
             <h3 className='fs-2 text-body-emphasis'>Contact Us</h3>
-            <p>
+            <p style={{ textAlign: 'justify' }}>
               Our team is online: Mon – Fri: 08:00am – 5:00pm Saturday: 08:00–
               12:00 noon Sunday & Public Holidays : Closed
             </p>
@@ -158,7 +158,7 @@ const ContactUs = () => {
               <i className='bi bi-envelope-at'></i>
             </div>
             <h3 className='fs-2 text-body-emphasis'>Write to us</h3>
-            <p>
+             <p style={{ textAlign: 'justify' }}>
               Reach the right person the first time, our contact forms will help
               you.
             </p>

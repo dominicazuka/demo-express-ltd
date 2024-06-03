@@ -987,14 +987,14 @@ const Ship = () => {
                           >
                             <div className='accordion-body'>
                               <h6>Insurance</h6>
-                              <p>
+                              <p style={{ textAlign: 'justify' }}>
                                 Financial protection of your shipment value
                                 against all risks of physical shipment loss or
                                 damage, from any external causes (additional
                                 charges apply)
                               </p>
                               <h6>GoGreen Plus</h6>
-                              <p>
+                              <p style={{ textAlign: 'justify' }}>
                                 <strong>
                                   Reduce your CO2 emissions by 30%.
                                 </strong>{' '}
