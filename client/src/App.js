@@ -2,7 +2,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css' // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js' // Import Bootstrap JavaScript
 import React, { useEffect, Suspense, lazy } from 'react'
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import BackToTopButton from './components/BackToTopButton'
 import FrontEndHeader from '../src/components/FrontEndHeader'
 import FrontEndFooter from '../src/components/FrontEndFooter'

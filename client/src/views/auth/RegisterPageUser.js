@@ -386,24 +386,6 @@ const RegisterPageUser = () => {
                   </div>
                 </div>
 
-                {/* notes */}
-                <div className='col-12 text-start justify-content-start ms-auto'>
-                  <label htmlFor='note' className='form-label'>
-                    Notes/Message
-                  </label>
-                  <div className='input-group'>
-                    <span className='input-group-text'>
-                      <i class='bi bi-journal-check'></i>
-                    </span>
-                    <textarea
-                      className='form-control'
-                      id='note'
-                      placeholder='Important things we need to take note of... (optional)'
-                      rows='5'
-                    />
-                  </div>
-                </div>
-
                 {/* new password */}
                 <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                   <label htmlFor='newPassword' className='form-label'>
