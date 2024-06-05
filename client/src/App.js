@@ -4,26 +4,23 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js' // Import Bootstrap JavaScrip
 import React, { useEffect, Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import BackToTopButton from './components/BackToTopButton'
-import FrontEndHeader from '../src/components/FrontEndHeader'
-import FrontEndFooter from '../src/components/FrontEndFooter'
-import BackEndHeader from '../src/components/BackEndHeader'
-import BackEndFooter from '../src/components/BackEndFooter'
+import BackEndLayout from '../src/layouts/BackEndLayout'
+import FrontEndLayout from '../src/layouts/FrontEndLayout'
 import FullScreenLoader from './components/FullScreenLoader'
 import Swal from 'sweetalert2'
-import 'datatables.net';
-import 'datatables.net-bs5';
-import 'datatables.net-responsive';
-import 'datatables.net-responsive-bs5';
-import 'datatables.net-select';
-import 'datatables.net-select-bs5';
-
+import 'datatables.net'
+import 'datatables.net-bs5'
+import 'datatables.net-responsive'
+import 'datatables.net-responsive-bs5'
+import 'datatables.net-select'
+import 'datatables.net-select-bs5'
 
 //using lazy load
-const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'));
-const ErrorPage = lazy(() => import('./components/ErrorPage'));
-const AboutUs = lazy(() => import('./views/frontend/about/AboutUs'));
-const Faq = lazy(() => import('./views/frontend/faq/Faq'));
-const Ship = lazy(() => import('./views/frontend/ship/Ship'));
+const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
+const ErrorPage = lazy(() => import('./components/ErrorPage'))
+const AboutUs = lazy(() => import('./views/frontend/about/AboutUs'))
+const Faq = lazy(() => import('./views/frontend/faq/Faq'))
+const Ship = lazy(() => import('./views/frontend/ship/Ship'))
 const RegisterPageUser = lazy(() => import('./views/auth/RegisterPageUser'))
 const RegisterPageDriver = lazy(() => import('./views/auth/RegisterPageDriver'))
 const LoginPageUser = lazy(() => import('./views/auth/LoginPageUser'))
@@ -32,18 +29,25 @@ const MyOrders = lazy(() => import('./views/frontend/order/MyOrders'))
 const OrderDetails = lazy(() => import('./views/frontend/order/OrderDetails'))
 const MyAccount = lazy(() => import('./views/frontend/account/MyAccount'))
 const TrackMyOrder = lazy(() => import('./views/frontend/track/TrackMyOrder'))
-const ServiceNews = lazy(() => import('./views/frontend/service-news/ServiceNews'))
+const ServiceNews = lazy(() =>
+  import('./views/frontend/service-news/ServiceNews')
+)
 const ContactUs = lazy(() => import('./views/frontend/contact/ContactUs'))
 const Locations = lazy(() => import('./views/frontend/locations/Locations'))
-const LocationWithinCountry = lazy(() => import('./views/frontend/locations/LocationWithinCountry'))
-const ReportFraud = lazy(() => import('./views/frontend/trust-center/ReportFraud'))
-const ConditionsOfCarriage = lazy(() => import('./views/frontend/conditions-of-carriage/ConditionsOfCarriage'))
+const LocationWithinCountry = lazy(() =>
+  import('./views/frontend/locations/LocationWithinCountry')
+)
+const ReportFraud = lazy(() =>
+  import('./views/frontend/trust-center/ReportFraud')
+)
+const ConditionsOfCarriage = lazy(() =>
+  import('./views/frontend/conditions-of-carriage/ConditionsOfCarriage')
+)
 
 // backend
-const Dashboard = lazy(() => import('./views/backend/Dashboard.js'));
+const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 
-
-const  App = () => {
+const App = () => {
   useEffect(() => {
     //set localStorage value
     const hasConsent = localStorage.getItem('cookieConsent')
@@ -106,38 +110,46 @@ const  App = () => {
     <div className='App'>
       <Suspense fallback={<FullScreenLoader />}>
         <BrowserRouter>
-          {/* <FrontEndHeader /> */}
-          <BackEndHeader /> {/* would implement dynamism later */}
           <Routes>
-            <Route path='/' element={<HomeScreen />} />
-            <Route path='/about' element={<AboutUs />} />
-            <Route path='/faq' element={<Faq />} />
-            <Route path='/ship' element={<Ship />} />
-            <Route path='/register/user' element={<RegisterPageUser />} />
-            <Route path='/login/user' element={<LoginPageUser/>}/>
-            <Route path='/login/driver' element={<LoginPageDriver/>}/>
-            <Route path='/register/driver' element={<RegisterPageDriver/>}/>
-            <Route path='/my-orders' element={<MyOrders/>}/>
-            <Route path='/order-details' element={<OrderDetails/>}/>
-            <Route path='/account' element={<MyAccount/>}/>
-            <Route path='/track-order' element={<TrackMyOrder/>}/>
-            <Route path='/service-news' element={<ServiceNews/>}/>
-            <Route path='/contact-us' element={<ContactUs/>}/>
-            <Route path='/locations' element={<Locations/>}/>
-            <Route path='/location-within-country' element={<LocationWithinCountry/>}/>
-            <Route path='/report-fraud' element={<ReportFraud/>}/>
-            <Route path='/conditions-of-carriage' element={<ConditionsOfCarriage/>}/>
+            {/* frontend */}
+            <Route element={<FrontEndLayout />}>
+              <Route path='/' element={<HomeScreen />} />
+              <Route path='/about' element={<AboutUs />} />
+              <Route path='/faq' element={<Faq />} />
+              <Route path='/ship' element={<Ship />} />
+              <Route path='/register/user' element={<RegisterPageUser />} />
+              <Route path='/login/user' element={<LoginPageUser />} />
+              <Route path='/login/driver' element={<LoginPageDriver />} />
+              <Route path='/register/driver' element={<RegisterPageDriver />} />
+              <Route path='/my-orders' element={<MyOrders />} />
+              <Route path='/order-details' element={<OrderDetails />} />
+              <Route path='/account' element={<MyAccount />} />
+              <Route path='/track-order' element={<TrackMyOrder />} />
+              <Route path='/service-news' element={<ServiceNews />} />
+              <Route path='/contact-us' element={<ContactUs />} />
+              <Route path='/locations' element={<Locations />} />
+              <Route
+                path='/location-within-country'
+                element={<LocationWithinCountry />}
+              />
+              <Route path='/report-fraud' element={<ReportFraud />} />
+              <Route
+                path='/conditions-of-carriage'
+                element={<ConditionsOfCarriage />}
+              />
+            </Route>
 
             {/* backend */}
-            <Route path='/dashboard' element={<Dashboard/>}/>
+            <Route element={<BackEndLayout />}>
+              <Route path='/dashboard' element={<Dashboard />} />
+            </Route>
 
+            {/* 404 page */}
             <Route path='/404' element={<ErrorPage />} />
 
             {/* Catch-all route for unmatched paths, you can either use a 404 page or so */}
             <Route path='*' element={<Navigate to='/404' replace />} />
           </Routes>
-          {/* <FrontEndFooter /> */}
-          <BackEndFooter /> {/* would implement dynamism later */}
         </BrowserRouter>
         <BackToTopButton />
       </Suspense>
