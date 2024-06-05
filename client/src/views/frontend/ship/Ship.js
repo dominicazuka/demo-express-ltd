@@ -948,7 +948,7 @@ const Ship = () => {
                             data-bs-parent='#accordionExample'
                           >
                             <div className='accordion-body'>
-                              <ul>
+                              <ul style={{listStylePosition: 'inside', textAlign: 'justify'}}>
                                 <li>
                                   Reliable door-to-door Express parcel &
                                   document Delivery of your Time Sensitive
