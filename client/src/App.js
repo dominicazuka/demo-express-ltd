@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import BackToTopButton from './components/BackToTopButton'
 import FrontEndHeader from '../src/components/FrontEndHeader'
 import FrontEndFooter from '../src/components/FrontEndFooter'
+import BackEndHeader from '../src/components/BackEndHeader'
+import BackEndFooter from '../src/components/BackEndFooter'
 import FullScreenLoader from './components/FullScreenLoader'
 import Swal from 'sweetalert2'
 import 'datatables.net';
@@ -37,8 +39,11 @@ const LocationWithinCountry = lazy(() => import('./views/frontend/locations/Loca
 const ReportFraud = lazy(() => import('./views/frontend/trust-center/ReportFraud'))
 const ConditionsOfCarriage = lazy(() => import('./views/frontend/conditions-of-carriage/ConditionsOfCarriage'))
 
+// backend
+const Dashboard = lazy(() => import('./views/backend/Dashboard.js'));
 
-function App () {
+
+const  App = () => {
   useEffect(() => {
     //set localStorage value
     const hasConsent = localStorage.getItem('cookieConsent')
@@ -101,7 +106,8 @@ function App () {
     <div className='App'>
       <Suspense fallback={<FullScreenLoader />}>
         <BrowserRouter>
-          <FrontEndHeader />
+          {/* <FrontEndHeader /> */}
+          <BackEndHeader /> {/* would implement dynamism later */}
           <Routes>
             <Route path='/' element={<HomeScreen />} />
             <Route path='/about' element={<AboutUs />} />
@@ -122,12 +128,16 @@ function App () {
             <Route path='/report-fraud' element={<ReportFraud/>}/>
             <Route path='/conditions-of-carriage' element={<ConditionsOfCarriage/>}/>
 
+            {/* backend */}
+            <Route path='/dashboard' element={<Dashboard/>}/>
+
             <Route path='/404' element={<ErrorPage />} />
 
             {/* Catch-all route for unmatched paths, you can either use a 404 page or so */}
             <Route path='*' element={<Navigate to='/404' replace />} />
           </Routes>
-          <FrontEndFooter />
+          {/* <FrontEndFooter /> */}
+          <BackEndFooter /> {/* would implement dynamism later */}
         </BrowserRouter>
         <BackToTopButton />
       </Suspense>

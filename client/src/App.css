@@ -485,3 +485,9 @@ input:not(.react-phone-number-input__input) {
   display: block;
   margin-top: 7px
 }
+
+/* disable bootstrap dashboard styling */
+.offcanvas-end {
+  width: auto !important;
+  transform: none !important;
+}
