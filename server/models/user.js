@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema(
   {
-    fullName: { type: String, required: true },
+    name: { type: String, required: true },
     company: { type: String },
     address: { type: String, required: true },
     postalCode: { type: String },
@@ -10,10 +10,14 @@ const userSchema = new mongoose.Schema(
     country: { type: String, required: true },
     state: { type: String, required: true },
     city: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    phone: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     vatTaxId: { type: String },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8, // Minimum length of 8 characters
+    },
     role: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     verificationString: { type: String },

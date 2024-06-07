@@ -1,50 +1,265 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import PhoneInput from 'react-phone-number-input'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import { useMediaQuery } from 'react-responsive'
+import Loader from '../../components/Loader'
+import { Country, State, City } from 'country-state-city'
+import Axios from '../../config'
+import swal from 'sweetalert' 
+import { getErrorMessage, validateEmail, validatePassword } from '../../utils';
+
+
 const RegisterPageUser = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-  const useFormValidation = () => {
-    useEffect(() => {
-      const forms = document.querySelectorAll('.needs-validation')
 
-      Array.from(forms).forEach(form => {
-        form.addEventListener(
-          'submit',
-          event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-              // Add 'was-validated' class to show validation messages
-              form.classList.add('was-validated')
-              // Highlight the required fields with the 'is-invalid' class
-              const invalidInputs = form.querySelectorAll(':invalid')
-              invalidInputs.forEach(input => {
-                input.classList.add('is-invalid')
-              })
-            }
+  const navigate = useNavigate(); //import useNavigate from react-router-dom
 
-            form.classList.add('was-validated')
-          },
-          false
-        )
-      })
+  const [name, setName] = useState('')
+  const [company, setCompany] = useState('')
+  const [address, setAddress] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [country, setCountry] = useState('')
+  const [countryCode, setCountryCode] = useState('')
+  const [state, setState] = useState('')
+  const [states, setStates] = useState([])
+  const [city, setCity] = useState('')
+  const [cities, setCities] = useState([])
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [vatTaxId, setVatTaxId] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [newsletter, setNewsletter] = useState('')
+  const [privacyPolicy, setPrivacyPolicy] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-      return () => {
-        // Cleanup event listeners
-        Array.from(forms).forEach(form => {
-          form.removeEventListener('submit', () => {})
-        })
-      }
-    }, [])
+  //error state variables and useRef for required inputs
+  const [nameError, setNameError] = useState('')
+  const nameInputRef = useRef(null)
+  const [addressError, setAddressError] = useState('')
+  const addressInputRef = useRef(null)
+  const [countryError, setCountryError] = useState('')
+  const countryInputRef = useRef(null)
+  const [stateError, setStateError] = useState('')
+  const stateInputRef = useRef(null)
+  const [cityError, setCityError] = useState('')
+  const cityInputRef = useRef(null)
+  const [phoneError, setPhoneError] = useState('')
+  const phoneInputRef = useRef(null)
+  const [emailError, setEmailError] = useState('')
+  const emailInputRef = useRef(null)
+  const [passwordError, setPasswordError] = useState('')
+  const passwordInputRef = useRef(null)
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
+  const confirmPasswordInputRef = useRef(null)
+  const [privacyPolicyError, setPrivacyPolicyError] = useState('')
+  const privacyPolicyInputRef = useRef(null)
+
+  const allCountries = Country.getAllCountries() //fetch all countries
+
+  const handleCountryChange = e => {
+    const countryIsoCode = e.target.value
+    setCountryCode(countryIsoCode)
+    const filterCountry = allCountries.find(c => c.isoCode === countryIsoCode)
+    setCountry(filterCountry.name)
+    console.log('country:', country)
+    const availableStates = State.getAllStates()
+    let filterStates = availableStates.filter(
+      s => s.countryCode === countryIsoCode
+    )
+    setStates(filterStates)
+    setCities([]) //clear cities when country changes
+    setState('') //reset selected state
+    setCity('') //reset selected city
+    setCountryError('')
   }
 
-  useFormValidation()
+  const handleStateChange = e => {
+    const stateIsoCode = e.target.value
+    const allStates = State.getAllStates()
+    let filterState = allStates.find(
+      s => s.isoCode === stateIsoCode && s.countryCode === countryCode
+    )
+    setState(filterState.name)
+    console.log('filter state:', filterState)
+    console.log('state:', state)
+    const availableCities = City.getCitiesOfState(countryCode, stateIsoCode)
+    setCities(availableCities)
+    setCity('') //reset selected city
+    setStateError('')
+  }
 
-  const handlePhoneNumberInput = e => {}
+  const handleCityChange = e => {
+    setCity(e.target.value)
+    console.log('city:', city)
+    setCityError('')
+  }
+
+  const handleNameChange = e => {
+    setName(e.target.value)
+    setNameError('')
+  }
+
+  const handleCompanyChange = e => {
+    setCompany(e.target.value)
+  }
+
+  const handlePostalCodeChange = e => {
+    setPostalCode(e.target.value)
+  }
+
+  const handleVatTaxIdChange = e => {
+    setVatTaxId(e.target.value)
+  }
+
+  const handleAddressChange = e => {
+    setAddress(e.target.value)
+    setAddressError('')
+  }
+
+  const handlePhoneChange = e => {
+    setPhone(e)
+    setPhoneError('')
+  }
+
+  const handleEmailChange = e => {
+    setEmail(e.target.value)
+    setEmailError('')
+  }
+
+  const handlePasswordChange = e => {
+    setPassword(e.target.value)
+    setPasswordError('')
+  }
+
+  const handleConfirmPasswordChange = e => {
+    setConfirmPassword(e.target.value)
+    setConfirmPasswordError('')
+  }
+
+  const handlePrivacyPolicyChange = e => {
+    setPrivacyPolicy(e.target.checked)
+    setPrivacyPolicyError('')
+  }
+
+  const register = async e => {
+    e.preventDefault() // Prevent default form submission
+    try {
+      let isError = false
+      if (name.trim() === '') {
+        setNameError('Please enter full name');
+        nameInputRef.current.focus() // Focus on the input element with the validation error
+      }
+
+      if (address.trim() === '') {
+        setAddressError('Please enter address')
+        addressInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (country.trim() === '' || country.trim() === 'none') {
+        setCountryError('Please select a country')
+        countryInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (state.trim() === '' || state.trim() === 'none') {
+        setStateError('Please select a state')
+        stateInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (city.trim() === '' || city.trim() === 'none') {
+        setCityError('Please select a city')
+        cityInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (phone.trim() === '') {
+        setPhoneError('Please enter phone number')
+        phoneInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (email.trim() === '') {
+        setEmailError('Please enter email address')
+        emailInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
+      }
+
+      if (!validateEmail(email.trim())) {
+        setEmailError('Please input a valid email address')
+        emailInputRef.current.focus() // Focus on the input
+        return isError = true
+      }
+
+      if (!validatePassword(password)) {
+        setPasswordError(
+          'Please input a strong password that matches the below requirements'
+        )
+        passwordInputRef.current.focus() // Focus on the input
+        return isError = true
+      }
+
+      if (!validatePassword(confirmPassword)) {
+        setConfirmPasswordError(
+          'Please input a strong password that matches the below requirements'
+        )
+        confirmPasswordInputRef.current.focus() // Focus on the input
+        return isError = true
+      }
+
+      if (password !== confirmPassword) {
+        setPasswordError('Passwords do not match')
+        setConfirmPasswordError('Passwords do not match')
+        passwordInputRef.current.focus() // Focus on the input
+        return isError = true
+      }
+
+      if (!privacyPolicy) {
+        setPrivacyPolicyError('You must accept the privacy policy')
+        privacyPolicyInputRef.current.focus() // Focus on the checkbox
+        return isError = true
+      }
+      if (password === confirmPassword) {
+        const newsletterSubscription = document.getElementById('newsletterCheck').checked
+        const user = {
+          name,
+          company,
+          address,
+          postalCode,
+          countryCode,
+          country,
+          state,
+          city,
+          phone,
+          email,
+          vatTaxId,
+          password,
+          newsletter: newsletterSubscription ? true : false, //conditional tenary check
+          role: 'User'
+        }
+        console.log('user:', user)
+        setLoading(true)
+        const { data, error } = await Axios.post('/users/register', user);
+        console.log('data', data)
+        swal(
+          error ? 'Oops' : 'Great',
+          'Registration Successful',
+          !error ? 'success' : 'error'
+        )
+        navigate('/account'); // Redirect to the /account page
+        setLoading(false)
+      }
+    } catch (error) {
+      swal('Oops', getErrorMessage(error), 'error')
+      setLoading(false)
+    }
+  }
 
   return (
     <div className='clearfix' style={{ position: 'relative' }}>
@@ -204,16 +419,22 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='text'
-                      className='form-control'
+                      className={`form-control ${
+                        nameError ? 'is-invalid' : ''
+                      } ${name ? 'is-valid' : ''}`}
                       id='name'
                       placeholder='Full Name'
                       required
+                      onChange={e => {
+                        handleNameChange(e)
+                      }}
+                      defaultValue={name}
+                      ref={nameInputRef}
                     />
-                    <div className='invalid-feedback'>
-                      Valid full name is required.
-                    </div>
+                    <div className='invalid-feedback'>{nameError}</div>
                   </div>
                 </div>
+
                 {/* company - optional */}
                 <div className='col-12 text-start justify-content-start ms-auto'>
                   <label htmlFor='company' className='form-label'>
@@ -225,9 +446,11 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='text'
-                      className='form-control'
+                      className={`form-control ${company ? 'is-valid' : ''}`}
                       id='company'
                       placeholder='(optional)'
+                      onChange={handleCompanyChange}
+                      defaultValue={company}
                     />
                   </div>
                 </div>
@@ -243,14 +466,19 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='text'
-                      className='form-control'
+                      className={`form-control ${
+                        addressError ? 'is-invalid' : ''
+                      } ${address ? 'is-valid' : ''}`}
                       id='address'
                       placeholder='Address'
                       required
+                      onChange={e => {
+                        handleAddressChange(e)
+                      }}
+                      defaultValue={address}
+                      ref={addressInputRef}
                     />
-                    <div className='invalid-feedback'>
-                      Valid address is required.
-                    </div>
+                    <div className='invalid-feedback'>{addressError}</div>
                   </div>
                 </div>
 
@@ -265,9 +493,11 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='text'
-                      className='form-control'
+                      className={`form-control ${postalCode ? 'is-valid' : ''}`}
                       id='postalCode'
                       placeholder='(optional)'
+                      onChange={handlePostalCodeChange}
+                      defaultValue={postalCode}
                     />
                   </div>
                 </div>
@@ -280,15 +510,25 @@ const RegisterPageUser = () => {
                   <span style={{ marginLeft: '10px' }}>
                     <i class='bi bi-globe-asia-australia'></i>
                   </span>
-                  <select className='form-select' id='country' required>
-                    <option selected disabled value="">
+                  <select
+                    className={`form-select ${
+                      countryError ? 'is-invalid' : ''
+                    } ${country ? 'is-valid' : ''}`}
+                    id='country'
+                    required
+                    onChange={handleCountryChange}
+                    ref={countryInputRef}
+                  >
+                    <option selected disabled value=''>
                       Select Country
                     </option>
-                    <option>United States</option>
+                    {allCountries.map(country => (
+                      <option key={country.isoCode} value={country.isoCode}>
+                        {country.name}
+                      </option>
+                    ))}
                   </select>
-                  <div className='invalid-feedback'>
-                    Please select a valid country.
-                  </div>
+                  <div className='invalid-feedback'>{countryError}</div>
                 </div>
 
                 <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
@@ -298,15 +538,26 @@ const RegisterPageUser = () => {
                   <span style={{ marginLeft: '10px' }}>
                     <i class='bi bi-map'></i>
                   </span>
-                  <select className='form-select' id='state' required>
-                    <option selected disabled value="">
+                  <select
+                    className={`form-select ${stateError ? 'is-invalid' : ''} ${
+                      state ? 'is-valid' : ''
+                    }`}
+                    id='state'
+                    required
+                    onChange={handleStateChange}
+                    disabled={!country}
+                    ref={stateInputRef}
+                  >
+                    <option selected disabled value=''>
                       Select State
                     </option>
-                    <option>Califonia</option>
+                    {states.map(state => (
+                      <option key={state.name} value={state.isoCode}>
+                        {state.name}
+                      </option>
+                    ))}
                   </select>
-                  <div className='invalid-feedback'>
-                    Please select a valid state.
-                  </div>
+                  <div className='invalid-feedback'>{stateError}</div>
                 </div>
 
                 <div className='col-md-4 has-validation text-start justify-content-start ms-auto'>
@@ -316,34 +567,49 @@ const RegisterPageUser = () => {
                   <span style={{ marginLeft: '10px' }}>
                     <i class='bi bi-radar'></i>
                   </span>
-                  <select className='form-select' id='city' required>
-                    <option selected disabled value="">
+                  <select
+                    className={`form-select ${cityError ? 'is-invalid' : ''} ${
+                      city ? 'is-valid' : ''
+                    }`}
+                    id='city'
+                    required
+                    onChange={handleCityChange}
+                    disabled={!state}
+                    ref={cityInputRef}
+                  >
+                    <option selected disabled value=''>
                       Select City
                     </option>
-                    <option>City 1</option>
+                    {cities.map(city => (
+                      <option key={city.name}>{city.name}</option>
+                    ))}
                   </select>
-                  <div className='invalid-feedback'>
-                    Please select a valid city.
-                  </div>
+                  <div className='invalid-feedback'>{cityError}</div>
                 </div>
 
                 {/* phone number */}
-                <div className='has-validation text-start justify-content-start ms-auto'>
+                <div
+                  className='has-validation text-start justify-content-start ms-auto'
+                  ref={phoneInputRef}
+                  tabIndex='-1'
+                >
                   <label htmlFor='phone' className='form-label'>
                     Phone Number
                   </label>
                   <PhoneInput
-                    className='form-control rounded'
+                    className={`form-control rounded ${
+                      phoneError ? 'is-invalid' : ''
+                    } ${phone ? 'is-valid' : ''}`}
                     id='phone'
                     placeholder='E.g +2347034054567'
                     onChange={e => {
-                      handlePhoneNumberInput(e)
+                      handlePhoneChange(e)
                     }}
-                    required
+                    inputProps={{
+                      required: true
+                    }}
                   />
-                  <div className='invalid-feedback'>
-                    Valid phone number is required.
-                  </div>
+                  <div className='invalid-feedback'>{phoneError}</div>
                 </div>
 
                 {/* email */}
@@ -357,14 +623,18 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='email'
-                      className='form-control'
+                      className={`form-control rounded ${
+                        emailError ? 'is-invalid' : ''
+                      } ${email ? 'is-valid' : ''}`}
                       id='email'
                       placeholder='Email would be used for shipment notifications'
                       required
+                      onChange={e => {
+                        handleEmailChange(e)
+                      }}
+                      ref={emailInputRef}
                     />
-                    <div className='invalid-feedback'>
-                      Valid sender email address is required.
-                    </div>
+                    <div className='invalid-feedback'>{emailError}</div>
                   </div>
                 </div>
 
@@ -379,9 +649,10 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='text'
-                      className='form-control'
+                      className={`form-control ${vatTaxId ? 'is-valid' : ''}`}
                       id='taxNo'
                       placeholder='Used in Customs Declaration section (optional)'
+                      onChange={handleVatTaxIdChange}
                     />
                   </div>
                 </div>
@@ -397,10 +668,14 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='password'
-                      className='form-control w-70'
+                      className={`form-control w-70 ${
+                        passwordError ? 'is-invalid' : ''
+                      } ${password ? 'is-valid' : ''}`}
                       id='newPassword'
                       placeholder='Enter your new password'
                       required
+                      onChange={handlePasswordChange}
+                      ref={passwordInputRef}
                     />
                     <button
                       className='btn btn-outline-secondary'
@@ -424,9 +699,7 @@ const RegisterPageUser = () => {
                     >
                       <i className='bi bi-eye'></i>
                     </button>
-                    <div className='invalid-feedback'>
-                      New Password is required.
-                    </div>
+                    <div className='invalid-feedback'>{passwordError}</div>
                   </div>
                 </div>
 
@@ -441,10 +714,14 @@ const RegisterPageUser = () => {
                     </span>
                     <input
                       type='password'
-                      className='form-control w-70'
+                      className={`form-control rounded ${
+                        passwordError ? 'is-invalid' : ''
+                      } ${confirmPassword ? 'is-valid' : ''}`}
                       id='confirmNewPassword'
                       placeholder='Confirm your new password'
                       required
+                      onChange={handleConfirmPasswordChange}
+                      ref={confirmPasswordInputRef}
                     />
                     <button
                       className='btn btn-outline-secondary'
@@ -470,7 +747,7 @@ const RegisterPageUser = () => {
                       <i className='bi bi-eye'></i>
                     </button>
                     <div className='invalid-feedback'>
-                      Confirmation of New Password is required.
+                      {confirmPasswordError}
                     </div>
                   </div>
                 </div>
@@ -478,11 +755,14 @@ const RegisterPageUser = () => {
                 {/* password requirements */}
                 <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                   <h6 className='mb-1'>Password requirements:</h6>
-                  <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
+                  <p style={{ textAlign: 'justify' }}>
+                    Ensure that these requirements are met:
+                  </p>
                   <ul
                     style={{
                       paddingLeft: '20px',
-                      listStylePosition: 'inside'
+                      listStylePosition: 'inside',
+                      color: (passwordError || confirmPasswordError) ? 'red' : ((password === confirmPassword && password) ? 'green' : 'black')
                     }}
                   >
                     <li> Minimum 8 characters long the more, the better</li>
@@ -501,8 +781,8 @@ const RegisterPageUser = () => {
                 <input
                   class='form-check-input'
                   type='checkbox'
-                  name='newsletter'
                   id='newsletterCheck'
+                  onChange={e => setNewsletter(e.target.checked)}
                 />
                 <label class='form-check-label' for='newsletterCheck'>
                   I agree to receive regular communications of promotions,
@@ -515,25 +795,29 @@ const RegisterPageUser = () => {
               {/* //privacy policy subscription start*/}
               <div class='form-check text-start my-3 has-validation'>
                 <input
-                  class='form-check-input'
+                  className={`form-check-input ${
+                    privacyPolicyError ? 'is-invalid' : ''
+                  } ${privacyPolicy ? 'is-valid' : ''}`}
                   type='checkbox'
                   name='privacyPolicy'
                   id='privacyPolicyCheck'
                   required
+                  ref={privacyPolicyInputRef}
+                  onChange={e => {
+                    handlePrivacyPolicyChange(e)
+                  }}
                 />
                 <label class='form-check-label' for='privacyPolicyCheck'>
                   I have read the Privacy Policy{' '}
                   <sup className='text-danger'> *</sup>
                 </label>
-                <div className='invalid-feedback'>
-                  Kindly check the box for privacy policy.
-                </div>
+                <div className='invalid-feedback'>{privacyPolicyError}</div>
               </div>
               {/* privacy policy end */}
-
+              {loading && <Loader />}
               <button
-                className='w-70 btn btn-success btn-lg shadow'
-                type='submit'
+                className='w-70 btn btn-success btn-lg shadow mt-2'
+                onClick={e => register(e)}
               >
                 Submit
               </button>
@@ -549,7 +833,14 @@ const RegisterPageUser = () => {
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi-truck' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi-truck'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Fast Delivery</h3>
@@ -564,7 +855,14 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-map' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi bi-map'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Real-Time Tracking</h3>
@@ -579,7 +877,14 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-tools' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi bi-tools'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Secure Payments</h3>

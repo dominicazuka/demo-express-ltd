@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import { Link } from 'react-router-dom'
 
 const ContactUs = () => {

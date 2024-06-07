@@ -75,7 +75,6 @@ const Dashboard = () => {
 
   return (
     <>
-      {/* <BackEndHeader /> */}
       <div class='container-fluid'>
         <div class='row'>
           <BackEndSideBar />
@@ -120,7 +119,6 @@ const Dashboard = () => {
             <h2>Section title</h2>
             <div class='table-responsive small'></div>
           </div>
-          {/* <BackEndFooter /> */}
         </div>
       </div>
     </>

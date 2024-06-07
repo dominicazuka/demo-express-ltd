@@ -3,7 +3,7 @@ import BackEndHeader from '../components/BackEndHeader'
 import BackEndFooter from '../components/BackEndFooter'
 import { Outlet } from 'react-router-dom'
 
-const BackEndLayout = ({ children }) => {
+const BackEndLayout = () => {
   return (
     <>
       <BackEndHeader />
