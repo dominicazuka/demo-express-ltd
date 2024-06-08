@@ -22,6 +22,7 @@ const AboutUs = lazy(() => import('./views/frontend/about/AboutUs'))
 const Faq = lazy(() => import('./views/frontend/faq/Faq'))
 const Ship = lazy(() => import('./views/frontend/ship/Ship'))
 const RegisterPageUser = lazy(() => import('./views/auth/RegisterPageUser'))
+const VerifyEmail = lazy(() => import('./views/auth/VerifyEmail'))
 const RegisterPageDriver = lazy(() => import('./views/auth/RegisterPageDriver'))
 const LoginPageUser = lazy(() => import('./views/auth/LoginPageUser'))
 const LoginPageDriver = lazy(() => import('./views/auth/LoginPageDriver'))
@@ -118,6 +119,7 @@ const App = () => {
               <Route path='/faq' element={<Faq />} />
               <Route path='/ship' element={<Ship />} />
               <Route path='/register/user' element={<RegisterPageUser />} />
+              <Route path='/user/verify-email' element={<VerifyEmail />} />
               <Route path='/login/user' element={<LoginPageUser />} />
               <Route path='/login/driver' element={<LoginPageDriver />} />
               <Route path='/register/driver' element={<RegisterPageDriver />} />

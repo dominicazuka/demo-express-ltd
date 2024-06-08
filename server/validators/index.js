@@ -23,5 +23,19 @@ const validateSignUpInput = [
     body("address").trim().not().isEmpty().withMessage("Address is required"),
 ]; 
 
+// Validation rules for verify email input
+const validateVerifyEmailInput = [
+    // Validation for verificationString field
+    body('verificationString')
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage('Verification String is required')
+        .isLength({ min: 6, max: 6 })
+        .withMessage('Verification String must be exactly 6 characters long')
+        .matches(/^[0-9a-zA-Z]{6}$/)
+        .withMessage('Verification String must be 6 alphanumeric characters')
+];
+
 // Export the validation rules
-module.exports = { validateSignUpInput };
+module.exports = { validateSignUpInput, validateVerifyEmailInput };

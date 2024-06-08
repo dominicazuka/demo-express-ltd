@@ -8,6 +8,7 @@ import { Country, State, City } from 'country-state-city'
 import Axios from '../../config'
 import swal from 'sweetalert' 
 import { getErrorMessage, validateEmail, validatePassword } from '../../utils';
+import TokenService from '../../libs/token';
 
 
 const RegisterPageUser = () => {
@@ -148,11 +149,13 @@ const RegisterPageUser = () => {
 
   const register = async e => {
     e.preventDefault() // Prevent default form submission
+    setLoading(true);
     try {
       let isError = false
       if (name.trim() === '') {
         setNameError('Please enter full name');
         nameInputRef.current.focus() // Focus on the input element with the validation error
+        return isError = true
       }
 
       if (address.trim() === '') {
@@ -243,17 +246,18 @@ const RegisterPageUser = () => {
           newsletter: newsletterSubscription ? true : false, //conditional tenary check
           role: 'User'
         }
-        console.log('user:', user)
-        setLoading(true)
         const { data, error } = await Axios.post('/users/register', user);
         console.log('data', data)
-        swal(
-          error ? 'Oops' : 'Great',
-          'Registration Successful',
-          !error ? 'success' : 'error'
-        )
-        navigate('/account'); // Redirect to the /account page
-        setLoading(false)
+        if (data) {
+          TokenService.setUser(data.user); // Store user data in local storage
+          swal(
+            error ? 'Oops' : 'Great',
+            'Registration Successful',
+            !error ? 'success' : 'error'
+          )
+          navigate(`/user/verify-email?email=${encodeURIComponent(user.email)}`); // Redirect to the verify email page
+        }
+        setLoading(false);
       }
     } catch (error) {
       swal('Oops', getErrorMessage(error), 'error')

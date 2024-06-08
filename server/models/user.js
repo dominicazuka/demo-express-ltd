@@ -26,7 +26,14 @@ const userSchema = new mongoose.Schema(
     lastLoginDate: { type: Date },
     lastLoginDevice: { type: String },
     image: { type: String },
-    isBlocked: { type: Boolean, default: false }
+    isBlocked: { type: Boolean, default: false },
+    averageDeliveryTime: { type: Number },
+    completionRate: { type: Number },
+    rating: { type: Number },
+    availability: { type: Boolean, default: true },
+    driverLicenseId: { type: String, },
+    vehicleNo: { type: String },
+    vehicleType: { type: String },
   },
   { timestamps: true }
 )
