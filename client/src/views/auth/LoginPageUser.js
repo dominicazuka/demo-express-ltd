@@ -74,7 +74,7 @@ const LoginPageUser = () => {
         rememberMe: rememberMe ? true : false //conditional tenary check
       }
       const { data } = await Axios.post('/users/login', user)
-      authDispatch({ type: LOGIN_USER, payload: data });
+      authDispatch({ type: LOGIN_USER, payload: data.user });
       console.log('login page data', data)
 
       if (data) {

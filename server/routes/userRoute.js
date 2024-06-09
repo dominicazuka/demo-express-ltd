@@ -333,7 +333,7 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
     }
 
     console.log("obj", obj);
- 
+
     // Store session information
     const sessionObj = {
       device,
@@ -343,7 +343,7 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
       email: user.email
     }
 
-    console.log("sessionObj", sessionObj);
+    console.log("sessionObj", sessionObj); 
 
     await Session.create(sessionObj);
 
@@ -354,8 +354,8 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
 
     // Respond with success message and user details
     res
-      .status(200)
-      .json({ message: 'Login successful', obj });   
+      .status(200) 
+      .json({ message: 'Login successful', user: obj });
   } catch (error) {
     console.log('login route error', error)
     return res
