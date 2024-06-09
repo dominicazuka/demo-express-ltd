@@ -1,7 +1,8 @@
 const validate = require('../middleware/validator.middleware')
 const {
   validateSignUpInput,
-  validateVerifyEmailInput
+  validateVerifyEmailInput,
+  validateSigninInput
 } = require('../validators')
 const express = require('express')
 const router = express.Router()
@@ -15,6 +16,7 @@ const {
 } = require('../util')
 const eventManager = require('../event')
 const { verifyRefreshToken } = require('../middleware/auth.middleware')
+const bcrypt = require("bcryptjs");
 
 // register user
 router.post('/register', validate(validateSignUpInput), async (req, res) => {
@@ -134,12 +136,12 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       .status(200)
       .json({ message: 'User registered successfully', user: obj });
   } catch (error) {
-    console.log('error', error)
+    console.log('register route error', error)
     return res
       .status(400)
       .json({ message: 'An error occurred, try registering again a new user' })
   }
-})
+});
 
 // verify email route
 router.put(
@@ -212,13 +214,13 @@ router.put(
       eventManager.emit('new_user_verified', { ...result._doc })
       res.status(200).json({ message: 'Email Verified Successfully', user: obj });
     } catch (error) {
-      console.log('error', error)
+      console.log('verify email route error', error)
       return res.status(400).json({
         message: 'An error occurred verifying user email, please try again.'
       })
     }
   }
-)
+);
 
 // resend verification mail
 router.put('/resend-verification-email', async (req, res) => {
@@ -241,13 +243,126 @@ router.put('/resend-verification-email', async (req, res) => {
     eventManager.emit('resend_user_email_verification_code', { ...user._doc })
     res.status(200).json({ message: 'Verification Code Sent Successfully' })
   } catch (error) {
-    console.log('error', error)
+    console.log('resned verification email error', error)
     return res.status(400).json({
       message:
         'An error occurred resending user verification code, please try again.'
     })
   }
-})
+});
+
+// login route
+router.post('/login', validate(validateSigninInput), async(req, res) => {
+  try {
+    const {email, password, rememberMe} = req.body;
+    // user device
+    const device = req.headers["user-agent"];
+    console.log("device", device);
+
+    // user ip
+    const ip = req.ip;
+    console.log("ip", ip);
+
+    // fetch user from db
+    const user = await User.findOne({email});
+    if(!user){
+      return res.status(400).json({
+        message: 'Wrong credentials provided!'
+      })
+    }
+
+    // load hash from password db
+    const checker = bcrypt.compareSync(password, user.password);
+
+    if(!checker){
+      return res.status(400).json({
+        message: 'Wrong credentials provided!'
+      })
+    }
+
+    // check if user is blocked
+    if(user.isBlocked){
+      return res.status(401).json({
+        message: 'Sorry your account is suspended, please contact Admin!'
+      })
+    }
+
+    // check if user email is verified (2FA)
+    if(!user.isVerified){
+      const emailVerificationRedirect = `user/verify-email?email=${encodeURIComponent(user.email)}`;
+      console.log('emailVerificationRedirect', emailVerificationRedirect)
+      return res.status(401).json({
+        message: 'Email not verified, kindly verify your email',
+        redirect: emailVerificationRedirect
+      })
+    }
+
+     // Generate authentication tokens
+     const currentUser = {
+      name: user.name,
+      email: user.email,
+      isBlocked: user.isBlocked,
+      role: user.role,
+      phone: user.phone,
+      country: user.country,
+      countryCode: user.countryCode,
+      state: user.state,
+      city: user.city,
+      company: user.company,
+      address: user.address,
+      vatTaxId: user.vatTaxId,
+      _id: user._id
+    }
+
+    console.log("currentUser", currentUser);
+
+    const token = generateHash(user._id.toString())
+
+    console.log("token", token);
+
+    const { accessToken, refreshToken } = await getAuthTokens({
+      ...currentUser,
+      token
+    })
+
+    // Prepare response object
+    const obj = {
+      ...currentUser,
+      accessToken,
+      refreshToken
+    }
+
+    console.log("obj", obj);
+ 
+    // Store session information
+    const sessionObj = {
+      device,
+      ip,
+      userId: user._id,
+      token,
+      email: user.email
+    }
+
+    console.log("sessionObj", sessionObj);
+
+    await Session.create(sessionObj);
+
+    //event emitter to send login notification email
+    eventManager.emit('login_notification', {
+      ...user._doc
+    })
+
+    // Respond with success message and user details
+    res
+      .status(200)
+      .json({ message: 'Login successful', obj });   
+  } catch (error) {
+    console.log('login route error', error)
+    return res
+      .status(400)
+      .json({ message: 'An error occurred, try again or refresh page.' })
+  }
+});
 
 
 //  route to refresh authentication tokens
@@ -323,6 +438,26 @@ router.post("/refresh/token", verifyRefreshToken, async (req, res) => {
     return res
       .status(400)
       .json({ message: "Sorry, an error occurred. Please try again later" });
+  }
+});
+
+// logout route
+router.patch('/logout', verifyRefreshToken, async(req, res) => {
+  try{
+    // fetch token
+    const token = req.user.token
+
+    // update session model
+    await Session.updateMany({token}, {isActive: false});
+
+    // send feedback
+    res.status(200).json({ message: 'Logout Successful' });
+  } catch(error){
+    console.log('logout error', error)
+    return res.status(400).json({
+      message:
+        'An error occurred, please try again.'
+    })
   }
 });
 

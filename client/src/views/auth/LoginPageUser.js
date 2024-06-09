@@ -1,50 +1,110 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import Loader from '../../components/Loader'
+import { validateEmail, getErrorMessage } from '../../utils'
+import Axios from '../../config'
+import TokenService from '../../libs/token'
+import swal from 'sweetalert'
+import { LOGIN_USER } from '../../actions/actions.auth'
+import { useAuthContext } from '../../contexts/AuthContext'
+
 
 const LoginPageUser = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-  const useFormValidation = () => {
-    useEffect(() => {
-      const forms = document.querySelectorAll('.needs-validation')
 
-      Array.from(forms).forEach(form => {
-        form.addEventListener(
-          'submit',
-          event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-              // Add 'was-validated' class to show validation messages
-              form.classList.add('was-validated')
-              // Highlight the required fields with the 'is-invalid' class
-              const invalidInputs = form.querySelectorAll(':invalid')
-              invalidInputs.forEach(input => {
-                input.classList.add('is-invalid')
-              })
-            }
+  const navigate = useNavigate() //import useNavigate from react-router-dom
 
-            form.classList.add('was-validated')
-          },
-          false
-        )
-      })
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState('')
+  const [redirectUrl, setRedirectUrl] = useState('')
+  const [loading, setLoading] = useState('')
 
-      return () => {
-        // Cleanup event listeners
-        Array.from(forms).forEach(form => {
-          form.removeEventListener('submit', () => {})
-        })
-      }
-    }, [])
+  const [emailError, setEmailError] = useState('')
+  const emailInputRef = useRef(null)
+  const [passwordError, setPasswordError] = useState('')
+  const passwordInputRef = useRef(null)
+
+  const {
+    authState: { isAuthenticated, isAuthenticating },
+    authDispatch
+  } = useAuthContext()
+
+  const handleEmailChange = e => {
+    setEmail(e.target.value)
+    setEmailError('')
   }
 
-  useFormValidation()
+  const handlePasswordChange = e => {
+    setPassword(e.target.value)
+    setPasswordError('')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      let isError = false
+      if (email.trim() === '') {
+        setEmailError('Please enter email address')
+        emailInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (!validateEmail(email.trim())) {
+        setEmailError('Please input a valid email address')
+        emailInputRef.current.focus() // Focus on the input
+        return (isError = true)
+      }
+
+      if (password.trim() === '') {
+        setPasswordError('Please enter password')
+        passwordInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      const rememberMe = document.getElementById('rememberMeCheck').checked
+      const user = {
+        email,
+        password,
+        rememberMe: rememberMe ? true : false //conditional tenary check
+      }
+      const { data } = await Axios.post('/users/login', user)
+      authDispatch({ type: LOGIN_USER, payload: data });
+      console.log('login page data', data)
+
+      if (data) {
+        TokenService.setUser(data.user) // Store user data in local storage
+        swal('Great', 'Login Successful', 'success').then(() => {
+          // Once the swal dialog is closed, redirect to the account page
+          return navigate(`/account`) // Redirect to the verify email page
+        }); 
+      }
+
+      setLoading(false)
+    } catch (error) { //all other status codes aside 2XX comes to the catch block
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.redirect
+      ) {
+        swal('Oops', getErrorMessage(error), 'error')
+
+        // Redirect to the URL provided by the server
+        setRedirectUrl(error.response.data.redirect);
+        setLoading(false)
+      } else {
+        // Handle other errors
+        swal('Oops', getErrorMessage(error), 'error')
+        setLoading(false)
+      }
+    }
+  }
+
   return (
     <div className='clearfix' style={{ position: 'relative' }}>
       {/* Breadcrumb  */}
@@ -191,6 +251,8 @@ const LoginPageUser = () => {
             <div className='mt-3 col-md-12 col-lg-12'>
               <h4 className='mb-3'>Sign In</h4>
 
+              {redirectUrl && <Link to={`/${redirectUrl}`} className='btn btn-warning btn-lg shadow mt-2'>Verify Email</Link>}
+
               <div className='row g-3'>
                 {/* email */}
                 <div className='col-12 text-start justify-content-start ms-auto'>
@@ -203,14 +265,18 @@ const LoginPageUser = () => {
                     </span>
                     <input
                       type='email'
-                      className='form-control'
+                      className={`form-control ${
+                        emailError ? 'is-invalid' : ''
+                      } ${email ? 'is-valid' : ''}`}
                       id='email'
-                      placeholder='Email would be used for shipment notifications'
+                      placeholder='Email address'
                       required
+                      onChange={e => {
+                        handleEmailChange(e)
+                      }}
+                      ref={emailInputRef}
                     />
-                    <div className='invalid-feedback'>
-                      Valid sender email address is required.
-                    </div>
+                    <div className='invalid-feedback'>{emailError}</div>
                   </div>
                 </div>
 
@@ -225,10 +291,16 @@ const LoginPageUser = () => {
                     </span>
                     <input
                       type='password'
-                      className='form-control'
+                      className={`form-control ${
+                        passwordError ? 'is-invalid' : ''
+                      } ${password ? 'is-valid' : ''}`}
                       id='password'
                       placeholder='Enter your password'
                       required
+                      onChange={e => {
+                        handlePasswordChange(e)
+                      }}
+                      ref={passwordInputRef}
                     />
                     <button
                       className='btn btn-outline-secondary'
@@ -265,17 +337,19 @@ const LoginPageUser = () => {
                   class='form-check-input'
                   type='checkbox'
                   name='remember-me'
-                  id='rememberMe'
+                  id='rememberMeCheck'
+                  onChange={e => setRememberMe(e.target.checked)}
                 />
-                <label class='form-check-label' for='rememberMe'>
+                <label class='form-check-label' for='rememberMeCheck'>
                   Remember me
                 </label>
               </div>
               {/* remember-me end */}
 
+              {loading && <Loader />}
               <button
-                className='w-70 btn btn-success btn-lg shadow'
-                type='submit'
+                className='w-70 btn btn-success btn-lg shadow mt-2'
+                onClick={e => handleSubmit(e)}
               >
                 Login
               </button>

@@ -2,7 +2,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css' // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js' // Import Bootstrap JavaScript
 import React, { useEffect, Suspense, lazy } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import BackToTopButton from './components/BackToTopButton'
 import BackEndLayout from '../src/layouts/BackEndLayout'
 import FrontEndLayout from '../src/layouts/FrontEndLayout'
@@ -14,6 +14,7 @@ import 'datatables.net-responsive'
 import 'datatables.net-responsive-bs5'
 import 'datatables.net-select'
 import 'datatables.net-select-bs5'
+import { useAuthContext } from '../src/contexts/AuthContext'
 
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
@@ -49,6 +50,10 @@ const ConditionsOfCarriage = lazy(() =>
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 
 const App = () => {
+  const {
+    authState: { isAuthenticated }
+  } = useAuthContext()
+
   useEffect(() => {
     //set localStorage value
     const hasConsent = localStorage.getItem('cookieConsent')
@@ -110,49 +115,47 @@ const App = () => {
   return (
     <div className='App'>
       <Suspense fallback={<FullScreenLoader />}>
-        <BrowserRouter>
-          <Routes>
-            {/* frontend */}
-            <Route element={<FrontEndLayout />}>
-              <Route path='/' element={<HomeScreen />} />
-              <Route path='/about' element={<AboutUs />} />
-              <Route path='/faq' element={<Faq />} />
-              <Route path='/ship' element={<Ship />} />
-              <Route path='/register/user' element={<RegisterPageUser />} />
-              <Route path='/user/verify-email' element={<VerifyEmail />} />
-              <Route path='/login/user' element={<LoginPageUser />} />
-              <Route path='/login/driver' element={<LoginPageDriver />} />
-              <Route path='/register/driver' element={<RegisterPageDriver />} />
-              <Route path='/my-orders' element={<MyOrders />} />
-              <Route path='/order-details' element={<OrderDetails />} />
-              <Route path='/account' element={<MyAccount />} />
-              <Route path='/track-order' element={<TrackMyOrder />} />
-              <Route path='/service-news' element={<ServiceNews />} />
-              <Route path='/contact-us' element={<ContactUs />} />
-              <Route path='/locations' element={<Locations />} />
-              <Route
-                path='/location-within-country'
-                element={<LocationWithinCountry />}
-              />
-              <Route path='/report-fraud' element={<ReportFraud />} />
-              <Route
-                path='/conditions-of-carriage'
-                element={<ConditionsOfCarriage />}
-              />
-            </Route>
+        <Routes>
+          {/* frontend */}
+          <Route element={<FrontEndLayout />}>
+            <Route path='/' element={<HomeScreen />} />
+            <Route path='/about' element={<AboutUs />} />
+            <Route path='/faq' element={<Faq />} />
+            <Route path='/ship' element={<Ship />} />
+            <Route path='/register/user' element={<RegisterPageUser />} />
+            <Route path='/user/verify-email' element={<VerifyEmail />} />
+            <Route path='/login/user' element={<LoginPageUser />} />
+            <Route path='/login/driver' element={<LoginPageDriver />} />
+            <Route path='/register/driver' element={<RegisterPageDriver />} />
+            <Route path='/my-orders' element={<MyOrders />} />
+            <Route path='/order-details' element={<OrderDetails />} />
+            <Route path='/account' element={<MyAccount />} />
+            <Route path='/track-order' element={<TrackMyOrder />} />
+            <Route path='/service-news' element={<ServiceNews />} />
+            <Route path='/contact-us' element={<ContactUs />} />
+            <Route path='/locations' element={<Locations />} />
+            <Route
+              path='/location-within-country'
+              element={<LocationWithinCountry />}
+            />
+            <Route path='/report-fraud' element={<ReportFraud />} />
+            <Route
+              path='/conditions-of-carriage'
+              element={<ConditionsOfCarriage />}
+            />
+          </Route>
 
-            {/* backend */}
-            <Route element={<BackEndLayout />}>
-              <Route path='/dashboard' element={<Dashboard />} />
-            </Route>
+          {/* backend */}
+          <Route element={<BackEndLayout />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
 
-            {/* 404 page */}
-            <Route path='/404' element={<ErrorPage />} />
+          {/* 404 page */}
+          <Route path='/404' element={<ErrorPage />} />
 
-            {/* Catch-all route for unmatched paths, you can either use a 404 page or so */}
-            <Route path='*' element={<Navigate to='/404' replace />} />
-          </Routes>
-        </BrowserRouter>
+          {/* Catch-all route for unmatched paths, you can either use a 404 page or so */}
+          <Route path='*' element={<Navigate to='/404' replace />} />
+        </Routes>
         <BackToTopButton />
       </Suspense>
     </div>

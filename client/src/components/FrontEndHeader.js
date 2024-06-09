@@ -1,11 +1,57 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import swal from 'sweetalert'
+import { getErrorMessage } from '../utils'
+import Axios from '../config'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const FrontEndHeader = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 768px)' })
   const marginBottom = isTabletOrMobile ? '180px' : '0' // Adjust margin bottom as needed
   const marginRight = isTabletOrMobile ? '0px' : '20px'
+
+  const navigate = useNavigate()
+
+  // Destructure authentication state and dispatcher from the authentication context
+  const {
+    authState: { isAuthenticated, user }, // Destructure isAuthenticated and user from authState
+    authDispatch // Get the authentication dispatcher
+  } = useAuthContext();
+
+  console.log('header isAuthenticated', isAuthenticated)
+  console.log('header user', user)
+
+    // Use effect to trigger re-render when authState changes
+    useEffect(() => {
+      console.log('header isAuthenticated useEffect', isAuthenticated)
+    }, [isAuthenticated]);
+
+
+  // handle logout
+  const handleLogout = async () => {
+    try {
+      if (localStorage.getItem('_f_user')) {
+        const user = localStorage.getItem('_d_user')
+
+        if (!user) return null
+        const _user = JSON.parse(user)
+        await Axios.patch('/users/logout', { refreshToken: _user.refreshToken })
+      }
+      localStorage.removeItem('_d_user') 
+
+      authDispatch({ type: 'LOG_OUT' })
+
+      swal('Great', 'Logout Successful', 'success').then(() => {
+        // Once the swal dialog is closed, redirect to the home page
+        navigate('/');
+      });
+    } catch (error) {
+      console.log('header Logout error', error)
+      swal('Oops', getErrorMessage(error), 'error')
+    }
+  }
+
 
   return (
     <>
@@ -154,16 +200,83 @@ const FrontEndHeader = () => {
             </form>
 
             <div className='mt-2 text-center'>
-              <Link to='/login/user'>
-                <button type='button' className='btn btn-outline-light me-2'>
-                  Login
-                </button>
-              </Link>
-              <Link to='/register/user'>
-                <button type='button' className='btn btn-warning'>
-                  Sign-up
-                </button>
-              </Link>
+              {isAuthenticated ? (
+                <ul className='navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0'>
+                  <li className='dropdown ms-2'>
+                    <a
+                      className='rounded-circle'
+                      href='#!'
+                      role='button'
+                      id='dropdownUser'
+                      data-bs-toggle='dropdown'
+                      aria-expanded='false'
+                    >
+                      <div className='avatar avatar-md avatar-indicators avatar-online'>
+                        <img
+                          alt='avatar'
+                          src={
+                            user.image
+                              ? user.image
+                              : 'https://via.placeholder.com/64x64'
+                          }
+                          className='rounded-circle'
+                        />
+                      </div>
+                    </a>
+                    <div className='dropdown-menu dropdown-menu-end shadow'>
+                      <div className='dropdown-item'>
+                        <div className='d-flex'>
+                          {/* <div className="avatar avatar-md avatar-indicators avatar-online">
+                          <img alt="avatar" src={user.image ? user.image : 'https://via.placeholder.com/64x64'} className="rounded-circle" />
+                        </div> */}
+                          <div className='ms-3 lh-1'>
+                            <h5 className='mb-1'>{user.name}</h5>
+                            <p className='mb-0 text-muted'>{user.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='dropdown-divider'></div>
+                      <ul className='list-unstyled'>
+                        <li>
+                          <Link to='/account' className='dropdown-item'>
+                            <i className='bi bi-person-badge me-2'></i>Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to='/my-orders' className='dropdown-item'>
+                            <i className='bi bi-cart me-2'></i>My Orders
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className='dropdown-item'
+                            onClick={e => handleLogout(e)}
+                          >
+                            <i className='bi bi-power me-2'></i>Logout
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              ) : (
+                <>
+                  <Link
+                    to='/login/user'
+                    className='btn btn-sm me-2 btn-outline-light'
+                    style={{ marginRight: '20px', marginBottom: marginBottom }}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to='/register/user'
+                    className='btn btn-warning btn-sm me-2'
+                    style={{ marginRight: '20px', marginBottom: marginBottom }}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
 
             <div

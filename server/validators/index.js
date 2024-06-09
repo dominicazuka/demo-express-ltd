@@ -37,5 +37,13 @@ const validateVerifyEmailInput = [
         .withMessage('Verification String must be 6 alphanumeric characters')
 ];
 
+// Validation rules for sign-up input
+const validateSigninInput = [
+    // Validation for email field
+    body("email").trim().not().isEmpty().withMessage("Email is required").bail().isEmail().withMessage("Please enter a valid email"),
+    // Validation for password field
+    body("password").trim().not().isEmpty().withMessage("Password is required").bail().isLength({min:8}).withMessage("Password length is too short"),
+]; 
+
 // Export the validation rules
-module.exports = { validateSignUpInput, validateVerifyEmailInput };
+module.exports = { validateSignUpInput, validateVerifyEmailInput, validateSigninInput };
