@@ -77,4 +77,33 @@ eventManager.on("new_user_verified", async (payload) => {
     }
 });
 
+// user login notification dispatch
+eventManager.on("login_notification", async (payload) => {
+    console.log('payload', payload)
+    try {
+        const to = payload.email;
+        const message = `Dear ${payload.name}, <br/>
+        <p>We noticed a new sign-in to your Account on a device. If this was you, you don’t need to do anything. If not, we’ll help you secure your account.</p>
+            <p>Your last login details are as follows:</p>
+            <ul>
+                <li><b>IP Address:</b> ${payload.lastLoginIpAddress}</li>
+                <li><b>Device:</b> ${payload.lastLoginDevice}</li>
+                <li><b>Date:</b> ${new Date(payload.lastLoginDate).toLocaleString()}</li>
+            </ul>
+            <br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `;
+        const html = await replyTemplate(message);
+        const options = {
+            to,
+            html,
+            subject: "Login Notification - Demo Express LTD"
+        }
+        await mailNoReplyDispatcher(options);
+    } catch (error) {
+        console.log("mailNoReplyDispatcher error:", error);
+    }
+});
+
 module.exports = eventManager;

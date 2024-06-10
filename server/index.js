@@ -8,6 +8,7 @@ const connectDb = require('./db'); //import db
 const bodyParser = require('body-parser'); //import body-parser middleware to parse incoming request bodies
 const {appOrigin} = require('./config') //import appOrigin from the config file 
 const {ipMiddleware} = require('./middleware/ip.middleware') // Importing the ipMiddleware from the middleware file
+const { verifyAuthToken, verifyRefreshToken } = require('./middleware/auth.middleware');
 
 // routes
 const userRoute = require('./routes/userRoute')

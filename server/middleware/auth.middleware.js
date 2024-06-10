@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken"); // Importing JWT for token verification
 const { jwtKeys } = require("../config"); // Importing JWT keys from configuration
 
+
 // Middleware to verify authentication token
 const verifyAuthToken = (req, res, next) => {
   // Extract the token from the request headers

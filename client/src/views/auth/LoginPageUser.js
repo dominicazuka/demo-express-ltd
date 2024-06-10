@@ -9,7 +9,6 @@ import swal from 'sweetalert'
 import { LOGIN_USER } from '../../actions/actions.auth'
 import { useAuthContext } from '../../contexts/AuthContext'
 
-
 const LoginPageUser = () => {
   // window scroll to top on page load
   useEffect(() => {
@@ -29,10 +28,11 @@ const LoginPageUser = () => {
   const [passwordError, setPasswordError] = useState('')
   const passwordInputRef = useRef(null)
 
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
   const {
-    authState: { isAuthenticated, isAuthenticating },
-    authDispatch
-  } = useAuthContext()
+    authState: { isAuthenticated, isAuthenticating }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
   const handleEmailChange = e => {
     setEmail(e.target.value)
@@ -44,7 +44,7 @@ const LoginPageUser = () => {
     setPasswordError('')
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
     try {
@@ -74,7 +74,12 @@ const LoginPageUser = () => {
         rememberMe: rememberMe ? true : false //conditional tenary check
       }
       const { data } = await Axios.post('/users/login', user)
-      authDispatch({ type: LOGIN_USER, payload: data.user });
+      // Dispatch an action to the authentication context to log in the user, The action has a type of LOGIN_USER and carries the user data in the payload
+      authDispatch({
+        type: LOGIN_USER, // Action type indicating the user is logging in
+        payload: data.user // Payload containing the user data to be stored in the authentication state
+      });
+
       console.log('login page data', data)
 
       if (data) {
@@ -82,11 +87,12 @@ const LoginPageUser = () => {
         swal('Great', 'Login Successful', 'success').then(() => {
           // Once the swal dialog is closed, redirect to the account page
           return navigate(`/account`) // Redirect to the verify email page
-        }); 
+        })
       }
 
       setLoading(false)
-    } catch (error) { //all other status codes aside 2XX comes to the catch block
+    } catch (error) {
+      //all other status codes aside 2XX comes to the catch block
       if (
         error.response &&
         error.response.data &&
@@ -95,7 +101,7 @@ const LoginPageUser = () => {
         swal('Oops', getErrorMessage(error), 'error')
 
         // Redirect to the URL provided by the server
-        setRedirectUrl(error.response.data.redirect);
+        setRedirectUrl(error.response.data.redirect)
         setLoading(false)
       } else {
         // Handle other errors
@@ -251,7 +257,14 @@ const LoginPageUser = () => {
             <div className='mt-3 col-md-12 col-lg-12'>
               <h4 className='mb-3'>Sign In</h4>
 
-              {redirectUrl && <Link to={`/${redirectUrl}`} className='btn btn-warning btn-lg shadow mt-2'>Verify Email</Link>}
+              {redirectUrl && (
+                <Link
+                  to={`/${redirectUrl}`}
+                  className='btn btn-warning btn-lg shadow mt-2'
+                >
+                  Verify Email
+                </Link>
+              )}
 
               <div className='row g-3'>
                 {/* email */}

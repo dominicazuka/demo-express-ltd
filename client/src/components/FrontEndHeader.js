@@ -17,16 +17,12 @@ const FrontEndHeader = () => {
   const {
     authState: { isAuthenticated, user }, // Destructure isAuthenticated and user from authState
     authDispatch // Get the authentication dispatcher
-  } = useAuthContext();
+  } = useAuthContext()
 
-  console.log('header isAuthenticated', isAuthenticated)
-  console.log('header user', user)
-
-    // Use effect to trigger re-render when authState changes
-    useEffect(() => {
-      console.log('header isAuthenticated useEffect', isAuthenticated)
-    }, [isAuthenticated]);
-
+  // Use effect to trigger re-render when authState changes
+  useEffect(() => {
+    console.log('header isAuthenticated useEffect', isAuthenticated)
+  }, [isAuthenticated])
 
   // handle logout
   const handleLogout = async () => {
@@ -38,20 +34,21 @@ const FrontEndHeader = () => {
         const _user = JSON.parse(user)
         await Axios.patch('/users/logout', { refreshToken: _user.refreshToken })
       }
-      localStorage.removeItem('_d_user') 
+      localStorage.removeItem('_d_user')
 
       authDispatch({ type: 'LOG_OUT' })
 
       swal('Great', 'Logout Successful', 'success').then(() => {
         // Once the swal dialog is closed, redirect to the home page
-        navigate('/');
-      });
+        navigate('/')
+      })
     } catch (error) {
       console.log('header Logout error', error)
       swal('Oops', getErrorMessage(error), 'error')
     }
   }
 
+  const isAuthorizedRole = ['Admin', 'Driver', 'SuperAdmin'].includes(user.role)
 
   return (
     <>
@@ -149,34 +146,6 @@ const FrontEndHeader = () => {
                   </li>
                 </ul>
               </li>
-              <li className='nav-item dropdown'>
-                <a
-                  className='nav-link dropdown-toggle'
-                  href='#'
-                  data-bs-toggle='dropdown'
-                  aria-expanded='false'
-                  style={{ color: 'white' }}
-                >
-                  Account
-                </a>
-                <ul className='dropdown-menu'>
-                  <li>
-                    <Link to='/my-orders' className='dropdown-item'>
-                      My Orders
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to='/account' className='dropdown-item'>
-                      My Account
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to='/track-order' className='dropdown-item'>
-                      Track Order
-                    </Link>
-                  </li>
-                </ul>
-              </li>
             </ul>
             <form
               className='mt-2'
@@ -216,10 +185,13 @@ const FrontEndHeader = () => {
                           alt='avatar'
                           src={
                             user.image
-                              ? user.image
-                              : 'https://via.placeholder.com/64x64'
+                              ? `${user.image}`
+                              : 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'
                           }
-                          className='rounded-circle'
+                          className='rounded-circle shadow'
+                          width='40'
+                          height='40'
+                          style={{ maxWidth: '60' }}
                         />
                       </div>
                     </a>
@@ -242,9 +214,22 @@ const FrontEndHeader = () => {
                             <i className='bi bi-person-badge me-2'></i>Profile
                           </Link>
                         </li>
+                        {isAuthorizedRole && (
+                          <li>
+                            <Link to='/dashboard' className='dropdown-item'>
+                              <i className='bi bi-speedometer me-2'></i>
+                              Dashboard
+                            </Link>
+                          </li>
+                        )}
                         <li>
                           <Link to='/my-orders' className='dropdown-item'>
                             <i className='bi bi-cart me-2'></i>My Orders
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to='/track-order' className='dropdown-item'>
+                            <i className='bi bi-binoculars me-2'></i>Track Order
                           </Link>
                         </li>
                         <li>

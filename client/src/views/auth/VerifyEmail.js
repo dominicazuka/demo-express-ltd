@@ -5,6 +5,8 @@ import Axios from '../../config'
 import swal from 'sweetalert'
 import { getErrorMessage } from '../../utils'
 import TokenService from '../../libs/token';
+import { LOGIN_USER } from '../../actions/actions.auth'
+import { useAuthContext } from '../../contexts/AuthContext'
 
 const VerifyEmail = () => {
   // window scroll to top on page load
@@ -23,6 +25,13 @@ const VerifyEmail = () => {
   const verificationStringInputRef = useRef(null)
   const [loading, setLoading] = useState(false)
   const [loadingResendVerificationEmail, setLoadingResendVerificationEmail] = useState(false)
+
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
+  const {
+    authState: { isAuthenticated, isAuthenticating }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+
 
   const handleVerificationStringInput = e => {
     setVerificationString(e.target.value)
@@ -76,6 +85,12 @@ const VerifyEmail = () => {
 
        // If verification is successful
       if (data) {
+        // Dispatch an action to the authentication context to log in the user, The action has a type of LOGIN_USER and carries the user data in the payload
+        authDispatch({
+          type: LOGIN_USER, // Action type indicating the user is logging in
+          payload: data.user // Payload containing the user data to be stored in the authentication state
+        });
+
         TokenService.setUser(data.user); // Store user data in local storage
         swal(
             error ? 'Oops' : 'Great',

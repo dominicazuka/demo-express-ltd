@@ -16,23 +16,25 @@ const {
 } = require('../util')
 const eventManager = require('../event')
 const { verifyRefreshToken } = require('../middleware/auth.middleware')
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs')
+const { verifyAuthToken } = require('../middleware/auth.middleware') //to verify if user is logged in
+const { verifyRole } = require('../middleware/role.middleware') //to verify user role
 
 // register user
 router.post('/register', validate(validateSignUpInput), async (req, res) => {
   try {
     const body = req.body
-    console.log("body", body);
+    console.log('body', body)
     // hash password
     const hashPassword = generateHash(req.body.password)
 
     // user device
-    const device = req.headers["user-agent"];
-    console.log("device", device);
+    const device = req.headers['user-agent']
+    console.log('device', device)
 
     // user ip
-    const ip = req.ip;
-    console.log("ip", ip);
+    const ip = req.ip
+    console.log('ip', ip)
 
     // Check if user with the same email already exists
     const existingUser = await User.findOne({ email: body.email })
@@ -70,13 +72,25 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       company: body.company,
       vatTaxId: body.vatTaxId,
       postalCode: body.postalCode,
-      verificationString: verificationCode
+      verificationString: verificationCode,
+      googleID: 'test123',
+      lastLoginIpAddress: ip,
+      lastLoginDate: new Date(),
+      lastLoginDevice: device,
+      image: 'c://user//test.jpg',
+      averageDeliveryTime: 2,
+      completionRate: 0,
+      rating: 4,
+      availability: true,
+      driverLicenseId: '09876543KJH97685',
+      vehicleNo: 'ABC-345-ADS',
+      vehicleType: 'Truck'
     })
 
-    console.log("user", user);
+    console.log('user', user)
 
-     // Generate authentication tokens
-     const currentUser = {
+    // Generate authentication tokens
+    const currentUser = {
       name: user.name,
       email: user.email,
       isBlocked: user.isBlocked,
@@ -89,14 +103,18 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       company: user.company,
       address: user.address,
       vatTaxId: user.vatTaxId,
+      lastLoginIpAddress: user.lastLoginIpAddress,
+      lastLoginDate: user.lastLoginDate,
+      lastLoginDevice: user.lastLoginDevice,
+      image: user.image,
       _id: user._id
     }
 
-    console.log("currentUser", currentUser);
+    console.log('currentUser', currentUser)
 
     const token = generateHash(user._id.toString())
 
-    console.log("token", token);
+    console.log('token', token)
 
     const { accessToken, refreshToken } = await getAuthTokens({
       ...currentUser,
@@ -110,7 +128,7 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       refreshToken
     }
 
-    console.log("obj", obj);
+    console.log('obj', obj)
 
     // Store session information
     const sessionObj = {
@@ -121,27 +139,24 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       email: user.email
     }
 
-    console.log("sessionObj", sessionObj);
+    console.log('sessionObj', sessionObj)
 
-    await Session.create(sessionObj);
+    await Session.create(sessionObj)
 
     //event emitter to send verification email
     eventManager.emit('register_user_email_verification_notification', {
       ...user._doc
     }) //send verification code to user email
 
-   
     // Respond with success message and user details
-    res
-      .status(200)
-      .json({ message: 'User registered successfully', user: obj });
+    res.status(200).json({ message: 'User registered successfully', user: obj })
   } catch (error) {
     console.log('register route error', error)
     return res
       .status(400)
       .json({ message: 'An error occurred, try registering again a new user' })
   }
-});
+})
 
 // verify email route
 router.put(
@@ -149,6 +164,14 @@ router.put(
   validate(validateVerifyEmailInput),
   async (req, res) => {
     try {
+      // user device
+      const device = req.headers['user-agent']
+      console.log('device', device)
+
+      // user ip
+      const ip = req.ip
+      console.log('ip', ip)
+
       const { verificationString } = req.body
       if (verificationString < 6) {
         return res.status(401).json({
@@ -178,41 +201,57 @@ router.put(
           _id: id
         },
         { $set: { isVerified: true } }
-      );
+      )
+
+      // Update user's last login details
+      await User.updateOne(
+        { _id: id },
+        {
+          lastLoginIpAddress: ip,
+          lastLoginDate: new Date(),
+          lastLoginDevice: device
+        }
+      )
 
       // Generate authentication tokens
-    const currentUser = {
-      name: result.name,
-      email: result.email,
-      isBlocked: result.isBlocked,
-      role: result.role,
-      phone: result.phone,
-      country: result.country,
-      countryCode: result.countryCode,
-      state: result.state,
-      city: result.city,
-      company: result.company,
-      address: result.address,
-      vatTaxId: result.vatTaxId,
-      _id: result._id
-    };
+      const currentUser = {
+        name: result.name,
+        email: result.email,
+        isBlocked: result.isBlocked,
+        role: result.role,
+        phone: result.phone,
+        country: result.country,
+        countryCode: result.countryCode,
+        state: result.state,
+        city: result.city,
+        company: result.company,
+        address: result.address,
+        vatTaxId: result.vatTaxId,
+        lastLoginIpAddress: ip,
+        lastLoginDate: new Date(),
+        lastLoginDevice: device,
+        image: result.image,
+        _id: result._id
+      }
 
-    const token = generateHash(result._id.toString());
-    const { accessToken, refreshToken } = await getAuthTokens({
-      ...currentUser,
-      token
-    });
+      const token = generateHash(result._id.toString())
+      const { accessToken, refreshToken } = await getAuthTokens({
+        ...currentUser,
+        token
+      })
 
-    // Prepare response object
-    const obj = {
-      ...currentUser,
-      accessToken,
-      refreshToken
-    };
+      // Prepare response object
+      const obj = {
+        ...currentUser,
+        accessToken,
+        refreshToken
+      }
 
-    // welcome email dispatch
+      // welcome email dispatch
       eventManager.emit('new_user_verified', { ...result._doc })
-      res.status(200).json({ message: 'Email Verified Successfully', user: obj });
+      res
+        .status(200)
+        .json({ message: 'Email Verified Successfully', user: obj })
     } catch (error) {
       console.log('verify email route error', error)
       return res.status(400).json({
@@ -220,7 +259,7 @@ router.put(
       })
     }
   }
-);
+)
 
 // resend verification mail
 router.put('/resend-verification-email', async (req, res) => {
@@ -249,47 +288,49 @@ router.put('/resend-verification-email', async (req, res) => {
         'An error occurred resending user verification code, please try again.'
     })
   }
-});
+})
 
 // login route
-router.post('/login', validate(validateSigninInput), async(req, res) => {
+router.post('/login', validate(validateSigninInput), async (req, res) => {
   try {
-    const {email, password, rememberMe} = req.body;
+    const { email, password, rememberMe } = req.body
     // user device
-    const device = req.headers["user-agent"];
-    console.log("device", device);
+    const device = req.headers['user-agent']
+    console.log('device', device)
 
     // user ip
-    const ip = req.ip;
-    console.log("ip", ip);
+    const ip = req.ip
+    console.log('ip', ip)
 
     // fetch user from db
-    const user = await User.findOne({email});
-    if(!user){
+    const user = await User.findOne({ email })
+    if (!user) {
       return res.status(400).json({
         message: 'Wrong credentials provided!'
       })
     }
 
     // load hash from password db
-    const checker = bcrypt.compareSync(password, user.password);
+    const checker = bcrypt.compareSync(password, user.password)
 
-    if(!checker){
+    if (!checker) {
       return res.status(400).json({
         message: 'Wrong credentials provided!'
       })
     }
 
     // check if user is blocked
-    if(user.isBlocked){
+    if (user.isBlocked) {
       return res.status(401).json({
         message: 'Sorry your account is suspended, please contact Admin!'
       })
     }
 
     // check if user email is verified (2FA)
-    if(!user.isVerified){
-      const emailVerificationRedirect = `user/verify-email?email=${encodeURIComponent(user.email)}`;
+    if (!user.isVerified) {
+      const emailVerificationRedirect = `user/verify-email?email=${encodeURIComponent(
+        user.email
+      )}`
       console.log('emailVerificationRedirect', emailVerificationRedirect)
       return res.status(401).json({
         message: 'Email not verified, kindly verify your email',
@@ -297,8 +338,18 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
       })
     }
 
-     // Generate authentication tokens
-     const currentUser = {
+    // Update user's last login details
+    await User.updateOne(
+      { _id: user._id },
+      {
+        lastLoginIpAddress: ip,
+        lastLoginDate: new Date(),
+        lastLoginDevice: device
+      }
+    )
+
+    // Generate authentication tokens
+    const currentUser = {
       name: user.name,
       email: user.email,
       isBlocked: user.isBlocked,
@@ -311,14 +362,18 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
       company: user.company,
       address: user.address,
       vatTaxId: user.vatTaxId,
+      lastLoginIpAddress: ip,
+      lastLoginDate: new Date(),
+      lastLoginDevice: device,
+      image: user.image,
       _id: user._id
     }
 
-    console.log("currentUser", currentUser);
+    console.log('currentUser', currentUser)
 
     const token = generateHash(user._id.toString())
 
-    console.log("token", token);
+    console.log('token', token)
 
     const { accessToken, refreshToken } = await getAuthTokens({
       ...currentUser,
@@ -332,7 +387,7 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
       refreshToken
     }
 
-    console.log("obj", obj);
+    console.log('obj', obj)
 
     // Store session information
     const sessionObj = {
@@ -343,59 +398,54 @@ router.post('/login', validate(validateSigninInput), async(req, res) => {
       email: user.email
     }
 
-    console.log("sessionObj", sessionObj); 
+    console.log('sessionObj', sessionObj)
 
-    await Session.create(sessionObj);
-
+    await Session.create(sessionObj)
+ 
     //event emitter to send login notification email
     eventManager.emit('login_notification', {
       ...user._doc
     })
 
     // Respond with success message and user details
-    res
-      .status(200) 
-      .json({ message: 'Login successful', user: obj });
+    res.status(200).json({ message: 'Login successful', user: obj })
   } catch (error) {
     console.log('login route error', error)
     return res
       .status(400)
       .json({ message: 'An error occurred, try again or refresh page.' })
   }
-});
-
+})
 
 //  route to refresh authentication tokens
-router.post("/refresh/token", verifyRefreshToken, async (req, res) => {
+router.post('/refresh/token', verifyRefreshToken, async (req, res) => {
   try {
     console.log({
       userId: req.user.userId,
       token: req.user.token
     })
     // Extract user ID and token from the request
-    const userId = req.user.userId;
-    const token = req.user.token;
+    const userId = req.user.userId
+    const token = req.user.token
 
     // Find the session associated with the user ID and token
-    const session = await Session
-      .findOne({ userId, token })
-      .sort({ _id: 1 });
+    const session = await Session.findOne({ userId, token }).sort({ _id: 1 })
 
     // If session doesn't exist or is not active, return a 403 Forbidden response
     if (!session || !session.isActive) {
       return res.status(403).json({
-        message: "Sorry, login to continue. Authentication is required",
-      });
+        message: 'Sorry, login to continue. Authentication is required'
+      })
     }
 
     // Find the user by user ID
-    const _user = await User.findById({ _id: userId });
+    const _user = await User.findById({ _id: userId })
 
     // If user doesn't exist or is blocked, return a 401 Unauthorized response
     if (_user && _user.isBlocked) {
       return res.status(401).json({
-        message: "Sorry, your account is suspended. Please contact admin",
-      });
+        message: 'Sorry, your account is suspended. Please contact admin'
+      })
     }
 
     // Generate authentication tokens for the user
@@ -412,53 +462,61 @@ router.post("/refresh/token", verifyRefreshToken, async (req, res) => {
       company: _user.company,
       address: _user.address,
       vatTaxId: _user.vatTaxId,
+      lastLoginIpAddress: _user.lastLoginIpAddress,
+      lastLoginDate: _user.lastLoginDate,
+      lastLoginDevice: _user.lastLoginDevice,
+      image: _user.image,
       _id: _user._id
-    };
+    }
 
     const { accessToken, refreshToken } = await getAuthTokens({
       ...currentUser,
-      token,
-    });
+      token
+    })
 
     // Construct response object with updated authentication tokens and user details
     const user = {
       ...currentUser,
       accessToken,
-      refreshToken,
-    };
+      refreshToken
+    }
 
     // Log the constructed response object
-    console.log("Response Object:", user);
+    console.log('Response Object:', user)
 
     // Send the response with the updated authentication tokens and user details
-    return res.send(user);
+    return res.send(user)
   } catch (error) {
-    console.error("Error during token refresh:", error);
+    console.error('Error during token refresh:', error)
     // If an error occurs, return a 400 Bad Request response
     return res
       .status(400)
-      .json({ message: "Sorry, an error occurred. Please try again later" });
+      .json({ message: 'Sorry, an error occurred. Please try again later' })
   }
-});
+})
 
 // logout route
-router.patch('/logout', verifyRefreshToken, async(req, res) => {
-  try{
-    // fetch token
-    const token = req.user.token
+router.patch(
+  '/logout',
+  verifyRefreshToken,
+  verifyAuthToken,
+  async (req, res) => {
+    try {
+      // fetch token
+      const token = req.user.token
 
-    // update session model
-    await Session.updateMany({token}, {isActive: false});
+      // update session model
+      await Session.updateMany({ token }, { isActive: false })
 
-    // send feedback
-    res.status(200).json({ message: 'Logout Successful' });
-  } catch(error){
-    console.log('logout error', error)
-    return res.status(400).json({
-      message:
-        'An error occurred, please try again.'
-    })
+      // send feedback
+      res.status(200).json({ message: 'Logout Successful' })
+    } catch (error) {
+      console.log('logout error', error)
+      return res.status(400).json({
+        message: 'An error occurred, please try again.'
+      })
+    }
   }
-});
+)
 
 module.exports = router

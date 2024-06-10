@@ -15,10 +15,12 @@ import 'datatables.net-responsive-bs5'
 import 'datatables.net-select'
 import 'datatables.net-select-bs5'
 import { useAuthContext } from '../src/contexts/AuthContext'
+import ProtectedRoute from './layouts/ProtectedRoute.js'
 
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
 const ErrorPage = lazy(() => import('./components/ErrorPage'))
+const UnauthorizedPage = lazy(() => import('./components/UnauthorizedPage'))
 const AboutUs = lazy(() => import('./views/frontend/about/AboutUs'))
 const Faq = lazy(() => import('./views/frontend/faq/Faq'))
 const Ship = lazy(() => import('./views/frontend/ship/Ship'))
@@ -50,9 +52,11 @@ const ConditionsOfCarriage = lazy(() =>
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 
 const App = () => {
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
   const {
-    authState: { isAuthenticated }
-  } = useAuthContext()
+    authState: { isAuthenticated, isAuthenticating } //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    // authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
   useEffect(() => {
     //set localStorage value
@@ -127,9 +131,6 @@ const App = () => {
             <Route path='/login/user' element={<LoginPageUser />} />
             <Route path='/login/driver' element={<LoginPageDriver />} />
             <Route path='/register/driver' element={<RegisterPageDriver />} />
-            <Route path='/my-orders' element={<MyOrders />} />
-            <Route path='/order-details' element={<OrderDetails />} />
-            <Route path='/account' element={<MyAccount />} />
             <Route path='/track-order' element={<TrackMyOrder />} />
             <Route path='/service-news' element={<ServiceNews />} />
             <Route path='/contact-us' element={<ContactUs />} />
@@ -143,15 +144,34 @@ const App = () => {
               path='/conditions-of-carriage'
               element={<ConditionsOfCarriage />}
             />
+
+            {/* protected routes frontend */}
+            <Route element={<ProtectedRoute allowedRoles={['User', 'Admin', 'SuperAdmin']} />}>
+              <Route path='/account' element={<MyAccount />} />
+              <Route path='/my-orders' element={<MyOrders />} />
+              <Route path='/order-details' element={<OrderDetails />} />
+            </Route>
           </Route>
 
           {/* backend */}
           <Route element={<BackEndLayout />}>
-            <Route path='/dashboard' element={<Dashboard />} />
+            {/* protected routes backend */}
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={['Admin', 'SuperAdmin']} />
+              }
+            >
+              <Route path='/dashboard' element={<Dashboard />} />
+            </Route>
           </Route>
 
           {/* 404 page */}
           <Route path='/404' element={<ErrorPage />} />
+
+          {/* unauthorized */}
+          <Route element={<FrontEndLayout />}>
+            <Route path='/unauthorized' element={<UnauthorizedPage />} />
+          </Route>
 
           {/* Catch-all route for unmatched paths, you can either use a 404 page or so */}
           <Route path='*' element={<Navigate to='/404' replace />} />
