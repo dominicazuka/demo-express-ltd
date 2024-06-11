@@ -6,18 +6,26 @@ import { useMediaQuery } from 'react-responsive'
 import Loader from '../../components/Loader'
 import { Country, State, City } from 'country-state-city'
 import Axios from '../../config'
-import swal from 'sweetalert' 
-import { getErrorMessage, validateEmail, validatePassword } from '../../utils';
-import TokenService from '../../libs/token';
-
+import swal from 'sweetalert'
+import { getErrorMessage, validateEmail, validatePassword } from '../../utils'
+import TokenService from '../../libs/token'
+import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 
 const RegisterPageUser = () => {
-  // window scroll to top on page load
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
-  const navigate = useNavigate(); //import useNavigate from react-router-dom
+  const navigate = useNavigate() //import useNavigate from react-router-dom
+
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated, isAuthenticating, and user
+  const {
+    authState: { isAuthenticated, isAuthenticating, user }, // Destructures the authState object to extract isAuthenticated, isAuthenticating, and user values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+
+    // window scroll to top on page load
+    useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
 
   const [name, setName] = useState('')
   const [company, setCompany] = useState('')
@@ -149,55 +157,55 @@ const RegisterPageUser = () => {
 
   const register = async e => {
     e.preventDefault() // Prevent default form submission
-    setLoading(true);
+    setLoading(true)
     try {
       let isError = false
       if (name.trim() === '') {
-        setNameError('Please enter full name');
+        setNameError('Please enter full name')
         nameInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (address.trim() === '') {
         setAddressError('Please enter address')
         addressInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (country.trim() === '' || country.trim() === 'none') {
         setCountryError('Please select a country')
         countryInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (state.trim() === '' || state.trim() === 'none') {
         setStateError('Please select a state')
         stateInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (city.trim() === '' || city.trim() === 'none') {
         setCityError('Please select a city')
         cityInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (phone.trim() === '') {
         setPhoneError('Please enter phone number')
         phoneInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (email.trim() === '') {
         setEmailError('Please enter email address')
         emailInputRef.current.focus() // Focus on the input element with the validation error
-        return isError = true
+        return (isError = true)
       }
 
       if (!validateEmail(email.trim())) {
         setEmailError('Please input a valid email address')
         emailInputRef.current.focus() // Focus on the input
-        return isError = true
+        return (isError = true)
       }
 
       if (!validatePassword(password)) {
@@ -205,7 +213,7 @@ const RegisterPageUser = () => {
           'Please input a strong password that matches the below requirements'
         )
         passwordInputRef.current.focus() // Focus on the input
-        return isError = true
+        return (isError = true)
       }
 
       if (!validatePassword(confirmPassword)) {
@@ -213,23 +221,24 @@ const RegisterPageUser = () => {
           'Please input a strong password that matches the below requirements'
         )
         confirmPasswordInputRef.current.focus() // Focus on the input
-        return isError = true
+        return (isError = true)
       }
 
       if (password !== confirmPassword) {
         setPasswordError('Passwords do not match')
         setConfirmPasswordError('Passwords do not match')
         passwordInputRef.current.focus() // Focus on the input
-        return isError = true
+        return (isError = true)
       }
 
       if (!privacyPolicy) {
         setPrivacyPolicyError('You must accept the privacy policy')
         privacyPolicyInputRef.current.focus() // Focus on the checkbox
-        return isError = true
+        return (isError = true)
       }
       if (password === confirmPassword) {
-        const newsletterSubscription = document.getElementById('newsletterCheck').checked
+        const newsletterSubscription =
+          document.getElementById('newsletterCheck').checked
         const user = {
           name,
           company,
@@ -246,18 +255,18 @@ const RegisterPageUser = () => {
           newsletter: newsletterSubscription ? true : false, //conditional tenary check
           role: 'User'
         }
-        const { data, error } = await Axios.post('/users/register', user);
+        const { data, error } = await Axios.post('/users/register', user)
         console.log('data', data)
         if (data) {
-          TokenService.setUser(data.user); // Store user data in local storage
+          TokenService.setUser(data.user) // Store user data in local storage
           swal(
             error ? 'Oops' : 'Great',
             'Registration Successful',
             !error ? 'success' : 'error'
           )
-          navigate(`/user/verify-email?email=${encodeURIComponent(user.email)}`); // Redirect to the verify email page
+          navigate(`/user/verify-email?email=${encodeURIComponent(user.email)}`) // Redirect to the verify email page
         }
-        setLoading(false);
+        setLoading(false)
       }
     } catch (error) {
       swal('Oops', getErrorMessage(error), 'error')
@@ -766,7 +775,12 @@ const RegisterPageUser = () => {
                     style={{
                       paddingLeft: '20px',
                       listStylePosition: 'inside',
-                      color: (passwordError || confirmPasswordError) ? 'red' : ((password === confirmPassword && password) ? 'green' : 'black')
+                      color:
+                        passwordError || confirmPasswordError
+                          ? 'red'
+                          : password === confirmPassword && password
+                          ? 'green'
+                          : 'black'
                     }}
                   >
                     <li> Minimum 8 characters long the more, the better</li>

@@ -8,6 +8,7 @@ import TokenService from '../../libs/token'
 import swal from 'sweetalert'
 import { LOGIN_USER } from '../../actions/actions.auth'
 import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 
 const LoginPageUser = () => {
   // window scroll to top on page load
@@ -30,7 +31,7 @@ const LoginPageUser = () => {
 
   // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
   const {
-    authState: { isAuthenticated, isAuthenticating }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    authState: { isAuthenticated, isAuthenticating, user }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
     authDispatch // Destructure authDispatch from useAuthContext hook
   } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
@@ -78,7 +79,7 @@ const LoginPageUser = () => {
       authDispatch({
         type: LOGIN_USER, // Action type indicating the user is logging in
         payload: data.user // Payload containing the user data to be stored in the authentication state
-      });
+      })
 
       console.log('login page data', data)
 

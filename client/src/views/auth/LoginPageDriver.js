@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { useMediaQuery } from 'react-responsive'
+import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 
 const LoginPageDriver = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const navigate = useNavigate() //import useNavigate from react-router-dom
+
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
+  const {
+    authState: { isAuthenticated, isAuthenticating, user }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+
+
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')

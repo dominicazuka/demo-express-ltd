@@ -16,6 +16,7 @@ import 'datatables.net-select'
 import 'datatables.net-select-bs5'
 import { useAuthContext } from '../src/contexts/AuthContext'
 import ProtectedRoute from './layouts/ProtectedRoute.js'
+import { useAuthRedirect } from './libs/auth/index.js'
 
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
@@ -52,11 +53,14 @@ const ConditionsOfCarriage = lazy(() =>
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 
 const App = () => {
-  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
-  const {
-    authState: { isAuthenticated, isAuthenticating } //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
-    // authDispatch // Destructure authDispatch from useAuthContext hook
-  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+
+  useAuthRedirect(); // custom hook is responsible for checking the user's authentication status and role and handle redirection to home page from login (already logged in users) and registration (users with certain 'role' can't access the registration) pages.
+
+  // // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
+  // const {
+  //   authState: { isAuthenticated, isAuthenticating } //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+  //   // authDispatch // Destructure authDispatch from useAuthContext hook
+  // } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
   useEffect(() => {
     //set localStorage value

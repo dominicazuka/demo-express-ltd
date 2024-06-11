@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { useMediaQuery } from 'react-responsive'
+import { useAuthContext } from '../../contexts/AuthContext'
+import Swal from 'sweetalert2'
+
 const RegisterPageUser = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const navigate = useNavigate() //import useNavigate from react-router-dom
+
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated, isAuthenticating, and user
+  const {
+    authState: { isAuthenticated, isAuthenticating, user }, // Destructures the authState object to extract isAuthenticated, isAuthenticating, and user values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+
   const useFormValidation = () => {
     useEffect(() => {
       const forms = document.querySelectorAll('.needs-validation')
@@ -283,7 +295,7 @@ const RegisterPageUser = () => {
                     <i class='bi bi-globe-asia-australia'></i>
                   </span>
                   <select className='form-select' id='country' required>
-                    <option selected disabled value="">
+                    <option selected disabled value=''>
                       Select Country
                     </option>
                     <option>United States</option>
@@ -301,7 +313,7 @@ const RegisterPageUser = () => {
                     <i class='bi bi-map'></i>
                   </span>
                   <select className='form-select' id='state' required>
-                    <option selected disabled value="">
+                    <option selected disabled value=''>
                       Select State
                     </option>
                     <option>Califonia</option>
@@ -319,7 +331,7 @@ const RegisterPageUser = () => {
                     <i class='bi bi-radar'></i>
                   </span>
                   <select className='form-select' id='city' required>
-                    <option selected disabled value="">
+                    <option selected disabled value=''>
                       Select City
                     </option>
                     <option>City 1</option>
@@ -484,7 +496,9 @@ const RegisterPageUser = () => {
                 {/* password requirements */}
                 <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                   <h6 className='mb-1'>Password requirements:</h6>
-                  <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
+                  <p style={{ textAlign: 'justify' }}>
+                    Ensure that these requirements are met:
+                  </p>
                   <ul
                     style={{
                       paddingLeft: '20px',
@@ -555,7 +569,14 @@ const RegisterPageUser = () => {
         <div class='row g-4 py-5 row-cols-1 row-cols-lg-3'>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-clock' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi bi-clock'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Flexible Scheduling</h3>
@@ -570,7 +591,14 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-currency-dollar' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi bi-currency-dollar'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Competitive Earnings</h3>
@@ -585,7 +613,14 @@ const RegisterPageUser = () => {
           </div>
           <div class='col d-flex align-items-start'>
             <div class='icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3'>
-              <i class='bi bi-headset' style={{ fontSize: '50px', color: '#006400', backgroundColor:'white' }}></i>
+              <i
+                class='bi bi-headset'
+                style={{
+                  fontSize: '50px',
+                  color: '#006400',
+                  backgroundColor: 'white'
+                }}
+              ></i>
             </div>
             <div>
               <h3 class='fs-2 text-body-emphasis'>Comprehensive Support</h3>
