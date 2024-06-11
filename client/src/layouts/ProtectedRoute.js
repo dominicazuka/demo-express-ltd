@@ -1,8 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import FullScreenLoader from '../components/FullScreenLoader'
 import { useAuthContext } from '../contexts/AuthContext'
-import BackEndHeader from '../components/BackEndHeader'
-import BackEndFooter from '../components/BackEndFooter'
+import Swal from 'sweetalert2'
 
 
 const ProtectedRoute = ({ allowedRoles }) => {
@@ -18,6 +17,21 @@ const ProtectedRoute = ({ allowedRoles }) => {
 
   //   if the user is not authenticated
   if (!isAuthenticated) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: toast => {
+        toast.onmouseenter = Swal.stopTimer
+        toast.onmouseleave = Swal.resumeTimer
+      }
+    })
+    Toast.fire({
+      icon: 'warning',
+      title: 'Log in to enjoy full account features!'
+    })
     return <Navigate to="/login/user" />
   }
 

@@ -1,50 +1,167 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import Loader from '../../../components/Loader'
+import {
+  validateEmail,
+  getErrorMessage,
+  validatePassword
+} from '../../../utils'
+import Axios from '../../../config'
+import TokenService from '../../../libs/token'
+import swal from 'sweetalert'
+import { LOGIN_USER } from '../../../actions/actions.auth'
+import { useAuthContext } from '../../../contexts/AuthContext'
+import Swal from 'sweetalert2'
 
 const MyAccount = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-  const useFormValidation = () => {
-    useEffect(() => {
-      const forms = document.querySelectorAll('.needs-validation')
 
-      Array.from(forms).forEach(form => {
-        form.addEventListener(
-          'submit',
-          event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-              // Add 'was-validated' class to show validation messages
-              form.classList.add('was-validated')
-              // Highlight the required fields with the 'is-invalid' class
-              const invalidInputs = form.querySelectorAll(':invalid')
-              invalidInputs.forEach(input => {
-                input.classList.add('is-invalid')
-              })
-            }
+  const navigate = useNavigate() //import useNavigate from react-router-dom
 
-            form.classList.add('was-validated')
-          },
-          false
-        )
-      })
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
+  const {
+    authState: { isAuthenticated, isAuthenticating, user }, //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
-      return () => {
-        // Cleanup event listeners
-        Array.from(forms).forEach(form => {
-          form.removeEventListener('submit', () => {})
-        })
-      }
-    }, [])
+  const [name, setName] = useState(user.name ? user.name : '')
+  const [company, setCompany] = useState(user.company ? user.company : '')
+  const [address, setAddress] = useState(user.address ? user.address : '')
+  const [postalCode, setPostalCode] = useState(
+    user.postalCode ? user.postalCode : ''
+  )
+  const [phone, setPhone] = useState(user.phone ? user.phone : '')
+  const [vatTaxId, setVatTaxId] = useState(user.vatTaxtId ? user.vatTaxtId : '')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+
+  const [loading, setLoading] = useState(false)
+  const [passwordLoading, setPasswordLoading] = useState(false)
+
+  //error state variables and useRef for required inputs
+  const [nameError, setNameError] = useState('')
+  const nameInputRef = useRef(null)
+  const companyInputRef = useRef(null)
+  const [addressError, setAddressError] = useState('')
+  const addressInputRef = useRef(null)
+  const postalCodeInputRef = useRef(null)
+  const [phoneError, setPhoneError] = useState('')
+  const phoneInputRef = useRef(null)
+  const vatTaxIdInputRef = useRef(null)
+  const [newPasswordError, setNewPasswordError] = useState('')
+  const newPasswordInputRef = useRef(null)
+  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState('')
+  const confirmNewPasswordInputRef = useRef(null)
+
+  const handleNameChange = e => {
+    setName(e.target.value)
+    setNameError('')
   }
 
-  useFormValidation()
-  const handlePhoneNumberInput = e => {}
+  const handleCompanyChange = e => {
+    setCompany(e.target.value)
+  }
+
+  const handlePostalCodeChange = e => {
+    setPostalCode(e.target.value)
+  }
+
+  const handleVatTaxIdChange = e => {
+    setVatTaxId(e.target.value)
+  }
+
+  const handleAddressChange = e => {
+    setAddress(e.target.value)
+    setAddressError('')
+  }
+
+  const handlePhoneChange = e => {
+    setPhone(e)
+    setPhoneError('')
+  }
+
+  const handleNewPasswordChange = e => {
+    setNewPassword(e.target.value)
+    setNewPasswordError('')
+  }
+
+  const handleConfirmNewPasswordChange = e => {
+    setConfirmNewPassword(e.target.value)
+    setConfirmNewPasswordError('')
+  }
+
+  const handlePasswordChange = async e => {
+    e.preventDefault()
+    setPasswordLoading(true)
+
+    try {
+      let isError = false
+      if (!validatePassword(newPassword)) {
+        setNewPasswordError(
+          'Please input a strong password that matches the below requirements'
+        )
+        newPasswordInputRef.current.focus() // Focus on the input
+        return (isError = true)
+      }
+
+      if (!validatePassword(confirmNewPassword)) {
+        setConfirmNewPasswordError(
+          'Please input a strong password that matches the below requirements'
+        )
+        confirmNewPasswordInputRef.current.focus() // Focus on the input
+        return (isError = true)
+      }
+
+      if (newPassword !== confirmNewPassword) {
+        setNewPasswordError('Passwords do not match')
+        setConfirmNewPasswordError('Passwords do not match')
+        newPasswordInputRef.current.focus() // Focus on the input
+        return (isError = true)
+      }
+
+      if (newPassword === confirmNewPassword) {
+        const _user = {
+          email: user.email,
+          password: newPassword
+        }
+        console.log('_user', _user)
+        const { data, error } = await Axios.patch(
+          '/users/update/password',
+          _user
+        )
+        console.log('data', data)
+        if (data) {
+          swal(
+            error ? 'Oops' : 'Great',
+            'Password Update Successful',
+            !error ? 'success' : 'error'
+          ).then(() => {
+            // Once the swal dialog is closed
+            setNewPassword('')
+            setConfirmNewPassword('')
+            setNewPasswordError('')
+            setConfirmNewPasswordError('')
+            localStorage.removeItem('_d_user')
+
+            authDispatch({ type: 'LOG_OUT' })
+
+            return navigate(`/login/user`) // Redirect to the user login page
+          })
+        }
+        setPasswordLoading(false)
+      }
+    } catch (error) {
+      console.log('error update password', error)
+      swal('Oops', getErrorMessage(error), 'error')
+      setPasswordLoading(false)
+    }
+  }
+
   return (
     <>
       {/* Breadcrumb  */}
@@ -164,6 +281,9 @@ const MyAccount = () => {
                             id='name'
                             placeholder='Full Name'
                             required
+                            defaultValue={name}
+                            onChange={handleNameChange}
+                            ref={nameInputRef}
                           />
                           <div className='invalid-feedback'>
                             Valid full name is required.
@@ -184,6 +304,9 @@ const MyAccount = () => {
                             className='form-control'
                             id='company'
                             placeholder='(optional)'
+                            defaultValue={company}
+                            onChange={handleCompanyChange}
+                            ref={companyInputRef}
                           />
                         </div>
                       </div>
@@ -202,6 +325,9 @@ const MyAccount = () => {
                             id='address'
                             placeholder='Address'
                             required
+                            defaultValue={address}
+                            onChange={handleAddressChange}
+                            ref={addressInputRef}
                           />
                           <div className='invalid-feedback'>
                             Valid address is required.
@@ -222,6 +348,9 @@ const MyAccount = () => {
                             className='form-control'
                             id='postalCode'
                             placeholder='(optional)'
+                            defaultValue={postalCode}
+                            onChange={handlePostalCodeChange}
+                            ref={postalCodeInputRef}
                           />
                         </div>
                       </div>
@@ -235,33 +364,14 @@ const MyAccount = () => {
                           id='phone'
                           placeholder='E.g +2347034054567'
                           onChange={e => {
-                            handlePhoneNumberInput(e)
+                            handlePhoneChange(e)
                           }}
                           required
+                          defaultValue={phone}
+                          ref={phoneInputRef}
                         />
                         <div className='invalid-feedback'>
                           Valid phone number is required.
-                        </div>
-                      </div>
-                      {/* email */}
-                      <div className='col-12 text-start justify-content-start ms-auto'>
-                        <label htmlFor='email' className='form-label'>
-                          Email Address
-                        </label>
-                        <div className='input-group has-validation'>
-                          <span className='input-group-text'>
-                            <i class='bi bi-envelope-at'></i>
-                          </span>
-                          <input
-                            type='email'
-                            className='form-control'
-                            id='email'
-                            placeholder='Email would be used for shipment notifications'
-                            required
-                          />
-                          <div className='invalid-feedback'>
-                            Valid sender email address is required.
-                          </div>
                         </div>
                       </div>
                       {/* VAT/Tax ID */}
@@ -278,6 +388,9 @@ const MyAccount = () => {
                             className='form-control'
                             id='taxNo'
                             placeholder='Used in Customs Declaration section (optional)'
+                            defaultValue={vatTaxId}
+                            onChange={handleVatTaxIdChange}
+                            ref={vatTaxIdInputRef}
                           />
                         </div>
                       </div>
@@ -293,7 +406,7 @@ const MyAccount = () => {
                         {/* <!-- Image upload --> */}
                         <div className='input-group'>
                           <span className='input-group-text'>
-                          <i class="bi bi-camera2"></i>
+                            <i class='bi bi-camera2'></i>
                           </span>
                           <input
                             type='file'
@@ -337,51 +450,6 @@ const MyAccount = () => {
               </div>
               <form>
                 <div className='row'>
-                  {/* current password */}
-                  <div className='col-12 text-start justify-content-start ms-auto mt-3'>
-                    <label htmlFor='currentPassword' className='form-label'>
-                      Current Password
-                    </label>
-                    <div className='input-group has-validation'>
-                      <span className='input-group-text'>
-                        <i className='bi bi-lock'></i>
-                      </span>
-                      <input
-                        type='password'
-                        className='form-control w-70'
-                        id='currentPassword'
-                        placeholder='Enter your current password'
-                        required
-                      />
-                      <button
-                        className='btn btn-outline-secondary'
-                        type='button'
-                        id='toggleCurrentPassword'
-                        onClick={() => {
-                          const passwordField =
-                            document.getElementById('currentPassword')
-                          const toggleButton = document.getElementById(
-                            'toggleCurrentPassword'
-                          )
-                          if (passwordField.type === 'password') {
-                            passwordField.type = 'text'
-                            toggleButton.innerHTML =
-                              '<i className="bi bi-eye-slash"></i>'
-                          } else {
-                            passwordField.type = 'password'
-                            toggleButton.innerHTML =
-                              '<i className="bi bi-eye"></i>'
-                          }
-                        }}
-                      >
-                        <i className='bi bi-eye'></i>
-                      </button>
-                      <div className='invalid-feedback'>
-                        Current Password is required.
-                      </div>
-                    </div>
-                  </div>
-
                   {/* new password */}
                   <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                     <label htmlFor='newPassword' className='form-label'>
@@ -393,10 +461,14 @@ const MyAccount = () => {
                       </span>
                       <input
                         type='password'
-                        className='form-control w-70'
+                        className={`form-control w-70 ${
+                          newPasswordError ? 'is-invalid' : ''
+                        } ${newPassword ? 'is-valid' : ''}`}
                         id='newPassword'
                         placeholder='Enter your new password'
                         required
+                        onChange={handleNewPasswordChange}
+                        ref={newPasswordInputRef}
                       />
                       <button
                         className='btn btn-outline-secondary'
@@ -420,9 +492,7 @@ const MyAccount = () => {
                       >
                         <i className='bi bi-eye'></i>
                       </button>
-                      <div className='invalid-feedback'>
-                        New Password is required.
-                      </div>
+                      <div className='invalid-feedback'>{newPasswordError}</div>
                     </div>
                   </div>
 
@@ -437,10 +507,14 @@ const MyAccount = () => {
                       </span>
                       <input
                         type='password'
-                        className='form-control w-70'
+                        className={`form-control w-70 ${
+                          confirmNewPasswordError ? 'is-invalid' : ''
+                        } ${confirmNewPassword ? 'is-valid' : ''}`}
                         id='confirmNewPassword'
                         placeholder='Confirm your new password'
                         required
+                        onChange={handleConfirmNewPasswordChange}
+                        ref={confirmNewPasswordInputRef}
                       />
                       <button
                         className='btn btn-outline-secondary'
@@ -466,7 +540,7 @@ const MyAccount = () => {
                         <i className='bi bi-eye'></i>
                       </button>
                       <div className='invalid-feedback'>
-                        Confirmation of New Password is required.
+                        {confirmNewPasswordError}
                       </div>
                     </div>
                   </div>
@@ -474,11 +548,19 @@ const MyAccount = () => {
                   {/* password requirements */}
                   <div className='col-12 text-start justify-content-start ms-auto mt-3'>
                     <h6 className='mb-1'>Password requirements:</h6>
-                    <p style={{ textAlign: 'justify' }}>Ensure that these requirements are met:</p>
+                    <p style={{ textAlign: 'justify' }}>
+                      Ensure that these requirements are met:
+                    </p>
                     <ul
                       style={{
                         paddingLeft: '20px',
-                        listStylePosition: 'inside'
+                        listStylePosition: 'inside',
+                        color:
+                          newPasswordError || confirmNewPasswordError
+                            ? 'red'
+                            : newPassword === confirmNewPassword && newPassword
+                            ? 'green'
+                            : 'black'
                       }}
                     >
                       <li> Minimum 8 characters long the more, the better</li>
@@ -491,10 +573,11 @@ const MyAccount = () => {
                   </div>
 
                   <div className='text-center'>
+                    {passwordLoading && <Loader />}
                     <button
-                      type='submit'
-                      className='text-center btn btn-success shadow'
+                      className='text-center btn btn-success shadow mt-2'
                       style={{ width: '30%' }}
+                      onClick={e => handlePasswordChange(e)}
                     >
                       Save Changes
                     </button>

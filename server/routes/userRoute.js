@@ -116,15 +116,17 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
 
     console.log('token', token)
 
-    const { accessToken, refreshToken } = await getAuthTokens({
-      ...currentUser,
-      token
-    })
+    const { accessToken, accessTokenExpiry, refreshToken } =
+      await getAuthTokens({
+        ...currentUser,
+        token
+      })
 
     // Prepare response object
     const obj = {
       ...currentUser,
       accessToken,
+      accessTokenExpiry,
       refreshToken
     }
 
@@ -235,15 +237,17 @@ router.put(
       }
 
       const token = generateHash(result._id.toString())
-      const { accessToken, refreshToken } = await getAuthTokens({
-        ...currentUser,
-        token
-      })
+      const { accessToken, accessTokenExpiry, refreshToken } =
+        await getAuthTokens({
+          ...currentUser,
+          token
+        })
 
       // Prepare response object
       const obj = {
         ...currentUser,
         accessToken,
+        accessTokenExpiry,
         refreshToken
       }
 
@@ -282,7 +286,7 @@ router.put('/resend-verification-email', async (req, res) => {
     eventManager.emit('resend_user_email_verification_code', { ...user._doc })
     res.status(200).json({ message: 'Verification Code Sent Successfully' })
   } catch (error) {
-    console.log('resned verification email error', error)
+    console.log('resend verification email error', error)
     return res.status(400).json({
       message:
         'An error occurred resending user verification code, please try again.'
@@ -375,15 +379,17 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
 
     console.log('token', token)
 
-    const { accessToken, refreshToken } = await getAuthTokens({
-      ...currentUser,
-      token
-    })
+    const { accessToken, accessTokenExpiry, refreshToken } =
+      await getAuthTokens({
+        ...currentUser,
+        token
+      })
 
     // Prepare response object
     const obj = {
       ...currentUser,
       accessToken,
+      accessTokenExpiry,
       refreshToken
     }
 
@@ -401,7 +407,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
     console.log('sessionObj', sessionObj)
 
     await Session.create(sessionObj)
- 
+
     //event emitter to send login notification email
     eventManager.emit('login_notification', {
       ...user._doc
@@ -414,6 +420,37 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
     return res
       .status(400)
       .json({ message: 'An error occurred, try again or refresh page.' })
+  }
+})
+
+// password reset route
+router.patch('/update/password', verifyAuthToken, async (req, res) => {
+  try {
+    const email = req.body.email 
+    const password = generateHash(req.body.password)
+    const hashPassword = password
+    const user = await User.find({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User does not exist' })
+    }
+
+    const result = await User.findOneAndUpdate(
+      { email }, 
+      { password: hashPassword }
+    )
+
+    //event emitter to send password reset notification email
+    eventManager.emit('update_password_notification', {
+      ...user._doc
+    })
+
+    res.status(200).json({ message: 'Password changed successfully' })
+  } catch (error) {
+    console.log('update password error', error)
+    return res.status(400).json({
+      message: 'An error occurred, please try again.'
+    })
   }
 })
 
@@ -469,15 +506,17 @@ router.post('/refresh/token', verifyRefreshToken, async (req, res) => {
       _id: _user._id
     }
 
-    const { accessToken, refreshToken } = await getAuthTokens({
-      ...currentUser,
-      token
-    })
+    const { accessToken, accessTokenExpiry, refreshToken } =
+      await getAuthTokens({
+        ...currentUser,
+        token
+      })
 
     // Construct response object with updated authentication tokens and user details
     const user = {
       ...currentUser,
       accessToken,
+      accessTokenExpiry,
       refreshToken
     }
 

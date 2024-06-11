@@ -14,9 +14,8 @@ import 'datatables.net-responsive'
 import 'datatables.net-responsive-bs5'
 import 'datatables.net-select'
 import 'datatables.net-select-bs5'
-import { useAuthContext } from '../src/contexts/AuthContext'
 import ProtectedRoute from './layouts/ProtectedRoute.js'
-import { useAuthRedirect } from './libs/auth/index.js'
+import { useAuthRedirect, useAutoLogout } from './libs/auth/index.js'
 
 //using lazy load
 const HomeScreen = lazy(() => import('./views/frontend/HomeScreen'))
@@ -53,14 +52,9 @@ const ConditionsOfCarriage = lazy(() =>
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 
 const App = () => {
+  useAuthRedirect() // custom hook is responsible for checking the user's authentication status and role and handle redirection to home page from login (already logged in users) and registration (users with certain 'role' can't access the registration) pages.
 
-  useAuthRedirect(); // custom hook is responsible for checking the user's authentication status and role and handle redirection to home page from login (already logged in users) and registration (users with certain 'role' can't access the registration) pages.
-
-  // // Destructure the authState object from the useAuthContext hook to extract isAuthenticated and isAuthenticating
-  // const {
-  //   authState: { isAuthenticated, isAuthenticating } //Destructures the authState object to extract isAuthenticated and isAuthenticating values.
-  //   // authDispatch // Destructure authDispatch from useAuthContext hook
-  // } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
+  useAutoLogout() // A custom hook that checks the token's expiration time every second and logs out the user if the token is expired. It displays a SweetAlert notification and navigates the user to the login page.
 
   useEffect(() => {
     //set localStorage value
@@ -113,8 +107,19 @@ const App = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         localStorage.setItem('cookieConsent', true)
-        Swal.fire('Saved!', '', 'success')
+        Swal.fire({
+          title: 'Saved!',
+          text: '', // Empty text for success message (optional)
+          icon: 'success',
+          confirmButtonColor: '#006400' // Set the background color to green
+        })
       } else if (result.isDenied) {
+        Swal.fire({
+          title: 'Oops!',
+          text: 'Changes are not saved', // Empty text for success message (optional)
+          icon: 'info',
+          confirmButtonColor: '#c8a209' // Set the background color to warning
+        })
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
@@ -150,16 +155,21 @@ const App = () => {
             />
 
             {/* protected routes frontend */}
-            <Route element={<ProtectedRoute allowedRoles={['User', 'Admin', 'SuperAdmin']} />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  allowedRoles={['User', 'Admin', 'SuperAdmin']}
+                />
+              }
+            >
               <Route path='/account' element={<MyAccount />} />
               <Route path='/my-orders' element={<MyOrders />} />
               <Route path='/order-details' element={<OrderDetails />} />
             </Route>
           </Route>
 
-          {/* backend */}
-          <Route element={<BackEndLayout />}>
-            {/* protected routes backend */}
+          {/* backend protected routes*/}
+          <Route element={<FrontEndLayout />}>
             <Route
               element={
                 <ProtectedRoute allowedRoles={['Admin', 'SuperAdmin']} />

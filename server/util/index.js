@@ -92,20 +92,23 @@ const getAuthTokens = async (user) => {
   // Destructure token and the rest of the user properties
   const { token, ...rest } = user;
 
+  const accessTokenExpiry = Math.floor(Date.now() / 1000) + 180; // Access token expires in 3 minutes (180 seconds)
+  const refreshTokenExpiry = Math.floor(Date.now() / 1000) + 86400; // Refresh token expires in 1 day (86400 seconds)
+
   // Generate an access token with a specified expiration time
   const accessToken = await jwt.sign(rest, jwtKeys.public, {
-    expiresIn: "180000", // Access token expires in 180000 milliseconds (3 minutes)
+    expiresIn: accessTokenExpiry,
   });
 
   // Generate a refresh token with a specified expiration time
   const refreshToken = await jwt.sign(
     { userId: rest._id, token },
     jwtKeys.secret,
-    { expiresIn: "86400000" } // Refresh token expires in 86400000 milliseconds (1 day)
+    { expiresIn: refreshTokenExpiry }
   );
 
-  // Return the generated access and refresh tokens
-  return { accessToken, refreshToken };
+  // Return the generated access, accessTokenExpiry and refresh tokens
+  return { accessToken, accessTokenExpiry, refreshToken };
 
 };
 

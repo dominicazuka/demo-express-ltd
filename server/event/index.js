@@ -106,4 +106,35 @@ eventManager.on("login_notification", async (payload) => {
     }
 });
 
+
+// update password notification dispatch
+eventManager.on("update_password_notification", async (payload) => {
+    console.log('payload', payload)
+    try {
+        const to = payload.email;
+        const message = `Dear ${payload.name}, <br/>
+        <p>We noticed a new password reset initiated on your account. If this was you, you don’t need to do anything. If not, we’ll help you secure your account.</p>
+            <p>The request was generated from below device details:</p>
+            <ul>
+                <li><b>IP Address:</b> ${payload.lastLoginIpAddress}</li>
+                <li><b>Device:</b> ${payload.lastLoginDevice}</li>
+                <li><b>Date:</b> ${new Date(payload.lastLoginDate).toLocaleString()}</li>
+            </ul>
+            <br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `;
+        const html = await replyTemplate(message);
+        const options = {
+            to,
+            html,
+            subject: "Password Changed Notification - Demo Express LTD"
+        }
+        await mailNoReplyDispatcher(options);
+    } catch (error) {
+        console.log("mailNoReplyDispatcher error:", error);
+    }
+});
+
+
 module.exports = eventManager;
