@@ -1,5 +1,6 @@
 require('dotenv').config(); //load enviroment variables
 const express = require('express'); //import express framework
+const path = require('path');
 const cors = require('cors'); //import CORS middleware to enable Cross-Origin Resource Sharing
 const compression = require('compression'); //import compression middleware to compress response bodies for all requests 
 const app = express(); //create an express app
@@ -49,5 +50,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({credentials:true, origin: appOrigin})); //configures the CORS (Cross-Origin Resource Sharing) middleware with specific options for your Express server.
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '../server/uploads')));
 
 app.use('/api/users', userRoute); 

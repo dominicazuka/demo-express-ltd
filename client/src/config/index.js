@@ -34,6 +34,13 @@ Axios.interceptors.request.use(
       // Add token to request headers if available
       config.headers["x-access-token"] = token; // for Node.js Express back-end
     }
+
+    // Dynamically set Content-Type header based on request data type
+    if (config.data && config.data instanceof FormData) {
+      config.headers["Content-Type"] = "multipart/form-data";
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
     return config;
   },
   (error) => {
@@ -82,5 +89,7 @@ Axios.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+
+ 
 
 export default Axios;

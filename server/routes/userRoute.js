@@ -6,6 +6,10 @@ const {
 } = require('../validators')
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+const crypto = require('crypto')
+const fs = require('fs')
+const path = require('path')
 const User = require('../models/user')
 const Session = require('../models/session')
 const Newsletter = require('../models/newsletter')
@@ -19,6 +23,31 @@ const { verifyRefreshToken } = require('../middleware/auth.middleware')
 const bcrypt = require('bcryptjs')
 const { verifyAuthToken } = require('../middleware/auth.middleware') //to verify if user is logged in
 const { verifyRole } = require('../middleware/role.middleware') //to verify user role
+
+//multer configuration for single user profile image upload - would exclude later from here
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../server/uploads/profile')
+  },
+  filename: function (req, file, cb) {
+    const randomName = crypto.randomBytes(16).toString('hex') // Generate a random string
+    const ext = path.extname(file.originalname) // Get the file extension
+    cb(null, `${randomName}${ext}`) // Combine them to create the new filename
+  }
+})
+
+const uploadOptions = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (!file.mimetype.match(/jpeg|jpg|png$/)) {
+      return cb(new Error('Only .png, .jpg, and .jpeg files are allowed.'))
+    }
+    cb(null, true)
+  },
+  limits: { fileSize: 2 * 1024 * 1024 } // 2MB
+})
 
 // register user
 router.post('/register', validate(validateSignUpInput), async (req, res) => {
@@ -426,7 +455,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
 // password reset route
 router.patch('/update/password', verifyAuthToken, async (req, res) => {
   try {
-    const email = req.body.email 
+    const email = req.body.email
     const password = generateHash(req.body.password)
     const hashPassword = password
     const user = await User.find({ email })
@@ -436,7 +465,7 @@ router.patch('/update/password', verifyAuthToken, async (req, res) => {
     }
 
     const result = await User.findOneAndUpdate(
-      { email }, 
+      { email },
       { password: hashPassword }
     )
 
@@ -453,6 +482,127 @@ router.patch('/update/password', verifyAuthToken, async (req, res) => {
     })
   }
 })
+
+// Get users profile
+router.get('/profile', verifyAuthToken, async (req, res) => {
+  try {
+    const { email } = req.query
+    // user device
+    const device = req.headers['user-agent']
+    // user ip
+    const ip = req.ip
+    console.log('req.query', req.query)
+    // Fetch user by email or _id
+    let user
+    if (email) {
+      user = await User.findOne({ email }).select('-password')
+      console.log('user', user)
+    }
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // Generate authentication tokens
+    const currentUser = {
+      name: user.name,
+      email: user.email,
+      isBlocked: user.isBlocked,
+      role: user.role,
+      phone: user.phone,
+      country: user.country,
+      countryCode: user.countryCode,
+      state: user.state,
+      city: user.city,
+      company: user.company,
+      address: user.address,
+      vatTaxId: user.vatTaxId,
+      lastLoginIpAddress: ip,
+      lastLoginDate: new Date(),
+      lastLoginDevice: device,
+      image: user.image,
+      _id: user._id
+    }
+
+    const token = generateHash(user._id.toString())
+
+    const { accessToken, accessTokenExpiry, refreshToken } =
+      await getAuthTokens({
+        ...currentUser,
+        token
+      })
+
+    // Prepare response object
+    const obj = {
+      ...currentUser,
+      accessToken,
+      accessTokenExpiry,
+      refreshToken
+    }
+
+    res.status(200).json(obj)
+  } catch (error) {
+    console.error('Error fetching user profile:', error)
+    res.status(500).json({ message: 'An error occurred, please try again.' })
+  }
+})
+
+//profile update route
+router.patch(
+  '/update/profile',
+  verifyAuthToken,
+  uploadOptions.single('image'),
+  async (req, res) => {
+    try {
+      const { name, company, address, postalCode, phone, vatTaxId, email } =
+        req.body
+      const newImage = req.file ? req.file.filename : null
+      const user = await User.findOne({ email })
+
+      if (!newImage)
+        return res
+          .status(404)
+          .json({ message: 'No image found in the request' })
+
+      if (!user) {
+        return res.status(400).json({ message: 'User does not exist' })
+      }
+
+      // If there's a new image, delete the old one
+      if (user.image && newImage) {
+        const oldImagePath = user.image
+          ? path.join(
+              __dirname,
+              '../uploads/profile',
+              path.basename(user.image)
+            )
+          : null
+
+        if (oldImagePath && fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath)
+        }
+        const fileName = newImage
+        const basePath = `${req.protocol}://${req.get('host')}/uploads/profile/`
+        user.image = `${basePath}${fileName}`
+      }
+
+      user.name = name || user.name
+      user.company = company || user.company
+      user.address = address || user.address
+      user.postalCode = postalCode || user.postalCode
+      user.phone = phone || user.phone
+      user.vatTaxId = vatTaxId || user.vatTaxId
+
+      await user.save()
+
+      res.status(200).json({ message: 'Profile updated successfully', user })
+    } catch (error) {
+      console.log('update profile error', error)
+      return res
+        .status(400)
+        .json({ message: 'An error occured, please try again.' })
+    }
+  }
+)
 
 //  route to refresh authentication tokens
 router.post('/refresh/token', verifyRefreshToken, async (req, res) => {

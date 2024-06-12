@@ -5,6 +5,7 @@ import swal from 'sweetalert'
 import { getErrorMessage } from '../utils'
 import Axios from '../config'
 import { useAuthContext } from '../contexts/AuthContext'
+import TokenService from '../libs/token'
 
 const FrontEndHeader = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 768px)' })
@@ -21,13 +22,32 @@ const FrontEndHeader = () => {
 
   // Use effect to trigger re-render when authState changes
   useEffect(() => {
-    console.log('header isAuthenticated useEffect', isAuthenticated)
-  }, [isAuthenticated])
+    // Fetch the user data from your API and set it to state
+    const fetchUser = async () => {
+      try {
+        const response = await Axios.get('/users/profile', {
+          params: { email: user.email }
+        })
+        const userData = response.data
+        if (userData) {
+          localStorage.removeItem('_d_user')
+          TokenService.setUser(userData) // Store user data in local storage
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+        swal('Oops', getErrorMessage(error), 'error')
+      }
+    }
+
+    if (isAuthenticated) {
+      fetchUser()
+    }
+  }, [isAuthenticated, authDispatch, navigate, user.email])
 
   // handle logout
   const handleLogout = async () => {
     try {
-      if (localStorage.getItem('_f_user')) {
+      if (localStorage.getItem('_d_user')) {
         const user = localStorage.getItem('_d_user')
 
         if (!user) return null
@@ -202,8 +222,26 @@ const FrontEndHeader = () => {
                           <img alt="avatar" src={user.image ? user.image : 'https://via.placeholder.com/64x64'} className="rounded-circle" />
                         </div> */}
                           <div className='ms-3 lh-1'>
-                            <h5 className='mb-1'>{user.name}</h5>
-                            <p className='mb-0 text-muted'>{user.email}</p>
+                            <h5
+                              className='mb-1'
+                              style={{
+                                wordWrap: 'break-word',
+                                overflowWrap: 'break-word',
+                                whiteSpace: 'normal'
+                              }}
+                            >
+                              {user.name}
+                            </h5>
+                            <p
+                              className='mb-0 text-muted'
+                              style={{
+                                wordWrap: 'break-word',
+                                overflowWrap: 'break-word',
+                                whiteSpace: 'normal'
+                              }}
+                            >
+                              {user.email}
+                            </p>
                           </div>
                         </div>
                       </div>

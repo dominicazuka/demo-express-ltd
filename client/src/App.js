@@ -169,7 +169,7 @@ const App = () => {
           </Route>
 
           {/* backend protected routes*/}
-          <Route element={<FrontEndLayout />}>
+          <Route element={<BackEndLayout />}>
             <Route
               element={
                 <ProtectedRoute allowedRoles={['Admin', 'SuperAdmin']} />

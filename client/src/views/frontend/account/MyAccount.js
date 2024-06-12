@@ -11,7 +11,7 @@ import {
 import Axios from '../../../config'
 import TokenService from '../../../libs/token'
 import swal from 'sweetalert'
-import { LOGIN_USER } from '../../../actions/actions.auth'
+import { LOGIN_USER, UPDATE_PROFILE } from '../../../actions/actions.auth'
 import { useAuthContext } from '../../../contexts/AuthContext'
 import Swal from 'sweetalert2'
 
@@ -29,14 +29,13 @@ const MyAccount = () => {
     authDispatch // Destructure authDispatch from useAuthContext hook
   } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
-  const [name, setName] = useState(user.name ? user.name : '')
-  const [company, setCompany] = useState(user.company ? user.company : '')
-  const [address, setAddress] = useState(user.address ? user.address : '')
-  const [postalCode, setPostalCode] = useState(
-    user.postalCode ? user.postalCode : ''
-  )
-  const [phone, setPhone] = useState(user.phone ? user.phone : '')
-  const [vatTaxId, setVatTaxId] = useState(user.vatTaxtId ? user.vatTaxtId : '')
+  const [name, setName] = useState('')
+  const [company, setCompany] = useState('')
+  const [address, setAddress] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [phone, setPhone] = useState('')
+  const [vatTaxId, setVatTaxId] = useState('')
+  const [image, setImage] = useState(null)
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
 
@@ -46,13 +45,18 @@ const MyAccount = () => {
   //error state variables and useRef for required inputs
   const [nameError, setNameError] = useState('')
   const nameInputRef = useRef(null)
+  const [companyError, setCompanyError] = useState('')
   const companyInputRef = useRef(null)
   const [addressError, setAddressError] = useState('')
   const addressInputRef = useRef(null)
+  const [postalCodeError, setPostalCodeError] = useState('')
   const postalCodeInputRef = useRef(null)
   const [phoneError, setPhoneError] = useState('')
   const phoneInputRef = useRef(null)
+  const [vatTaxIdError, setVatTaxIdError] = useState('')
   const vatTaxIdInputRef = useRef(null)
+  const [imageError, setImageError] = useState('')
+  const imageInputRef = useRef(null)
   const [newPasswordError, setNewPasswordError] = useState('')
   const newPasswordInputRef = useRef(null)
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState('')
@@ -65,14 +69,17 @@ const MyAccount = () => {
 
   const handleCompanyChange = e => {
     setCompany(e.target.value)
+    setCompanyError('')
   }
 
   const handlePostalCodeChange = e => {
     setPostalCode(e.target.value)
+    setPostalCodeError('')
   }
 
   const handleVatTaxIdChange = e => {
     setVatTaxId(e.target.value)
+    setVatTaxIdError('')
   }
 
   const handleAddressChange = e => {
@@ -83,6 +90,113 @@ const MyAccount = () => {
   const handlePhoneChange = e => {
     setPhone(e)
     setPhoneError('')
+  }
+
+  const handleImageChange = e => {
+    const file = e.target.files[0]
+    if (file) {
+      if (!file.type.match('image/jpeg|image/png|image/jpg')) {
+        setImageError('Only .png, .jpg, and .jpeg files are allowed')
+        setImage(null)
+      } else if (file.size > 2 * 1024 * 1024) {
+        setImageError('File size should not exceed 2MB.')
+        setImage(null)
+      } else {
+        setImageError('')
+        setImage(file)
+      }
+    }
+  }
+
+  const handleUpdateProfileSubmit = async e => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      let isError = false
+      if (name.trim() === '') {
+        setNameError('Please enter full name')
+        nameInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (address.trim() === '') {
+        setAddressError('Please enter address')
+        addressInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (phone.trim() === '') {
+        setPhoneError('Please enter phone number')
+        phoneInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (company.trim() === '') {
+        setCompanyError('Please enter company')
+        companyInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (postalCode.trim() === '') {
+        setPostalCodeError('Please enter postal code')
+        postalCodeInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (vatTaxId.trim() === '') {
+        setVatTaxIdError('Please enter VAT/Tax Id No.')
+        vatTaxIdInputRef.current.focus() // Focus on the input element with the validation error
+        return (isError = true)
+      }
+
+      if (!image) {
+        setImageError('No file selected or invalid file selected.')
+        imageInputRef.current.focus() // Focus on the input element with the validation error
+        setLoading(false)
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('image', image)
+      formData.append('name', name)
+      formData.append('company', company)
+      formData.append('address', address)
+      formData.append('postalCode', postalCode)
+      formData.append('phone', phone)
+      formData.append('vatTaxId', vatTaxId)
+      formData.append('email', user.email)
+
+      const { data } = await Axios.patch('/users/update/profile', formData)
+
+      // Dispatch an action to the authentication context to update the user, The action has a type of UPDATE_PROFILE and carries the user data in the payload
+      authDispatch({
+        type: UPDATE_PROFILE, // Action type indicating the user is logging in
+        payload: data.user // Payload containing the user data to be stored in the authentication state
+      })
+
+      if (data) {
+        console.log('update profile client data', data)
+        // Update local storage with new user details
+        localStorage.setItem('user', JSON.stringify(data.user))
+
+        // Display success message and refresh the page
+        swal('Great', 'Profile updated successfully', 'success').then(() => {
+          setName(() => '') // Update name state with an empty string
+          setCompany(() => '') // Similar updates for other state variables
+          setPostalCode(() => '')
+          setVatTaxId(() => '')
+          setPhone(() => '')
+          setImage(null)
+          window.scrollTo(0, 0)
+          window.location.reload() //refresh the window
+        })
+      }
+
+      setLoading(false)
+    } catch (error) {
+      swal('Oops!', getErrorMessage(error), 'error')
+      setLoading(false)
+    }
   }
 
   const handleNewPasswordChange = e => {
@@ -257,7 +371,11 @@ const MyAccount = () => {
               <hr />
             </div>
             {/* <!-- Form START --> */}
-            <form className='file-upload needs-validation' noValidate>
+            <form
+              // onSubmit={handleUpdateProfileSubmit}
+              className='file-upload needs-validation'
+              noValidate
+            >
               <div className='row mb-3 gx-5'>
                 {/* <!-- Contact detail --> */}
                 <div className='col-xxl-8 mb-5 mb-xxl-0'>
@@ -277,20 +395,19 @@ const MyAccount = () => {
                           </span>
                           <input
                             type='text'
-                            className='form-control'
+                            className={`form-control ${
+                              nameError ? 'is-invalid' : ''
+                            } ${name ? 'is-valid' : ''}`}
                             id='name'
                             placeholder='Full Name'
                             required
-                            defaultValue={name}
                             onChange={handleNameChange}
                             ref={nameInputRef}
                           />
-                          <div className='invalid-feedback'>
-                            Valid full name is required.
-                          </div>
+                          <div className='invalid-feedback'>{nameError}</div>
                         </div>
                       </div>
-                      {/* company - optional */}
+                      {/* company */}
                       <div className='col-12 text-start justify-content-start ms-auto'>
                         <label htmlFor='company' className='form-label'>
                           Company
@@ -301,13 +418,16 @@ const MyAccount = () => {
                           </span>
                           <input
                             type='text'
-                            className='form-control'
+                            className={`form-control ${
+                              companyError ? 'is-invalid' : ''
+                            } ${company ? 'is-valid' : ''}`}
                             id='company'
-                            placeholder='(optional)'
-                            defaultValue={company}
+                            placeholder='Company'
+                            required
                             onChange={handleCompanyChange}
                             ref={companyInputRef}
                           />
+                          <div className='invalid-feedback'>{companyError}</div>
                         </div>
                       </div>
                       {/* address */}
@@ -321,20 +441,19 @@ const MyAccount = () => {
                           </span>
                           <input
                             type='text'
-                            className='form-control'
+                            className={`form-control ${
+                              addressError ? 'is-invalid' : ''
+                            } ${address ? 'is-valid' : ''}`}
                             id='address'
                             placeholder='Address'
                             required
-                            defaultValue={address}
                             onChange={handleAddressChange}
                             ref={addressInputRef}
                           />
-                          <div className='invalid-feedback'>
-                            Valid address is required.
-                          </div>
+                          <div className='invalid-feedback'>{addressError}</div>
                         </div>
                       </div>
-                      {/* postal code - optional */}
+                      {/* postal code */}
                       <div className='col-12 text-start justify-content-start ms-auto'>
                         <label htmlFor='postalCode' className='form-label'>
                           Postal Code
@@ -345,34 +464,42 @@ const MyAccount = () => {
                           </span>
                           <input
                             type='text'
-                            className='form-control'
+                            className={`form-control ${
+                              postalCodeError ? 'is-invalid' : ''
+                            } ${postalCode ? 'is-valid' : ''}`}
                             id='postalCode'
-                            placeholder='(optional)'
-                            defaultValue={postalCode}
+                            placeholder='Postal Code'
+                            required
                             onChange={handlePostalCodeChange}
                             ref={postalCodeInputRef}
                           />
+                          <div className='invalid-feedback'>
+                            {postalCodeError}
+                          </div>
                         </div>
                       </div>
                       {/* phone number */}
-                      <div className='has-validation text-start justify-content-start ms-auto'>
+                      <div
+                        tabIndex='-1'
+                        ref={phoneInputRef}
+                        className='has-validation text-start justify-content-start ms-auto'
+                      >
                         <label htmlFor='phone' className='form-label'>
                           Phone Number
                         </label>
                         <PhoneInput
-                          className='form-control rounded'
+                          className={`form-control ${
+                            phoneError ? 'is-invalid' : ''
+                          } ${phone ? 'is-valid' : ''}`}
                           id='phone'
                           placeholder='E.g +2347034054567'
                           onChange={e => {
                             handlePhoneChange(e)
                           }}
                           required
-                          defaultValue={phone}
-                          ref={phoneInputRef}
+                          // ref={phoneInputRef}
                         />
-                        <div className='invalid-feedback'>
-                          Valid phone number is required.
-                        </div>
+                        <div className='invalid-feedback'>{phoneError}</div>
                       </div>
                       {/* VAT/Tax ID */}
                       <div className='col-12 text-start justify-content-start ms-auto'>
@@ -385,13 +512,18 @@ const MyAccount = () => {
                           </span>
                           <input
                             type='text'
-                            className='form-control'
+                            className={`form-control ${
+                              vatTaxIdError ? 'is-invalid' : ''
+                            } ${vatTaxId ? 'is-valid' : ''}`}
                             id='taxNo'
-                            placeholder='Used in Customs Declaration section (optional)'
-                            defaultValue={vatTaxId}
+                            required
+                            placeholder='Used in Customs Declaration section'
                             onChange={handleVatTaxIdChange}
                             ref={vatTaxIdInputRef}
                           />
+                          <div className='invalid-feedback'>
+                            {vatTaxIdError}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -413,8 +545,13 @@ const MyAccount = () => {
                             id='customFile'
                             name='file'
                             hidden=''
-                            className='form-control mb-2 mt-2'
+                            className={`form-control mb-2 mt-2 ${
+                              imageError ? 'is-invalid' : ''
+                            } ${image ? 'is-valid' : ''}`}
+                            onChange={handleImageChange}
+                            ref={imageInputRef}
                           />
+                          <div className='invalid-feedback'>{imageError}</div>
                         </div>
                         {/* <!-- Content --> */}
                         <p className='text-muted mt-3 mb-0'>
@@ -428,17 +565,18 @@ const MyAccount = () => {
               </div>
 
               <div className='gap-3 d-md-flex justify-content-md-end text-center'>
+                {loading && <Loader />}
                 <button
                   type='button'
-                  className='btn btn-danger btn-lg shadow mt-2'
+                  className='btn btn-danger btn-lg shadow mt-2 me-2'
                 >
                   Delete profile
                 </button>
                 <button
-                  type='submit'
-                  className='btn btn-success btn-lg shadow mt-2'
+                  className='btn btn-success btn-lg shadow mt-2 me-2'
+                  onClick={e => handleUpdateProfileSubmit(e)}
                 >
-                  Update profile
+                  Update Profile
                 </button>
               </div>
             </form>
