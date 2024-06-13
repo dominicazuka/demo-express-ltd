@@ -11,7 +11,7 @@ const {appOrigin} = require('./config') //import appOrigin from the config file
 const {ipMiddleware} = require('./middleware/ip.middleware') // Importing the ipMiddleware from the middleware file
 const { verifyAuthToken, verifyRefreshToken } = require('./middleware/auth.middleware');
 
-// routes
+// routes 
 const userRoute = require('./routes/userRoute')
 
 // establish db connection 

@@ -337,7 +337,9 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
 
     // fetch user from db
     const user = await User.findOne({ email })
-    if (!user) {
+
+    //if user requested account deletion or not found
+    if (!user || user.isDeleted) {
       return res.status(400).json({
         message: 'Wrong credentials provided!'
       })
@@ -707,5 +709,41 @@ router.patch(
     }
   }
 )
+
+// soft delete profile route
+router.delete('/delete/profile', verifyAuthToken, async (req, res) => {
+  try {
+   const email = req.user.email;
+
+  //  console.log('soft delete email', req.user.email)
+
+   //fetch user from db
+   const user = await User.findOne({email});
+  //  console.log('soft delete user', user)
+
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    //mark the user as deleted
+    user.isDeleted = true;
+    user.lastLoginDate = new Date();
+    await user.save();
+
+    //event emitter to send password reset notification email
+    eventManager.emit('user_delete_request_notification', {
+      ...user._doc
+    })
+
+    res.status(200).json({ message: 'Profile deleted successfully' })
+  } catch (error) {
+    console.log('delete profile error', error)
+    return res.status(400).json({
+      message: 'An error occurred, please try again.'
+    })
+  }
+})
+
 
 module.exports = router

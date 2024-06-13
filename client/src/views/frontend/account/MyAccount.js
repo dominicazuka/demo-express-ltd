@@ -276,6 +276,54 @@ const MyAccount = () => {
     }
   }
 
+  const handleDeleteProfile = async(e) => {
+    e.preventDefault();
+    setLoading(true);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You won't be able to revert this`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#006400',
+      cancelButtonColor: '#8a640e',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const email = user.email; 
+          console.log('email', email)
+          const {data} = await Axios.delete('/users/delete/profile', {email});
+
+          if (data) {
+            Swal.fire({
+              title: 'Deleted!',
+              text: `Your profile has been deleted.`,
+              icon: 'success',
+              confirmButtonColor: '#006400',
+            }).then(() => {
+              // Perform logout and navigate to login page
+              localStorage.removeItem('_d_user')
+              authDispatch({ type: 'LOG_OUT' });
+              setLoading(false);
+              navigate('/login/user');
+            });
+          }
+        } catch (error) {
+          setLoading(false);
+          swal('Oops', getErrorMessage(error), 'error')
+        }
+      }else if (result.isDenied) {
+        Swal.fire({
+          title: 'Request successful',
+          text: `Profile not deleted`,
+          icon: 'info',
+          confirmButtonColor: '#006400',
+        })
+        setLoading(false);
+      }
+    });
+  }
+
   return (
     <>
       {/* Breadcrumb  */}
@@ -569,6 +617,7 @@ const MyAccount = () => {
                 <button
                   type='button'
                   className='btn btn-danger btn-lg shadow mt-2 me-2'
+                  onClick={e => handleDeleteProfile(e)}
                 >
                   Delete profile
                 </button>

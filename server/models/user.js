@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
     },
     role: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
+    isDeleted: {
+      type: Boolean,
+      default: false
+    },
     verificationString: { type: String },
     googleID: { type: String },
     lastLoginIpAddress: { type: String },
