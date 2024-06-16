@@ -141,6 +141,29 @@ eventManager.on('update_password_notification', async payload => {
   }
 })
 
+// resend verification code user email dispatch
+eventManager.on('forgot_password_request_notification', async payload => {
+    try {
+      const to = payload.email
+      const message = `Dear ${payload.name}, <br/>
+          <p>You recently initiated a forgot password process on our platform, kindly find below the required code.</p> <br/>
+  
+          <p><b>Verification code:</b> ${payload.verificationString}</p> <br/>
+  
+          <p><b>Demo Express LTD Team.</b></p> <br/>
+          `
+      const html = await replyTemplate(message)
+      const options = {
+        to,
+        html,
+        subject: 'Forgot Password Verification Code - Demo Express LTD'
+      }
+      await mailNoReplyDispatcher(options)
+    } catch (error) {
+      console.log('mailNoReplyDispatcher error:', error)
+    }
+  })
+
 // admin user delete request notification dispatch
 eventManager.on('user_delete_request_notification', async payload => {
   console.log('payload', payload)

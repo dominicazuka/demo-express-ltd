@@ -387,7 +387,7 @@ const RegisterPageUser = () => {
               </Link>
             </div>
 
-            <div className='col-lg-12'>
+            {/* <div className='col-lg-12'>
               <Link
                 to='/login/driver'
                 rel='noopener noreferrer'
@@ -403,7 +403,7 @@ const RegisterPageUser = () => {
                   DRIVER LOGIN
                 </button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

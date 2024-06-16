@@ -283,7 +283,7 @@ const VerifyEmail = () => {
           </form>
         </div>
       </main>
-      {/* register form ends */}
+      {/* verify email form ends */}
     </>
   )
 }

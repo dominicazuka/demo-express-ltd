@@ -28,6 +28,7 @@ const RegisterPageUser = lazy(() => import('./views/auth/RegisterPageUser'))
 const VerifyEmail = lazy(() => import('./views/auth/VerifyEmail'))
 const RegisterPageDriver = lazy(() => import('./views/auth/RegisterPageDriver'))
 const LoginPageUser = lazy(() => import('./views/auth/LoginPageUser'))
+const ForgotPassword = lazy(() => import('./views/auth/ForgotPassword'))
 const LoginPageDriver = lazy(() => import('./views/auth/LoginPageDriver'))
 const MyOrders = lazy(() => import('./views/frontend/order/MyOrders'))
 const OrderDetails = lazy(() => import('./views/frontend/order/OrderDetails'))
@@ -138,6 +139,7 @@ const App = () => {
             <Route path='/register/user' element={<RegisterPageUser />} />
             <Route path='/user/verify-email' element={<VerifyEmail />} />
             <Route path='/login/user' element={<LoginPageUser />} />
+            <Route path='/forgot/password' element={<ForgotPassword />} />
             <Route path='/login/driver' element={<LoginPageDriver />} />
             <Route path='/register/driver' element={<RegisterPageDriver />} />
             <Route path='/track-order' element={<TrackMyOrder />} />

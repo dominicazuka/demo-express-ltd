@@ -278,18 +278,19 @@ const MyAccount = () => {
 
   const handleDeleteProfile = async(e) => {
     e.preventDefault();
-    setLoading(true);
     Swal.fire({
       title: 'Are you sure?',
       text: `You won't be able to revert this`,
       icon: 'warning',
       showCancelButton: true,
+      showDenyButton: true,
       confirmButtonColor: '#006400',
       cancelButtonColor: '#8a640e',
       confirmButtonText: 'Yes, delete it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          setLoading(true);
           const email = user.email; 
           console.log('email', email)
           const {data} = await Axios.delete('/users/delete/profile', {email});
@@ -313,12 +314,14 @@ const MyAccount = () => {
           swal('Oops', getErrorMessage(error), 'error')
         }
       }else if (result.isDenied) {
-        Swal.fire({
-          title: 'Request successful',
-          text: `Profile not deleted`,
-          icon: 'info',
-          confirmButtonColor: '#006400',
-        })
+        setLoading(false);
+        swal('Request Successful', 'Profile not deleted', 'info')
+        // Swal.fire({
+        //   title: 'Request successful',
+        //   text: `Profile not deleted`,
+        //   icon: 'info',
+        //   confirmButtonColor: '#006400',
+        // })
         setLoading(false);
       }
     });

@@ -454,7 +454,107 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
   }
 })
 
-// password reset route
+// forgot password request route
+router.patch('/forgot-password-request', async (req, res) => {
+  try {
+    const email = req.body.email
+
+    const user = await User.findOne({ email })
+
+    if (!user || user.isDeleted) {
+      return res.status(404).json({ message: 'User does not exist' })
+    }
+
+     //generate verification code
+     const verificationCode = generateVerificationCode()
+
+    user.verificationString = verificationCode;
+    await user.save();
+
+    //event emitter to send password reset notification email
+    eventManager.emit('forgot_password_request_notification', {
+      ...user._doc
+    })
+
+    res.status(200).json({ message: 'Verification code sent successfully' })
+  } catch (error) {
+    console.log('forgot password request error', error)
+    return res.status(400).json({
+      message: 'An error occurred, please try again.'
+    })
+  }
+})
+
+// resend verification mail
+router.put('/forgot-password/verify-email', validate(validateVerifyEmailInput), async (req, res) => {
+  try {
+    const { verificationString } = req.body
+
+    if (verificationString < 6) {
+      return res.status(401).json({
+        message: 'Verification code length must be 6 characters.'
+      })
+    }
+
+    if (verificationString > 6) {
+      return res.status(401).json({
+        message: 'Verification code above required'
+      })
+    }
+
+    const result = await User.findOne({
+      verificationString
+    })
+
+    if (!result) {
+      return res.status(401).json({
+        message: 'Invalid verification code.'
+      })
+    }
+
+    res.status(200).json({ message: 'Verification code verified' })
+  } catch (error) {
+    console.log('resend verification email error', error)
+    return res.status(400).json({
+      message:
+        'An error occurred confirming user verification code, please try again.'
+    })
+  }
+})
+
+// forgot password reset route (not logged in users)
+router.patch('/forgot-password/update/password', async (req, res) => {
+  try {
+    const email = req.body.email
+    const password = generateHash(req.body.password)
+    const hashPassword = password
+    const user = await User.find({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User does not exist' })
+    }
+
+    const result = await User.findOneAndUpdate(
+      { email },
+      { password: hashPassword }
+    )
+
+    //event emitter to send password reset notification email
+    eventManager.emit('update_password_notification', {
+      ...user._doc
+    })
+
+    res.status(200).json({ message: 'Password changed successfully' })
+  } catch (error) {
+    console.log('update password error', error)
+    return res.status(400).json({
+      message: 'An error occurred, please try again.'
+    })
+  }
+})
+
+
+// password reset route - logged in users (my account page)
 router.patch('/update/password', verifyAuthToken, async (req, res) => {
   try {
     const email = req.body.email
@@ -721,7 +821,6 @@ router.delete('/delete/profile', verifyAuthToken, async (req, res) => {
    const user = await User.findOne({email});
   //  console.log('soft delete user', user)
 
-
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
@@ -731,7 +830,7 @@ router.delete('/delete/profile', verifyAuthToken, async (req, res) => {
     user.lastLoginDate = new Date();
     await user.save();
 
-    //event emitter to send password reset notification email
+    //event emitter to send user delete request notification email
     eventManager.emit('user_delete_request_notification', {
       ...user._doc
     })

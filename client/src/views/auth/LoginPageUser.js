@@ -225,7 +225,7 @@ const LoginPageUser = () => {
               </Link>
             </div>
 
-            <div className='col-lg-12'>
+            {/* <div className='col-lg-12'>
               <Link
                 to='/register/driver'
                 rel='noopener noreferrer'
@@ -241,7 +241,7 @@ const LoginPageUser = () => {
                   DRIVER REGISTER
                 </button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -345,20 +345,26 @@ const LoginPageUser = () => {
               </div>
 
               <hr className='my-4' />
-              {/* remember-me subscription start*/}
-              <div class='form-check text-start my-3'>
-                <input
-                  class='form-check-input'
-                  type='checkbox'
-                  name='remember-me'
-                  id='rememberMeCheck'
-                  onChange={e => setRememberMe(e.target.checked)}
-                />
-                <label class='form-check-label' for='rememberMeCheck'>
-                  Remember me
-                </label>
+              <div className='gap-3 d-md-flex justify-content-md-start text-center'>
+                {/* remember-me subscription start*/}
+                <div class='form-check text-start my-3'>
+                  <input
+                    class='form-check-input'
+                    type='checkbox'
+                    name='remember-me'
+                    id='rememberMeCheck'
+                    onChange={e => setRememberMe(e.target.checked)}
+                  />
+                  <label class='form-check-label' for='rememberMeCheck'>
+                    Remember me
+                  </label>
+
+                  {/*forgot password*/}
+                  <Link to='/forgot/password' style={{ marginLeft: '10px', color: 'green' }}>
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
-              {/* remember-me end */}
 
               {loading && <Loader />}
               <button
