@@ -10,6 +10,8 @@ import FullScreenLoader from './components/FullScreenLoader'
 import Swal from 'sweetalert2'
 import 'datatables.net'
 import 'datatables.net-bs5'
+import 'datatables.net-buttons';
+import 'datatables.net-dt';
 import 'datatables.net-responsive'
 import 'datatables.net-responsive-bs5'
 import 'datatables.net-select'
@@ -51,6 +53,7 @@ const ConditionsOfCarriage = lazy(() =>
 
 // backend
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
+const AllPartners = lazy(() => import('./views/backend/partner/AllPartners.js'))
 
 const App = () => {
   useAuthRedirect() // custom hook is responsible for checking the user's authentication status and role and handle redirection to home page from login (already logged in users) and registration (users with certain 'role' can't access the registration) pages.
@@ -178,6 +181,7 @@ const App = () => {
               }
             >
               <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/all/partners' element={<AllPartners />} />
             </Route>
           </Route>
 

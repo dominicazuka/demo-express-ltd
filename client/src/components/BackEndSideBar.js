@@ -70,14 +70,14 @@ const BackEndSideBar = () => {
           <div className='offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto'>
             <ul className='nav flex-column'>
               <li className='nav-item'>
-                <a
+                <Link
+                  to='/dashboard'
                   className='nav-link d-flex align-items-center gap-2 active'
                   aria-current='page'
-                  href='#'
                 >
                   <i className='bi bi-house-door-fill'></i>
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li className='nav-item'>
                 <a
@@ -93,17 +93,8 @@ const BackEndSideBar = () => {
                   className='nav-link d-flex align-items-center gap-2'
                   href='#'
                 >
-                  <i className='bi bi-cart'></i>
-                  Products
-                </a>
-              </li>
-              <li className='nav-item'>
-                <a
-                  className='nav-link d-flex align-items-center gap-2'
-                  href='#'
-                >
                   <i className='bi bi-people'></i>
-                  Customers
+                  Users
                 </a>
               </li>
               <li className='nav-item'>
@@ -116,13 +107,13 @@ const BackEndSideBar = () => {
                 </a>
               </li>
               <li className='nav-item'>
-                <a
+                <Link
+                  to='/all/partners'
                   className='nav-link d-flex align-items-center gap-2'
-                  href='#'
                 >
-                  <i className='bi bi-puzzle'></i>
-                  Integrations
-                </a>
+                  <i class='fa-regular fa-handshake'></i>
+                  Partners
+                </Link>
               </li>
             </ul>
 
@@ -153,24 +144,6 @@ const BackEndSideBar = () => {
                 >
                   <i className='bi bi-file-earmark-text'></i>
                   Last quarter
-                </a>
-              </li>
-              <li className='nav-item'>
-                <a
-                  className='nav-link d-flex align-items-center gap-2'
-                  href='#'
-                >
-                  <i className='bi bi-file-earmark-text'></i>
-                  Social engagement
-                </a>
-              </li>
-              <li className='nav-item'>
-                <a
-                  className='nav-link d-flex align-items-center gap-2'
-                  href='#'
-                >
-                  <i className='bi bi-file-earmark-text'></i>
-                  Year-end sale
                 </a>
               </li>
             </ul>

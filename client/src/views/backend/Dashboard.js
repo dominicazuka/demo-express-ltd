@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import BackEndSideBar from '../../components/BackEndSideBar'
 import BackEndFooter from '../../components/BackEndFooter'
 import BackEndHeader from '../../components/BackEndHeader'
@@ -26,6 +26,11 @@ ChartJS.register(
 )
 
 const Dashboard = () => {
+    // window scroll to top on page load
+    useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
+
   const data = {
     labels: [
       'Sunday',
