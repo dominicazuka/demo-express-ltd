@@ -143,26 +143,26 @@ eventManager.on('update_password_notification', async payload => {
 
 // resend verification code user email dispatch
 eventManager.on('forgot_password_request_notification', async payload => {
-    try {
-      const to = payload.email
-      const message = `Dear ${payload.name}, <br/>
+  try {
+    const to = payload.email
+    const message = `Dear ${payload.name}, <br/>
           <p>You recently initiated a forgot password process on our platform, kindly find below the required code.</p> <br/>
   
           <p><b>Verification code:</b> ${payload.verificationString}</p> <br/>
   
           <p><b>Demo Express LTD Team.</b></p> <br/>
           `
-      const html = await replyTemplate(message)
-      const options = {
-        to,
-        html,
-        subject: 'Forgot Password Verification Code - Demo Express LTD'
-      }
-      await mailNoReplyDispatcher(options)
-    } catch (error) {
-      // console.log('mailNoReplyDispatcher error:', error)
+    const html = await replyTemplate(message)
+    const options = {
+      to,
+      html,
+      subject: 'Forgot Password Verification Code - Demo Express LTD'
     }
-  })
+    await mailNoReplyDispatcher(options)
+  } catch (error) {
+    // console.log('mailNoReplyDispatcher error:', error)
+  }
+})
 
 // admin user delete request notification dispatch
 eventManager.on('user_delete_request_notification', async payload => {
@@ -202,7 +202,9 @@ eventManager.on('super_admin_new_partner_added', async payload => {
   try {
     const to = adminEmail
     const message = `Dear Admin, <br/>
-        <p>A new partner has been added by ${payload.user.name} (${payload.user.email}).</p> <br/>
+        <p>A new partner has been added by ${payload.user.name} (${
+      payload.user.email
+    }).</p> <br/>
             <p>Partner Details:</p>
             <ul>
                 <li><b>Name:</b> ${payload.partnerName}</li>
@@ -269,7 +271,9 @@ eventManager.on('super_admin_partner_edited', async payload => {
   try {
     const to = adminEmail
     const message = `Dear Admin, <br/>
-        <p>A partner has been edited by ${payload.user.name} (${payload.user.email}).</p> <br/>
+        <p>A partner has been edited by ${payload.user.name} (${
+      payload.user.email
+    }).</p> <br/>
             <p>Updated Partner Details:</p>
             <ul>
                 <li><b>Name:</b> ${payload.partnerName}</li>
@@ -296,4 +300,38 @@ eventManager.on('super_admin_partner_edited', async payload => {
   }
 })
 
+//super admin partner deleted notification dispatch
+eventManager.on('super_admin_partner_deleted', async payload => {
+  // console.log('payload', payload)
+  try {
+    const to = adminEmail
+    const message = `Dear Admin, <br/>
+        <p>A partner has been deleted by ${payload.user.name} (${
+      payload.user.email
+    }).</p> <br/>
+            <p>Deleted Partner Details:</p>
+            <ul>
+                <li><b>Name:</b> ${payload.partnerName}</li>
+                <li><b>Phone Number:</b> ${payload.phoneNumber}</li>
+                <li><b>Email</b> ${payload.email}</li>
+                <li><b>Services</b> ${payload.servicesOffered.join(', ')}</li>
+                <li><b>Address</b> ${payload.address}</li>
+                <li><b>Country</b> ${payload.country}</li>
+            </ul>
+            <br/>
+            <p>Please review the information and take the necessary actions. If you have any questions or need further assistance, please do not hesitate to contact support team.</p><br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `
+    const html = await replyTemplate(message)
+    const options = {
+      to,
+      html,
+      subject: 'Partner Deleted Notification - Demo Express LTD'
+    }
+    await mailNoReplyDispatcher(options)
+  } catch (error) {
+    // console.log('mailNoReplyDispatcher error:', error)
+  }
+})
 module.exports = eventManager

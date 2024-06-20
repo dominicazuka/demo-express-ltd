@@ -5,12 +5,19 @@ import { Link } from 'react-router-dom'
 import Axios from '../../../config'
 import Swal from 'sweetalert2'
 import Loader from '../../../components/Loader'
+import { useAuthContext } from '../../../contexts/AuthContext'
 
 const AllPartners = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  // Destructure the authState object from the useAuthContext hook to extract isAuthenticated, isAuthenticating, and user
+  const {
+    authState: { isAuthenticated, isAuthenticating, user }, // Destructures the authState object to extract isAuthenticated, isAuthenticating, and user values.
+    authDispatch // Destructure authDispatch from useAuthContext hook
+  } = useAuthContext() // Use the useAuthContext hook to get the authentication state and dispatch function
 
   const [partners, setPartners] = useState([])
   const [loading, setLoading] = useState(false)
@@ -42,6 +49,56 @@ const AllPartners = () => {
       $('#basic-datatable').DataTable()
     }
   }, [partners])
+
+  const handleDelete = async (partnerId, user) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You won't be able to revert this`,
+      icon: 'warning',
+      showCancelButton: true,
+      showDenyButton: true,
+      confirmButtonColor: '#006400',
+      cancelButtonColor: '#8a640e',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          setLoading(true)
+          const { data } = await Axios.delete(
+            `/partners/delete/partner/${partnerId}`,
+            {
+              data: {
+                email: user.email,
+                name: user.name
+              }
+            }
+          )
+
+          if (data) {
+            Swal.fire({
+              title: 'Deleted!',
+              text: `The partner has been deleted.`,
+              icon: 'success',
+              confirmButtonColor: '#006400'
+            }).then(() => {
+              setLoading(false)
+              setPartners(partners.filter(partner => partner._id !== partnerId))
+            })
+          }
+        } catch (error) {
+          setLoading(false)
+          Swal.fire('Oops', 'Failed to delete partner', 'error')
+        }
+      } else if (result.isDenied) {
+        setLoading(false)
+        Swal.fire(
+          'Request Successful',
+          'Partner not deleted, request cancelled',
+          'info'
+        )
+      }
+    })
+  }
 
   return (
     <div className='container-fluid'>
@@ -94,6 +151,14 @@ const AllPartners = () => {
                         </td>
                       </tr>
                     )}
+
+                    {!loading && partners.length === 0 && (
+                      <tr>
+                        <td colSpan='8' style={{ textAlign: 'center' }}>
+                          No data available in table
+                        </td>
+                      </tr>
+                    )}
                     {partners.map((partner, index) => (
                       <tr key={partner._id}>
                         <td>{index + 1}</td>
@@ -105,20 +170,27 @@ const AllPartners = () => {
                         <td>{partner.country}</td>
                         <td>
                           <Link
-                            to={`/edit/partner?id=${encodeURIComponent(partner._id)}`}
+                            to={`/edit/partner?id=${encodeURIComponent(
+                              partner._id
+                            )}`}
                             className='btn btn-blue rounded-pill waves-effect waves-light'
                             title='Edit'
                           >
                             <i className='fa-regular fa-pen-to-square'></i>
                           </Link>
-                          <a
-                            href={`delete/partner/${partner._id}`}
+                          <button
+                            onClick={() =>
+                              handleDelete(partner._id, {
+                                email: user.email,
+                                name: user.name
+                              })
+                            }
                             className='btn btn-danger rounded-pill waves-effect waves-light'
                             id='delete'
                             title='Delete'
                           >
                             <i className='fa-solid fa-trash'></i>
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     ))}

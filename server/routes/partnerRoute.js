@@ -136,4 +136,35 @@ router.patch(
   }
 );
 
+// delete partner route
+router.delete(
+  '/delete/partner/:id',
+  verifyAuthToken,
+  verifyRole(['Admin', 'SuperAdmin']),
+  async (req, res) => {
+    const { id } = req.params;
+    const {email, name} = req.body;
+
+    try {
+      const partner = await Partner.findByIdAndDelete(id);
+      if (!partner) {
+        return res.status(404).json({ message: 'Partner not found' });
+      }
+
+      const user = {
+        email, 
+        name
+      }
+
+      //super admin partner deleted email dispatch
+      eventManager.emit('super_admin_partner_deleted', { ...partner._doc, user })
+
+      res.status(200).json({ message: 'Partner deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete partner', error });
+    }
+  }
+);
+
+
 module.exports = router;
