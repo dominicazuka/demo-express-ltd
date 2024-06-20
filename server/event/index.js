@@ -196,4 +196,72 @@ eventManager.on('user_delete_request_notification', async payload => {
   }
 })
 
+
+//super admin new partner added notification dispatch
+eventManager.on('super_admin_new_partner_added', async payload => {
+  console.log('payload', payload)
+  try {
+    const to = adminEmail
+    const message = `Dear Admin, <br/>
+        <p>A new partner has been added by ${payload.user.name} (${payload.user.email}).</p> <br/>
+            <p>Partner Details:</p>
+            <ul>
+                <li><b>Name:</b> ${payload.partnerName}</li>
+                <li><b>Phone Number:</b> ${payload.phoneNumber}</li>
+                <li><b>Email</b> ${payload.email}</li>
+                <li><b>Services</b> ${payload.servicesOffered.join(', ')}</li>
+                <li><b>Address</b> ${payload.address}</li>
+                <li><b>Country</b> ${payload.country}</li>
+            </ul>
+            <br/>
+            <p>Please review the information and take the necessary actions. If you have any questions or need further assistance, please do not hesitate to contact support team.</p><br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `
+    const html = await replyTemplate(message)
+    const options = {
+      to,
+      html,
+      subject: 'New Partner Added Notification - Demo Express LTD'
+    }
+    await mailNoReplyDispatcher(options)
+  } catch (error) {
+    console.log('mailNoReplyDispatcher error:', error)
+  }
+})
+
+//new partner welcome email dispatch
+eventManager.on('new_partner_welcome_email', async payload => {
+  console.log('payload', payload)
+  try {
+    const to = payload.email
+    const message = `Dear ${payload.partnerName}, <br/>
+        <p>We are thrilled to welcome you to Demo Express LTD!</p> <br/>
+        <p>As our new partner, you are now part of a community dedicated to "connecting customers with need of exceptional services."</p> <br/>
+            <p>Partner Account Details:</p>
+            <ul>
+                <li><b>Name:</b> ${payload.partnerName}</li>
+                <li><b>Phone Number:</b> ${payload.phoneNumber}</li>
+                <li><b>Email</b> ${payload.email}</li>
+                <li><b>Services</b> ${payload.servicesOffered.join(', ')}</li>
+                <li><b>Address</b> ${payload.address}</li>
+                <li><b>Country</b> ${payload.country}</li>
+            </ul>
+            <br/>
+            <p>Please review the information and take the necessary actions. If you have any questions or need further assistance, please do not hesitate to contact support team.</p><br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `
+    const html = await replyTemplate(message)
+    const options = {
+      to,
+      html,
+      subject: 'Welcome to Demo Express LTD'
+    }
+    await mailNoReplyDispatcher(options)
+  } catch (error) {
+    console.log('mailNoReplyDispatcher error:', error)
+  }
+})
+
 module.exports = eventManager

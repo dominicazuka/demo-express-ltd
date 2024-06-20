@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const shipperSchema = new mongoose.Schema({
     shipperName: { type: String, required: true },
     phoneNumber: { type: String, required: true },

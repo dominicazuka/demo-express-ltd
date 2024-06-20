@@ -45,5 +45,16 @@ const validateSigninInput = [
     body("password").trim().not().isEmpty().withMessage("Password is required").bail().isLength({min:8}).withMessage("Password length is too short"),
 ]; 
 
+// Validation rules for adding a new partner
+const validateAddPartnerInput = [
+    body("name").trim().not().isEmpty().withMessage("Name is required"),
+    body("email").trim().not().isEmpty().withMessage("Email is required").bail().isEmail().withMessage("Please enter a valid email"),
+    body("phone").trim().not().isEmpty().withMessage("Phone Number is required"),
+    body("country").trim().not().isEmpty().withMessage("Country is required"),
+    body("state").trim().not().isEmpty().withMessage("State is required"),
+    body("city").trim().not().isEmpty().withMessage("City is required"),
+    body("address").trim().not().isEmpty().withMessage("Address is required"),
+];
+
 // Export the validation rules
-module.exports = { validateSignUpInput, validateVerifyEmailInput, validateSigninInput };
+module.exports = { validateSignUpInput, validateVerifyEmailInput, validateSigninInput, validateAddPartnerInput  };

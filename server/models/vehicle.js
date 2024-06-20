@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const vehicleSchema = new mongoose.Schema({
     vehicleType: { type: String, required: true },
     capacity: { type: Number, required: true },

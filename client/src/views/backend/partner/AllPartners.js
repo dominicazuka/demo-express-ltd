@@ -3,6 +3,8 @@ import BackEndSideBar from '../../../components/BackEndSideBar'
 import $ from 'jquery'
 import { Link } from 'react-router-dom'
 import Axios from '../../../config'
+import Swal from 'sweetalert2'
+import Loader from '../../../components/Loader'
 
 const AllPartners = () => {
   // window scroll to top on page load
@@ -11,27 +13,35 @@ const AllPartners = () => {
   }, [])
 
   const [partners, setPartners] = useState([])
-
-  //   initialize datatable
-  const useDataTables = selector => {
-    useEffect(() => {
-      $(selector).DataTable()
-    }, [selector])
-  }
-  useDataTables('#basic-datatable')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        const response = await Axios.get('/users/all-partners') // Adjust the URL as necessary
+        setLoading(true)
+        const response = await Axios.get('/partners/all-partners') // Adjust the URL as necessary
         setPartners(response.data)
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching partners:', error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error fetching partners, please try again or refresh page',
+          confirmButtonColor: '#006400'
+        })
       }
     }
 
     fetchPartners()
   }, [])
+
+  useEffect(() => {
+    // Initialize DataTable after partners data is set
+    if (partners.length > 0) {
+      $('#basic-datatable').DataTable()
+    }
+  }, [partners])
 
   return (
     <div className='container-fluid'>
@@ -42,7 +52,7 @@ const AllPartners = () => {
             <div className='card-header'>
               <div className='row'>
                 <div className='col-lg-12 text-lg-end align-items-end mt-3 mt-lg-0'>
-                  <Link to='/ship' className='btn btn-success'>
+                  <Link to='/add/partner' className='btn btn-success'>
                     + Add New Partner
                   </Link>
                   <a href='#!' className='btn btn-light'>
@@ -72,6 +82,18 @@ const AllPartners = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {loading && (
+                      <tr>
+                        <td colSpan='8' style={{ textAlign: 'center' }}>
+                          <div
+                            className='d-flex justify-content-center align-items-center'
+                            style={{ height: '100px' }}
+                          >
+                            <Loader />
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                     {partners.map((partner, index) => (
                       <tr key={partner._id}>
                         <td>{index + 1}</td>
@@ -111,4 +133,4 @@ const AllPartners = () => {
   )
 }
 
-export default AllPartners;
+export default AllPartners

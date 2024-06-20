@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const carrierSchema = new mongoose.Schema({
     carrierName: { type: String, required: true },
     phoneNumber: { type: String, required: true },

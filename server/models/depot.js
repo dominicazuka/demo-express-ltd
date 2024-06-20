@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const depotSchema = new mongoose.Schema({
     address: { type: String, required: true },
     countryCode: { type: String, required: true },

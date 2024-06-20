@@ -13,6 +13,7 @@ const { verifyAuthToken, verifyRefreshToken } = require('./middleware/auth.middl
 
 // routes 
 const userRoute = require('./routes/userRoute')
+const partnerRoute = require('./routes/partnerRoute')
 
 // establish db connection 
 connectDb(); 
@@ -55,3 +56,4 @@ app.use(cors({credentials:true, origin: appOrigin})); //configures the CORS (Cro
 app.use('/uploads', express.static(path.join(__dirname, '../server/uploads')));
 
 app.use('/api/users', userRoute); 
+app.use('/api/partners', partnerRoute); 
