@@ -175,7 +175,7 @@ const MyAccount = () => {
       })
 
       if (data) {
-        console.log('update profile client data', data)
+        // console.log('update profile client data', data)
         // Update local storage with new user details
         localStorage.setItem('user', JSON.stringify(data.user))
 
@@ -243,12 +243,12 @@ const MyAccount = () => {
           email: user.email,
           password: newPassword
         }
-        console.log('_user', _user)
+        // console.log('_user', _user)
         const { data, error } = await Axios.patch(
           '/users/update/password',
           _user
         )
-        console.log('data', data)
+        // console.log('data', data)
         if (data) {
           swal(
             error ? 'Oops' : 'Great',
@@ -270,7 +270,7 @@ const MyAccount = () => {
         setPasswordLoading(false)
       }
     } catch (error) {
-      console.log('error update password', error)
+      // console.log('error update password', error)
       swal('Oops', getErrorMessage(error), 'error')
       setPasswordLoading(false)
     }
@@ -292,7 +292,7 @@ const MyAccount = () => {
         try {
           setLoading(true);
           const email = user.email; 
-          console.log('email', email)
+          // console.log('email', email)
           const {data} = await Axios.delete('/users/delete/profile', {email});
 
           if (data) {

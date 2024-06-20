@@ -109,7 +109,7 @@ const ForgotPassword = () => {
       const { data } = await Axios.put('/users/forgot-password/verify-email', {
         verificationString: verificationString
       })
-      console.log('data', data)
+      // console.log('data', data)
 
       // If verification is successful
       if (data) {
@@ -172,12 +172,12 @@ const ForgotPassword = () => {
           email: userEmail,
           password: newPassword
         }
-        console.log('_user', user)
+        // console.log('_user', user)
         const { data, error } = await Axios.patch(
           '/users/forgot-password/update/password',
           user
         )
-        console.log('data', data)
+        // console.log('data', data)
         if (data) {
           swal(
             error ? 'Oops' : 'Great',
@@ -199,7 +199,7 @@ const ForgotPassword = () => {
         setPasswordLoading(false)
       }
     } catch (error) {
-      console.log('error update password', error)
+      // console.log('error update password', error)
       swal('Oops', getErrorMessage(error), 'error')
       setPasswordLoading(false)
     }

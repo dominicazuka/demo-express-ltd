@@ -2,7 +2,7 @@
 
 // Function to get error message from error object
 export const getErrorMessage = (error) => {
-  console.log("error", error)
+  // console.log("error", error)
     let message = error.message;
     if (error.response) {
       message = error.response.data.message;

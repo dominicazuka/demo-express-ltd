@@ -45,7 +45,7 @@ const VerifyEmail = () => {
       const { data, error } = await Axios.put('/users/resend-verification-email', {
         email: email
       })
-      console.log('data', data)
+      // console.log('data', data)
       swal(
         error ? 'Oops' : 'Great',
         'Email Verification Resent',
@@ -81,7 +81,7 @@ const VerifyEmail = () => {
       const { data, error } = await Axios.put('/users/verify-email', {
         verificationString: verificationString
       })
-      console.log('data', data)
+      // console.log('data', data)
 
        // If verification is successful
       if (data) {

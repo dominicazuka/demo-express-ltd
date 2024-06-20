@@ -7,7 +7,7 @@ const { jwtKeys } = require("../config"); // Importing JWT keys from configurati
 const verifyAuthToken = (req, res, next) => {
   // Extract the token from the request headers
   let token = req.headers["x-access-token"];  
-  console.log('Received Access Token:', token); // Log the received token
+  // console.log('Received Access Token:', token); // Log the received token
 
   // Check if token exists
   if (!token) { 
@@ -38,7 +38,7 @@ const verifyAuthToken = (req, res, next) => {
 const verifyRefreshToken = (req, res, next) => {
   // Extract the refresh token from the request body
   let token = req.body.refreshToken;
-  console.log('Received Refresh Token:', token); // Log the received refresh token
+  // console.log('Received Refresh Token:', token); // Log the received refresh token
 
   // Check if refresh token exists
   if (!token) {

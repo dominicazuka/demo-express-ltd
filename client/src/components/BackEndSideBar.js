@@ -16,7 +16,7 @@ const BackEndSideBar = () => {
 
   // Use effect to trigger re-render when authState changes
   useEffect(() => {
-    console.log('header isAuthenticated useEffect', isAuthenticated)
+    // console.log('header isAuthenticated useEffect', isAuthenticated)
   }, [isAuthenticated])
 
   // handle logout
@@ -38,7 +38,7 @@ const BackEndSideBar = () => {
         navigate('/')
       })
     } catch (error) {
-      console.log('header Logout error', error)
+      // console.log('header Logout error', error)
       swal('Oops', getErrorMessage(error), 'error')
     }
   }

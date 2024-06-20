@@ -28,7 +28,7 @@ Axios.interceptors.request.use(
   (config) => {
      // Retrieve the access token from local storage
     const token = TokenService.getLocalAccessToken();
-    console.log("Request Token:", token); // Debugging: Log the token being sent
+    // console.log("Request Token:", token); // Debugging: Log the token being sent
 
     if (token) {
       // Add token to request headers if available
@@ -68,12 +68,12 @@ Axios.interceptors.response.use(
           });
 
           // Log the new tokens received after refresh
-          console.log('New Access Token:', rs.data.accessToken);
-          console.log('New Refresh Token:', rs.data.refreshToken);
+          // console.log('New Access Token:', rs.data.accessToken);
+          // console.log('New Refresh Token:', rs.data.refreshToken);
           
           // Update the session with the new token
           TokenService.updateLocalSession(rs.data);
-          console.log("New Tokens:", rs.data); // Debugging: Log the new tokens
+          // console.log("New Tokens:", rs.data); // Debugging: Log the new tokens
 
           // Retry the original request with new access token
           originalConfig.headers["x-access-token"] = rs.data.accessToken;

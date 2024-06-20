@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import BackEndSideBar from '../../../components/BackEndSideBar'
-import $ from 'jquery'
-import { useNavigate } from 'react-router-dom'
-import Axios from '../../../config'
+import { useLocation, useNavigate } from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import swal from 'sweetalert'
 import { getErrorMessage, validateEmail } from '../../../utils'
-import Swal from 'sweetalert2'
 import { Country } from 'country-state-city'
-import Loader from '../../../components/Loader'
 import { useAuthContext } from '../../../contexts/AuthContext'
+import Axios from '../../../config'
+import Swal from 'sweetalert2'
+import Loader from '../../../components/Loader'
+import BackEndSideBar from '../../../components/BackEndSideBar'
 
-const AddPartner = () => {
+const EditPartner = () => {
   // window scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -26,6 +25,14 @@ const AddPartner = () => {
 
   const navigate = useNavigate() //import useNavigate from react-router-dom
 
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const id = searchParams.get('id')
+
+  const [partner, setPartner] = useState(null)
+
+  const [loading, setLoading] = useState(false)
+
   const [partnerName, setPartnerName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
@@ -34,7 +41,30 @@ const AddPartner = () => {
   const [address, setAddress] = useState('')
   const [country, setCountry] = useState('')
   const [countryCode, setCountryCode] = useState('')
-  const [loading, setLoading] = useState(false)
+
+  //fetch partner by id from db
+  useEffect(() => {
+    const fetchPartner = async () => {
+      try {
+        const response = await Axios.get(`/partners/get/partner`, {
+          params: { id }
+        })
+        setPartner(response.data)
+        // console.log('partner', partner)
+      } catch (error) {
+        // console.error('Error fetching partner:', error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error fetching partner details, please try again or refresh page',
+          confirmButtonColor: '#006400'
+        })
+        setLoading(false)
+      }
+    }
+
+    fetchPartner()
+  }, [id])
 
   //error state variables and useRef for required inputs
   const [partnerNameError, setPartnerNameError] = useState('')
@@ -163,8 +193,9 @@ const AddPartner = () => {
         countryCode
       }
 
-      const response = await Axios.post('/partners/add-partner', {
+      const response = await Axios.patch('/partners/update/partner', {
         ...partner,
+        id,
         user: {
           email: user.email,
           name: user.name
@@ -175,7 +206,7 @@ const AddPartner = () => {
         Swal.fire({
           icon: 'success',
           title: 'Success',
-          text: 'Partner added successfully',
+          text: 'Partner updated successfully',
           confirmButtonColor: '#006400'
         })
         setPartnerName('')
@@ -208,7 +239,7 @@ const AddPartner = () => {
         <div className='col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3'>
           <div className='card shadow'>
             <div className='card-body'>
-              <h4 className='card-title'>Add Partner</h4>
+              <h4 className='card-title'>Edit Partner</h4>
               <form
                 className='needs-validation'
                 noValidate
@@ -220,6 +251,9 @@ const AddPartner = () => {
                     <label htmlFor='partnerName' className='form-label'>
                       Partner Name
                     </label>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.partnerName}</b></li>
+                    </ul>
                     <div className='input-group has-validation'>
                       <span className='input-group-text'>
                         <i class='bi bi-person-bounding-box'></i>
@@ -250,6 +284,9 @@ const AddPartner = () => {
                     <label htmlFor='phone' className='form-label'>
                       Phone Number
                     </label>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.phoneNumber}</b></li>
+                    </ul>
                     <PhoneInput
                       className={`form-control rounded ${
                         phoneNumberError ? 'is-invalid' : ''
@@ -271,6 +308,9 @@ const AddPartner = () => {
                     <label htmlFor='email' className='form-label'>
                       Email Address
                     </label>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.email}</b></li>
+                    </ul>
                     <div className='input-group has-validation'>
                       <span className='input-group-text'>
                         <i class='bi bi-envelope-at'></i>
@@ -297,6 +337,9 @@ const AddPartner = () => {
                     <label htmlFor='servicesOffered' className='form-label'>
                       Services Offered
                     </label>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.servicesOffered.join(', ')}</b></li>
+                    </ul>
                     <div className='input-group has-validation'>
                       <span className='input-group-text'>
                         <i class='bi bi-tags-fill'></i>
@@ -336,6 +379,9 @@ const AddPartner = () => {
                     <label htmlFor='address' className='form-label'>
                       Address
                     </label>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.address}</b></li>
+                    </ul>
                     <div className='input-group has-validation'>
                       <span className='input-group-text'>
                         <i class='bi bi-send'></i>
@@ -351,7 +397,6 @@ const AddPartner = () => {
                         onChange={e => {
                           handleAddressChange(e)
                         }}
-                        defaultValue={address}
                         ref={addressInputRef}
                       />
                       <div className='invalid-feedback'>{addressError}</div>
@@ -366,6 +411,10 @@ const AddPartner = () => {
                     <span style={{ marginLeft: '10px' }}>
                       <i class='bi bi-globe-asia-australia'></i>
                     </span>
+                    <ul className='text-muted' style={{listStylePosition: 'inside'}}>
+                      <li>Old Data: <b>{partner && partner.country}</b></li>
+                    </ul>
+                    
                     <select
                       className={`form-select ${
                         countryError ? 'is-invalid' : ''
@@ -404,4 +453,4 @@ const AddPartner = () => {
   )
 }
 
-export default AddPartner
+export default EditPartner

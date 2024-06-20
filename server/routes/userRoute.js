@@ -53,17 +53,17 @@ const uploadOptions = multer({
 router.post('/register', validate(validateSignUpInput), async (req, res) => {
   try {
     const body = req.body
-    console.log('body', body)
+    // console.log('body', body)
     // hash password
     const hashPassword = generateHash(req.body.password)
 
     // user device
     const device = req.headers['user-agent']
-    console.log('device', device)
+    // console.log('device', device)
 
     // user ip
     const ip = req.ip
-    console.log('ip', ip)
+    // console.log('ip', ip)
 
     // Check if user with the same email already exists
     const existingUser = await User.findOne({ email: body.email })
@@ -116,7 +116,7 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       vehicleType: 'Truck'
     })
 
-    console.log('user', user)
+    // console.log('user', user)
 
     // Generate authentication tokens
     const currentUser = {
@@ -139,11 +139,11 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       _id: user._id
     }
 
-    console.log('currentUser', currentUser)
+    // console.log('currentUser', currentUser)
 
     const token = generateHash(user._id.toString())
 
-    console.log('token', token)
+    // console.log('token', token)
 
     const { accessToken, accessTokenExpiry, refreshToken } =
       await getAuthTokens({
@@ -159,7 +159,7 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       refreshToken
     }
 
-    console.log('obj', obj)
+    // console.log('obj', obj)
 
     // Store session information
     const sessionObj = {
@@ -170,7 +170,7 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
       email: user.email
     }
 
-    console.log('sessionObj', sessionObj)
+    // console.log('sessionObj', sessionObj)
 
     await Session.create(sessionObj)
 
@@ -182,7 +182,7 @@ router.post('/register', validate(validateSignUpInput), async (req, res) => {
     // Respond with success message and user details
     res.status(200).json({ message: 'User registered successfully', user: obj })
   } catch (error) {
-    console.log('register route error', error)
+    // console.log('register route error', error)
     return res
       .status(400)
       .json({ message: 'An error occurred, try registering again a new user' })
@@ -197,11 +197,11 @@ router.put(
     try {
       // user device
       const device = req.headers['user-agent']
-      console.log('device', device)
+      // console.log('device', device)
 
       // user ip
       const ip = req.ip
-      console.log('ip', ip)
+      // console.log('ip', ip)
 
       const { verificationString } = req.body
       if (verificationString < 6) {
@@ -286,7 +286,7 @@ router.put(
         .status(200)
         .json({ message: 'Email Verified Successfully', user: obj })
     } catch (error) {
-      console.log('verify email route error', error)
+      // console.log('verify email route error', error)
       return res.status(400).json({
         message: 'An error occurred verifying user email, please try again.'
       })
@@ -315,7 +315,7 @@ router.put('/resend-verification-email', async (req, res) => {
     eventManager.emit('resend_user_email_verification_code', { ...user._doc })
     res.status(200).json({ message: 'Verification Code Sent Successfully' })
   } catch (error) {
-    console.log('resend verification email error', error)
+    // console.log('resend verification email error', error)
     return res.status(400).json({
       message:
         'An error occurred resending user verification code, please try again.'
@@ -329,11 +329,11 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
     const { email, password, rememberMe } = req.body
     // user device
     const device = req.headers['user-agent']
-    console.log('device', device)
+    // console.log('device', device)
 
     // user ip
     const ip = req.ip
-    console.log('ip', ip)
+    // console.log('ip', ip)
 
     // fetch user from db
     const user = await User.findOne({ email })
@@ -366,7 +366,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
       const emailVerificationRedirect = `user/verify-email?email=${encodeURIComponent(
         user.email
       )}`
-      console.log('emailVerificationRedirect', emailVerificationRedirect)
+      // console.log('emailVerificationRedirect', emailVerificationRedirect)
       return res.status(401).json({
         message: 'Email not verified, kindly verify your email',
         redirect: emailVerificationRedirect
@@ -404,11 +404,11 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
       _id: user._id
     }
 
-    console.log('currentUser', currentUser)
+    // console.log('currentUser', currentUser)
 
     const token = generateHash(user._id.toString())
 
-    console.log('token', token)
+    // console.log('token', token)
 
     const { accessToken, accessTokenExpiry, refreshToken } =
       await getAuthTokens({
@@ -424,7 +424,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
       refreshToken
     }
 
-    console.log('obj', obj)
+    // console.log('obj', obj)
 
     // Store session information
     const sessionObj = {
@@ -435,7 +435,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
       email: user.email
     }
 
-    console.log('sessionObj', sessionObj)
+    // console.log('sessionObj', sessionObj)
 
     await Session.create(sessionObj)
 
@@ -447,7 +447,7 @@ router.post('/login', validate(validateSigninInput), async (req, res) => {
     // Respond with success message and user details
     res.status(200).json({ message: 'Login successful', user: obj })
   } catch (error) {
-    console.log('login route error', error)
+    // console.log('login route error', error)
     return res
       .status(400)
       .json({ message: 'An error occurred, try again or refresh page.' })
@@ -478,7 +478,7 @@ router.patch('/forgot-password-request', async (req, res) => {
 
     res.status(200).json({ message: 'Verification code sent successfully' })
   } catch (error) {
-    console.log('forgot password request error', error)
+    // console.log('forgot password request error', error)
     return res.status(400).json({
       message: 'An error occurred, please try again.'
     })
@@ -514,7 +514,7 @@ router.put('/forgot-password/verify-email', validate(validateVerifyEmailInput), 
 
     res.status(200).json({ message: 'Verification code verified' })
   } catch (error) {
-    console.log('resend verification email error', error)
+    // console.log('resend verification email error', error)
     return res.status(400).json({
       message:
         'An error occurred confirming user verification code, please try again.'
@@ -546,7 +546,7 @@ router.patch('/forgot-password/update/password', async (req, res) => {
 
     res.status(200).json({ message: 'Password changed successfully' })
   } catch (error) {
-    console.log('update password error', error)
+    // console.log('update password error', error)
     return res.status(400).json({
       message: 'An error occurred, please try again.'
     })
@@ -578,7 +578,7 @@ router.patch('/update/password', verifyAuthToken, async (req, res) => {
 
     res.status(200).json({ message: 'Password changed successfully' })
   } catch (error) {
-    console.log('update password error', error)
+    // console.log('update password error', error)
     return res.status(400).json({
       message: 'An error occurred, please try again.'
     })
@@ -593,12 +593,12 @@ router.get('/profile', verifyAuthToken, async (req, res) => {
     const device = req.headers['user-agent']
     // user ip
     const ip = req.ip
-    console.log('req.query', req.query)
+    // console.log('req.query', req.query)
     // Fetch user by email or _id
     let user
     if (email) {
       user = await User.findOne({ email }).select('-password')
-      console.log('user', user)
+      // console.log('user', user)
     }
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
@@ -643,7 +643,7 @@ router.get('/profile', verifyAuthToken, async (req, res) => {
 
     res.status(200).json(obj)
   } catch (error) {
-    console.error('Error fetching user profile:', error)
+    // console.error('Error fetching user profile:', error)
     res.status(500).json({ message: 'An error occurred, please try again.' })
   }
 })
@@ -698,7 +698,7 @@ router.patch(
 
       res.status(200).json({ message: 'Profile updated successfully', user })
     } catch (error) {
-      console.log('update profile error', error)
+      // console.log('update profile error', error)
       return res
         .status(400)
         .json({ message: 'An error occured, please try again.' })
@@ -709,10 +709,10 @@ router.patch(
 //  route to refresh authentication tokens
 router.post('/refresh/token', verifyRefreshToken, async (req, res) => {
   try {
-    console.log({
-      userId: req.user.userId,
-      token: req.user.token
-    })
+    // console.log({
+    //   userId: req.user.userId,
+    //   token: req.user.token
+    // })
     // Extract user ID and token from the request
     const userId = req.user.userId
     const token = req.user.token
@@ -773,12 +773,12 @@ router.post('/refresh/token', verifyRefreshToken, async (req, res) => {
     }
 
     // Log the constructed response object
-    console.log('Response Object:', user)
+    // console.log('Response Object:', user)
 
     // Send the response with the updated authentication tokens and user details
     return res.send(user)
   } catch (error) {
-    console.error('Error during token refresh:', error)
+    // console.error('Error during token refresh:', error)
     // If an error occurs, return a 400 Bad Request response
     return res
       .status(400)
@@ -802,7 +802,7 @@ router.patch(
       // send feedback
       res.status(200).json({ message: 'Logout Successful' })
     } catch (error) {
-      console.log('logout error', error)
+      // console.log('logout error', error)
       return res.status(400).json({
         message: 'An error occurred, please try again.'
       })
@@ -815,11 +815,11 @@ router.delete('/delete/profile', verifyAuthToken, async (req, res) => {
   try {
    const email = req.user.email;
 
-  //  console.log('soft delete email', req.user.email)
+  //  // console.log('soft delete email', req.user.email)
 
    //fetch user from db
    const user = await User.findOne({email});
-  //  console.log('soft delete user', user)
+  //  // console.log('soft delete user', user)
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
@@ -837,7 +837,7 @@ router.delete('/delete/profile', verifyAuthToken, async (req, res) => {
 
     res.status(200).json({ message: 'Profile deleted successfully' })
   } catch (error) {
-    console.log('delete profile error', error)
+    // console.log('delete profile error', error)
     return res.status(400).json({
       message: 'An error occurred, please try again.'
     })

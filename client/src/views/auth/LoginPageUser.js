@@ -81,7 +81,7 @@ const LoginPageUser = () => {
         payload: data.user // Payload containing the user data to be stored in the authentication state
       })
 
-      console.log('login page data', data)
+      // console.log('login page data', data)
 
       if (data) {
         TokenService.setUser(data.user) // Store user data in local storage

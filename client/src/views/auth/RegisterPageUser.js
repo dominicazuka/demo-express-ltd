@@ -75,7 +75,7 @@ const RegisterPageUser = () => {
     setCountryCode(countryIsoCode)
     const filterCountry = allCountries.find(c => c.isoCode === countryIsoCode)
     setCountry(filterCountry.name)
-    console.log('country:', country)
+    // console.log('country:', country)
     const availableStates = State.getAllStates()
     let filterStates = availableStates.filter(
       s => s.countryCode === countryIsoCode
@@ -94,8 +94,8 @@ const RegisterPageUser = () => {
       s => s.isoCode === stateIsoCode && s.countryCode === countryCode
     )
     setState(filterState.name)
-    console.log('filter state:', filterState)
-    console.log('state:', state)
+    // console.log('filter state:', filterState)
+    // console.log('state:', state)
     const availableCities = City.getCitiesOfState(countryCode, stateIsoCode)
     setCities(availableCities)
     setCity('') //reset selected city
@@ -104,7 +104,7 @@ const RegisterPageUser = () => {
 
   const handleCityChange = e => {
     setCity(e.target.value)
-    console.log('city:', city)
+    // console.log('city:', city)
     setCityError('')
   }
 
@@ -256,7 +256,7 @@ const RegisterPageUser = () => {
           role: 'User'
         }
         const { data, error } = await Axios.post('/users/register', user)
-        console.log('data', data)
+        // console.log('data', data)
         if (data) {
           TokenService.setUser(data.user) // Store user data in local storage
           swal(

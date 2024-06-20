@@ -135,7 +135,7 @@ export const useAutoLogout = () => {
         navigate('/login/user')
       })
     } catch (error) {
-      console.log('Auto logout error', error)
+      // console.log('Auto logout error', error)
       Swal.fire({
         icon: 'error',
         title: 'Oops!',

@@ -56,6 +56,7 @@ const ConditionsOfCarriage = lazy(() =>
 const Dashboard = lazy(() => import('./views/backend/Dashboard.js'))
 const AllPartners = lazy(() => import('./views/backend/partner/AllPartners.js'))
 const AddPartner = lazy(() => import('./views/backend/partner/AddPartner.js'))
+const EditPartner = lazy(() => import('./views/backend/partner/EditPartner.js'))
 
 const App = () => {
   useAuthRedirect() // custom hook is responsible for checking the user's authentication status and role and handle redirection to home page from login (already logged in users) and registration (users with certain 'role' can't access the registration) pages.
@@ -185,6 +186,7 @@ const App = () => {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/all/partners' element={<AllPartners />} />
               <Route path='/add/partner' element={<AddPartner />} />
+              <Route path='/edit/partner' element={<EditPartner />} />
             </Route>
           </Route>
 

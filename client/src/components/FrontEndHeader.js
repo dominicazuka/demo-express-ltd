@@ -63,7 +63,7 @@ const FrontEndHeader = () => {
         navigate('/')
       })
     } catch (error) {
-      console.log('header Logout error', error)
+      // console.log('header Logout error', error)
       swal('Oops', getErrorMessage(error), 'error')
     }
   }

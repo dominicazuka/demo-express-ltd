@@ -100,17 +100,17 @@ const AllPartners = () => {
                         <td>{partner.partnerName}</td>
                         <td>{partner.phoneNumber}</td>
                         <td>{partner.email}</td>
-                        <td>{partner.servicesOffered}</td>
+                        <td>{partner.servicesOffered.join(', ')}</td>
                         <td>{partner.address}</td>
                         <td>{partner.country}</td>
                         <td>
-                          <a
-                            href={`edit/partner/${partner._id}`}
+                          <Link
+                            to={`/edit/partner?id=${encodeURIComponent(partner._id)}`}
                             className='btn btn-blue rounded-pill waves-effect waves-light'
                             title='Edit'
                           >
                             <i className='fa-regular fa-pen-to-square'></i>
-                          </a>
+                          </Link>
                           <a
                             href={`delete/partner/${partner._id}`}
                             className='btn btn-danger rounded-pill waves-effect waves-light'

@@ -9,7 +9,7 @@ const eventManager = new EventEmitter()
 eventManager.on(
   'register_user_email_verification_notification',
   async payload => {
-    console.log('payload', payload)
+    // // console.log('payload', payload)
     try {
       const to = payload.email
       const message = `Dear ${payload.name}, <br/>
@@ -29,7 +29,7 @@ eventManager.on(
       }
       await mailNoReplyDispatcher(options)
     } catch (error) {
-      console.log('mailNoReplyDispatcher error:', error)
+      // // console.log('mailNoReplyDispatcher error:', error)
     }
   }
 )
@@ -53,13 +53,13 @@ eventManager.on('resend_user_email_verification_code', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
 // user email verified dispatch
 eventManager.on('new_user_verified', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = payload.email
     const message = `Dear ${payload.name}, <br/>
@@ -75,13 +75,13 @@ eventManager.on('new_user_verified', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
 // user login notification dispatch
 eventManager.on('login_notification', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = payload.email
     const message = `Dear ${payload.name}, <br/>
@@ -106,13 +106,13 @@ eventManager.on('login_notification', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
 // update password notification dispatch
 eventManager.on('update_password_notification', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = payload.email
     const message = `Dear ${payload.name}, <br/>
@@ -137,7 +137,7 @@ eventManager.on('update_password_notification', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
@@ -160,13 +160,13 @@ eventManager.on('forgot_password_request_notification', async payload => {
       }
       await mailNoReplyDispatcher(options)
     } catch (error) {
-      console.log('mailNoReplyDispatcher error:', error)
+      // console.log('mailNoReplyDispatcher error:', error)
     }
   })
 
 // admin user delete request notification dispatch
 eventManager.on('user_delete_request_notification', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = adminEmail
     const message = `Dear Admin, <br/>
@@ -192,14 +192,13 @@ eventManager.on('user_delete_request_notification', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
-
 //super admin new partner added notification dispatch
 eventManager.on('super_admin_new_partner_added', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = adminEmail
     const message = `Dear Admin, <br/>
@@ -226,13 +225,13 @@ eventManager.on('super_admin_new_partner_added', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
 //new partner welcome email dispatch
 eventManager.on('new_partner_welcome_email', async payload => {
-  console.log('payload', payload)
+  // console.log('payload', payload)
   try {
     const to = payload.email
     const message = `Dear ${payload.partnerName}, <br/>
@@ -260,7 +259,40 @@ eventManager.on('new_partner_welcome_email', async payload => {
     }
     await mailNoReplyDispatcher(options)
   } catch (error) {
-    console.log('mailNoReplyDispatcher error:', error)
+    // console.log('mailNoReplyDispatcher error:', error)
+  }
+})
+
+//super admin partner edited notification dispatch
+eventManager.on('super_admin_partner_edited', async payload => {
+  // console.log('payload', payload)
+  try {
+    const to = adminEmail
+    const message = `Dear Admin, <br/>
+        <p>A partner has been edited by ${payload.user.name} (${payload.user.email}).</p> <br/>
+            <p>Updated Partner Details:</p>
+            <ul>
+                <li><b>Name:</b> ${payload.partnerName}</li>
+                <li><b>Phone Number:</b> ${payload.phoneNumber}</li>
+                <li><b>Email</b> ${payload.email}</li>
+                <li><b>Services</b> ${payload.servicesOffered.join(', ')}</li>
+                <li><b>Address</b> ${payload.address}</li>
+                <li><b>Country</b> ${payload.country}</li>
+            </ul>
+            <br/>
+            <p>Please review the information and take the necessary actions. If you have any questions or need further assistance, please do not hesitate to contact support team.</p><br/>
+            <p><b>Demo Express LTD Team.</b></p>
+            <br/>
+        `
+    const html = await replyTemplate(message)
+    const options = {
+      to,
+      html,
+      subject: 'Partner Updated Notification - Demo Express LTD'
+    }
+    await mailNoReplyDispatcher(options)
+  } catch (error) {
+    // console.log('mailNoReplyDispatcher error:', error)
   }
 })
 
